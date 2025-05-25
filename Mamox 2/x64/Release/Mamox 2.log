@@ -1,0 +1,42 @@
+﻿  chemkinOut.cpp
+  kinox.Cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'chemkinOut.cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'kinox.Cpp')
+  
+  LumpedReaction.cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'LumpedReaction.cpp')
+  
+  Main.cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(211,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(212,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(198,16): warning C4101: 'rows': unreferenced local variable
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'Main.cpp')
+  
+  molec.Cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'molec.Cpp')
+  
+  RateRule.cpp
+  reaction.Cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'reaction.Cpp')
+  
+  Simulation.cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'Simulation.cpp')
+  
+  thermoOut.cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\molec.h(10,1): error C1083: Cannot open include file: 'inchi_api.h': No such file or directory
+  (compiling source file 'thermoOut.cpp')
+  

@@ -1,0 +1,19 @@
+﻿  kinox.Cpp
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(211,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'kinox.Cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(212,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  (compiling source file 'kinox.Cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(198,16): warning C4101: 'rows': unreferenced local variable
+  (compiling source file 'kinox.Cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\kinox.Cpp(416,7): warning C4101: 'buff': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\kinox.Cpp(426,7): warning C4101: 'ch': unreferenced local variable
+     Creating library C:\Users\22230357\source\repos\Mamox-2\Release\Mamox 2.lib and object C:\Users\22230357\source\repos\Mamox-2\Release\Mamox 2.exp
+  Generating code
+  8 of 4572 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    167 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Mamox 2.vcxproj -> C:\Users\22230357\source\repos\Mamox-2\Release\Mamox 2.exe

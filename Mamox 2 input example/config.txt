@@ -1,0 +1,38 @@
+! Configuration file for Mamox 2
+
+FUELS = 
+1_c5h10, 
+2_c5h10,
+1_c6h12,
+2_c6h12,
+3_c6h12,
+1_c7h14,
+2_c7h14,
+3_c7h14;
+!FUELS = 2-m-c8;
+
+
+MOL_FOLDER = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\molecules";
+
+BASE_MECH =   "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_06\kinetic.kin";
+BASE_THERMO = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_06\thermo.ter";
+BASE_NAMES =  "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_06\glossary.txt";
+
+THERMO_GROUP_FILE = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\thermo_group_values\groups_contribution.csv";
+THERMO_HBI_FILE = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\thermo_group_values\radicals_corrections.csv";
+
+RATE_RULES_FILE = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\rate_rules\kinetic_constants.csv";
+
+REVERSIBLE_DETAILED_MECH = "TRUE";
+
+GENERATE_LUMPED = FALSE;
+LUMPING_T = 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050 , 1100, 1150, 1200;	! [K]
+LUMPING_P = 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0;									! [atm]
+NUM_CORES = 8;
+EQ_RATIO = 1.0;
+TAU = 2.0; ![s]
+
+OUT_FOLDER = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\outputBatchLumping";
+SIM_TYPE = BATCH;
+LUMP_WITH_CORE_MECH = TRUE;
+

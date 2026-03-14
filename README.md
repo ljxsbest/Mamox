@@ -7,11 +7,9 @@ Authors:
 - Tiziano Faravelli (tiziano.faravelli@polimi.it)
 - Eliseo Ranzi
   
-For any inquire please contact Sirio Brunialti - sirio.brunialti@kaust.edu.sa
-
 HOW TO CITE  
 If a publication is produced using this software the following references must be reported
-- - J. Liu, Y. Gao, P. Wang, H.S. Saraee, S. Brunialti, S.M. Sarathy, P.K. Senecal, J.T. Chen, S. Huang, Q. Ding, S. Dong, H.J. Curran, An ignition delay time and automated chemical kinetic modeling study of three heptene isomers, Combust. Flame 280 (2025) 114409.
+- J. Liu, Y. Gao, P. Wang, H.S. Saraee, S. Brunialti, S.M. Sarathy, P.K. Senecal, J.T. Chen, S. Huang, Q. Ding, S. Dong, H.J. Curran, An ignition delay time and automated chemical kinetic modeling study of three heptene isomers, Combust. Flame 280 (2025) 114409.
 - S. Brunialti, X. Zhang, T. Faravelli, A. Frassoldati, S.M. Sarathy, Automatically generated detailed and lumped reaction mechanisms for low- and high-temperature oxidation of alkanes, Proceedings of the Combustion Institute 39 (2023) 335-344.
 - E. Ranzi, A. Frassoldati, S. Granata, T. Faravelli, Wide-Range Kinetic Modeling Study of the Pyrolysis, Partial Oxidation, and Combustion of Heavy n-Alkanes, Ind. Eng. Chem. Res. 44 (2005) 5170-5183
 - E. Ranzi, T. Faravelli, P. Gaffuri, A. Sogaro, Low-Temperature Combustion - Automatic-Generation of Primary Oxidation Reactions and Lumping Procedures, Combustion and Flame 102 (1995) 179-192.

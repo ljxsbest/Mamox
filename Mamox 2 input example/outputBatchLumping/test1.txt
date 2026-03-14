@@ -1,0 +1,8 @@
+C5H9OH1Q2-4 <=> C3H6 + OH + CH2OH + HCO                     7.400e+14   -0.320    25000  !RR 5_TE M 3
+C5H9OH1Q2-4 <=> C3H6 + OH + CH2OH + HCO                     7.400e+14   -0.320    25000  !RR 5_TE M 1
+
+C5H9OH1Q2-4 <=> C3H6 + OH + CH2OH + HCO                     7.400e+14   -0.320    25000  !RR 12 M 3
+C5H9OH1Q2-4 <=> C3H6 + OH + CH2OH + HCO                     7.400e+14   -0.320    25000  !RR 15_ADD_SP M 2
+C5H9OH1Q2-4 <=> C3H6 + OH + CH2OH + HCO                     7.400e+14   -0.320    25000  !RR 8_PA M 1
+C5H9OH1Q2-4 <=> C3H6 + OH + CH2OH + HCO                     7.400e+14   -0.320    25000  !RR 8_PA M 1
+END

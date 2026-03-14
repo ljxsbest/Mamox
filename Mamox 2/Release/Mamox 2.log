@@ -1,19 +1,55 @@
-﻿  kinox.Cpp
+﻿  Main.cpp
 C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(211,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'kinox.Cpp')
+  (compiling source file 'Main.cpp')
   
 C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(212,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  (compiling source file 'kinox.Cpp')
+  (compiling source file 'Main.cpp')
   
 C:\Users\22230357\source\repos\Mamox-2\Mamox 2\utilities.h(198,16): warning C4101: 'rows': unreferenced local variable
-  (compiling source file 'kinox.Cpp')
+  (compiling source file 'Main.cpp')
   
-C:\Users\22230357\source\repos\Mamox-2\Mamox 2\kinox.Cpp(416,7): warning C4101: 'buff': unreferenced local variable
-C:\Users\22230357\source\repos\Mamox-2\Mamox 2\kinox.Cpp(426,7): warning C4101: 'ch': unreferenced local variable
+C:\Users\22230357\PROJECT\Nlopt_2.7.1\nlopt-2.7.1\build\nlopt.hpp(395,59): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\PROJECT\Nlopt_2.7.1\nlopt-2.7.1\build\nlopt.hpp(423,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\PROJECT\Nlopt_2.7.1\nlopt-2.7.1\build\nlopt.hpp(452,59): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\PROJECT\Nlopt_2.7.1\nlopt-2.7.1\build\nlopt.hpp(462,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(594,15): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3178,21): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3179,24): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3789,33): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3789,33): warning C4267:         with
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3789,33): warning C4267:         [
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3789,33): warning C4267:             _Ty=int
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3789,33): warning C4267:         ]
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3826,33): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3826,33): warning C4267:         with
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3826,33): warning C4267:         [
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3826,33): warning C4267:             _Ty=int
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3826,33): warning C4267:         ]
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3897,52): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3897,52): warning C4267:         with
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3897,52): warning C4267:         [
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3897,52): warning C4267:             _Ty=int
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(3897,52): warning C4267:         ]
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(4357,7): warning C4101: 'trovati': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(4552,7): warning C4101: 'found2': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(4554,7): warning C4101: 'found4': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(4553,7): warning C4101: 'found3': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(4551,7): warning C4101: 'found1': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(6718,18): warning C4101: 'pos1Ole': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(6718,27): warning C4101: 'pos2Ole': unreferenced local variable
+C:\Users\22230357\source\repos\Mamox-2\Mamox 2\Main.cpp(6718,10): warning C4101: 'posRad': unreferenced local variable
      Creating library C:\Users\22230357\source\repos\Mamox-2\Release\Mamox 2.lib and object C:\Users\22230357\source\repos\Mamox-2\Release\Mamox 2.exp
   Generating code
-  8 of 4572 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    167 functions had inline decision re-evaluated but remain unchanged
+  4 of 4664 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    139 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Mamox 2.vcxproj -> C:\Users\22230357\source\repos\Mamox-2\Release\Mamox 2.exe

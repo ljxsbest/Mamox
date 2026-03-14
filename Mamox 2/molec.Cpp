@@ -1,4 +1,4 @@
-
+﻿
 #include "molec.h"
 #include <string.h>
 
@@ -7,13 +7,15 @@ void Molecola::init(void)
 	conc = 0;
 	isomeri = 1;
 	output = FORMULA;
-	numole = numete = numO = numkyn = 0;
+	numcycoo = numole = numete = numO = numkyn = 0;
 	
 	for (int r = 0; r <= SIZEMAX; r++)
 	{
 		for (int c = 0; c <= 5; c++) struttura[r][c] = 0;
 		ole[r][0] = ole[r][1] = 0;
+		kyn[r][0] = kyn[r][1] = 0;
 		ete[r][0] = ete[r][1] = 0;
+		cycoo[r][0] = cycoo[r][1] = 0; // JL250826
 		doppioO[r] = 0;
 	};
 	specialMolecule = 0;
@@ -41,8 +43,8 @@ Molecola::Molecola(std::string filePath)
 	myfile.close();
 };
 
-Molecola::Molecola(int size_, std::vector<int> structure, int numOle_, std::vector<int> oleBonds, int numEthe_,
-	std::vector<int> etheBonds, int numKeto_, std::vector<int> ketoPos)
+Molecola::Molecola(int size_, std::vector<int> structure, int numOle_, std::vector<int> oleBonds, int numKyn_, std::vector<int> kynBonds, int numEthe_,
+	std::vector<int> etheBonds, int numKeto_, std::vector<int> ketoPos, int numCycoo_, std::vector<int> cycooBonds)
 {
 	init();
 
@@ -70,11 +72,26 @@ Molecola::Molecola(int size_, std::vector<int> structure, int numOle_, std::vect
 		ete[i + 1][1] = etheBonds[i * 2 + 1];
 	}
 
+	numcycoo = numCycoo_;
+	for (int i = 0; i < numCycoo_; i++)
+	{
+		cycoo[i + 1][0] = cycooBonds[i * 2];
+		cycoo[i + 1][1] = cycooBonds[i * 2 + 1];
+	}
+
 	numO = numKeto_;
 	for (int i = 0; i < numKeto_; i++)
 	{
 		doppioO[i + 1] = ketoPos[i];
 	}
+
+	numkyn = numKyn_;
+	for (int i = 0; i < numKyn_; i++)
+	{
+		kyn[i + 1][0] = kynBonds[i * 2];
+		kyn[i + 1][1] = kynBonds[i * 2 + 1];
+	}
+
 }
 
 int Molecola::isole(int pos1, int pos2)
@@ -92,6 +109,25 @@ int Molecola::isole(int pos)
 	for (int i = 1; i <= numole; i++)
 	{
 		if (ole[i][0] == pos || ole[i][1] == pos) return 1;
+	};
+	return 0;
+};
+
+int Molecola::iskyn(int pos1, int pos2)
+{
+	for (int i = 1; i <= numkyn; i++)
+	{
+		if (kyn[i][0] == pos1 && kyn[i][1] == pos2) return 1;
+		if (kyn[i][1] == pos1 && kyn[i][0] == pos2) return 1;
+	};
+	return 0;
+};
+
+int Molecola::iskyn(int pos)
+{
+	for (int i = 1; i <= numkyn; i++)
+	{
+		if (kyn[i][0] == pos || kyn[i][1] == pos) return 1;
 	};
 	return 0;
 };
@@ -116,7 +152,25 @@ int Molecola::isAllylic(int pos)// Goes fine for HC, what about R*?
 			if (isole(i))
 				return true;
 	}
+	return false;
+}
 
+int Molecola::isAllylic(int pos1, int pos2) // Check if the bond between pos1 and pos2 is allylic.
+{
+	// 1. Any pos is not olefin;
+	// 2. One of the pos connected to an olefin.
+	if (!areBonded(pos1, pos2))
+		return false;
+	if (isole(pos1) || isole(pos2))
+		return false;
+	for (int i = 1; i <= SIZEMAX; i++)
+	{
+		if (i == pos1 || i == pos2)
+			continue;
+		if (areBonded(pos1, i) || areBonded(pos2, i))
+			if (isole(i))
+				return true;
+	}
 	return false;
 }
 
@@ -133,13 +187,9 @@ int Molecola::addole(int pos1, int pos2)
 	if (dist(pos1, pos2) != 1) return 0;
 	if (isole(pos1, pos2))
 	{
-		if (size()==2)
-		{
-			numkyn = 1;
-			return 0;
-		}
+		//numkyn = 1;
+		addkyn(pos1, pos2);
 		return 0;
-
 	}
 	//if (numAbstractableH(pos1) < 1 || numAbstractableH(pos2) < 1)  // non ci puo' stare il legame
 	//{
@@ -160,7 +210,8 @@ int Molecola::addole(int pos1, int pos2)
 		}
 		else
 		{
-			std::cerr << "WARNING: addole called on a carbon without hydrogens" << std::endl;
+			std::cout << "tipo(pos1): " << tipo(pos1) << std::endl;
+			std::cerr << "WARNING: addole called on a carbon without hydrogens1" << std::endl;
 			return 0;
 		}
 	}
@@ -174,16 +225,67 @@ int Molecola::addole(int pos1, int pos2)
 		}
 		else
 		{
-			std::cerr << "WARNING: addole called on a carbon without hydrogens" << std::endl;
+			std::cout << "pos2: " << pos2 << std::endl;
+			std::cout << "tipo(pos2): " << tipo(pos2) << std::endl;
+			std::cerr << "WARNING: addole called on a carbon without hydrogens2" << std::endl;
 			return 0;
 		}
 	}
 
-
-	// se ho passato tutti i controlli...
 	numole++;
 	ole[numole][0] = pos1;
 	ole[numole][1] = pos2;
+	return 1;
+}
+
+
+int Molecola::addkyn(int pos1, int pos2)
+{
+	if (dist(pos1, pos2) != 1) return 0;
+	if (iskyn(pos1, pos2)) return 0;
+	//if (!isole(pos1, pos2))
+	//{
+	//	std::cerr << "WARNING: addkyn called on two carbons not connected by a double bond!" << std::endl;
+	//	return 0;
+	//}
+
+	if (numAbstractableH(pos1) < 1)
+	{
+		if (tipo(pos1) == 2)
+			tipo(pos1, 1);
+		else if (tipo(pos1) == 11)
+		{
+			tipo(pos1, 10);
+		}
+		else
+		{
+			std::cout << "tipo(pos1): " << tipo(pos1) << std::endl;
+			std::cerr << "WARNING: addkyn called on a carbon without hydrogens1" << std::endl;
+			return 0;
+		}
+	}
+	if (numAbstractableH(pos2) < 1)
+	{
+		if (tipo(pos2) == 2)
+			tipo(pos2, 1);
+		else if (tipo(pos2) == 11)
+		{
+			tipo(pos2, 10);
+		}
+		else
+		{
+			std::cout << "pos2: " << pos2 << std::endl;
+			std::cout << "tipo(pos2): " << tipo(pos2) << std::endl;
+			std::cerr << "WARNING: addole called on a carbon without hydrogens2" << std::endl;
+			return 0;
+		}
+	}
+
+	// se ho passato tutti i controlli...
+	if (isole(pos1, pos2)) removeOle(pos1, pos2);
+	numkyn++;
+	kyn[numkyn][0] = pos1;
+	kyn[numkyn][1] = pos2;
 	return 1;
 };
 
@@ -197,10 +299,27 @@ int Molecola::isetero(int pos1, int pos2)
 	return 0;
 };
 
+int Molecola::iscycoo(int pos1, int pos2)
+{
+	for (int i = 1; i <= numcycoo; i++)
+	{
+		if (cycoo[i][0] == pos1 && cycoo[i][1] == pos2) return 1;
+		if (cycoo[i][1] == pos1 && cycoo[i][0] == pos2) return 1;
+	};
+	return 0;
+};
+
 int Molecola::isetero(int pos)
 {
 	for (int i = 1; i <= numete; i++)
 		if (ete[i][0] == pos || ete[i][1] == pos) return 1;
+	return 0;
+};
+
+int Molecola::iscycoo(int pos)
+{
+	for (int i = 1; i <= numcycoo; i++)
+		if (cycoo[i][0] == pos || cycoo[i][1] == pos) return 1;
 	return 0;
 };
 
@@ -219,6 +338,17 @@ int Molecola::addetero(int pos1, int pos2)
 	ete[numete][1] = pos2;
 	return 1;
 };
+
+int Molecola::addcycoo(int pos1, int pos2)
+{
+	if (tipoC(pos1) == Cq) return 0;
+	if (tipoC(pos2) == Cq) return 0;
+	numcycoo++;
+	cycoo[numcycoo][0] = pos1;
+	cycoo[numcycoo][1] = pos2;
+	return 1;
+};
+
 
 int Molecola::removeOO(int pos)
 {
@@ -425,6 +555,33 @@ int Molecola::COHrad_to_C(int pos)
 	return 1;
 }
 
+int Molecola::COrad_to_COH(int pos)
+{
+	if (struttura[pos][1] != 9)
+	{
+		std::cerr << "ERROR: COrad_to_COH called on a non -CO* !" << std::endl;
+		return 0;
+	}
+	struttura[pos][1] = 10;
+	return 1;
+}
+
+int Molecola::COH_to_COrad(int pos)
+{
+	if (struttura[pos][1] != 10)
+	{
+		std::cerr << "ERROR: COrad_to_COH called on a non -COH !" << std::endl;
+		return 0;
+	}
+	struttura[pos][1] = 9;
+	return 1;
+}
+
+
+
+
+
+
 int Molecola::Crad_to_COOH(int pos)
 {
 	if (struttura[pos][1] != 2 && struttura[pos][1] != 11)
@@ -532,6 +689,17 @@ int Molecola::COrad_to_CO(int pos)
 	return 1;
 }
 
+int Molecola::CO_to_COrad(int pos)
+{
+	if (!ischeto(pos))
+	{
+		std::cerr << "ERROR: CO_to_COrad called on a non keto carbon!" << std::endl;
+		return 0;
+	}
+	removeAllKeto();
+	struttura[pos][1] = 9;
+	return 1;
+}
 // JIAXIN
 int Molecola::oleR_to_oleROO(int pos)
 {
@@ -721,6 +889,86 @@ int Molecola::addch3(int pos)  // add a ch3 on allyRs producing an alkyl radical
 	}
 }
 
+
+/* Algorithm:
+1. For the first radical, change pos_allR to bond;
+2. For the second radical, all the pos=pos+size(), except '0's;
+*/
+int Molecola::allRrecom(int pos)  // add a ch3 on allyRs producing an alkyl radical.
+{
+	{
+		if (struttura[pos][1] != 2)
+		{
+			std::cerr << "ERROR: allRrecom called on a non radical!" << std::endl;
+			return 0;
+		}
+		std::cout << "pos: " << pos << std::endl;
+		struttura[pos][1] = 1; //radical to a bond.
+		
+		int num_lines = 0;
+		for (int i = 1; i <= SIZEMAX; i++)
+		{
+			if (struttura[i][1] == 0)
+			{
+				num_lines = i;
+				break;
+			}
+		}
+
+		int size_R = num_lines - 1;
+
+		for (int i = 1; i <= size_R; i++)
+		{
+			struttura[i + size_R][1] = struttura[i][1];
+			for (int j = 2; j <=5; j++)
+			{
+				if (struttura[i][j] != 0)
+				{
+					struttura[i + size_R][j] = struttura[i][j] + size_R;
+				}
+			}
+		}
+		struttura[pos + size_R][1] = 1; // radical to a bond.
+
+		// Add bond info for the two radicals.
+		for (int i = 1; i <= 5; i++)
+		{
+			if (struttura[pos][i] == 0)
+			{
+				struttura[pos][i] = pos + size_R;
+				struttura[pos + size_R][i] = pos;
+				break;
+			}
+		}
+
+		addole(ole[1][0]+size_R, ole[1][1] + size_R);
+		//for (int i = 1; i <= 5; i++)
+		//{
+		//	if (struttura[pos][i] == 0)
+		//	{
+		//		struttura[pos + size_R][i] = pos;
+		//		break;
+		//	}
+		//}
+
+		////struttura[num_lines][1] = 1;
+		////struttura[num_lines][2] = pos;
+		////struttura[num_lines][3] = 0;
+		////struttura[num_lines][4] = 0;
+		////struttura[num_lines][5] = 0;
+		//// step 4.
+		//for (int i = 1; i <= 5; i++)
+		//{
+		//	if (struttura[pos][i] == 0)
+		//	{
+		//		struttura[pos][i] = num_lines;
+		//		break;
+		//	}
+		//}
+		return 1;
+	}
+}
+
 bool Molecola::isGroup(int pos)
 {
 	if (tipo(pos) != 1)
@@ -771,6 +1019,9 @@ int Molecola::removeAtom(int pos)
 		//std::cout << ole[i][0] << std::endl;
 		ole[i][0] = map[ole[i][0]];
 		ole[i][1] = map[ole[i][1]];
+		kyn[i][0] = map[kyn[i][0]];
+		kyn[i][1] = map[kyn[i][1]];
+
 		ete[i][0] = map[ete[i][0]];
 		ete[i][1] = map[ete[i][1]];
 		doppioO[i] = map[doppioO[i]];
@@ -820,6 +1071,138 @@ int Molecola::isKetene(int pos)
 	return 0;
 }
 
+bool Molecola::isOnRIsoRing(int pos, int pos1, int pos2) // Ring 5, 6, 7. ring = dist + 2.
+{
+	//addetero(pos1, pos2);
+
+	int distance = dist(pos1, pos2);
+	switch (distance)
+	{
+	case 1:		// three members ring
+		// already satisfied by iseter(pos) check
+		break;
+	case 2:	// four members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		if (found1[pos] == 1 && found2[pos] == 1)
+			return true;
+		break;
+	}
+	case 3:		// 5 members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		if ((found1[pos] == 1 && dist(pos, pos2) == 2)
+			|| (found2[pos] == 1 && dist(pos, pos1) == 2))
+			return true;
+		break;
+	}
+	case 4: // JL250908 6 members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		int found3[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		scorri(pos1, 2, found3);
+
+		// 判断 pos 是否在从 pos1 或 pos2 出发的两条路径上，距离另一端为3（环总长6）
+		if ((found1[pos] == 1 && dist(pos, pos2) == 3)
+			|| (found2[pos] == 1 && dist(pos, pos1) == 3)
+			|| (found3[pos] == 1 && dist(pos, pos2) == 2))
+		{
+			return true;
+		}
+		break;
+	}
+	case 5: // JL250910 7 members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		int found3[SIZEMAX + 1];
+		int found4[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		scorri(pos1, 2, found3);
+		scorri(pos2, 2, found4);
+		// 判断 pos 是否在从 pos1 或 pos2 出发的两条路径上，距离另一端为3（环总长6）
+		if ((found1[pos] == 1 && dist(pos, pos2) == 4)
+			|| (found2[pos] == 1 && dist(pos, pos1) == 4)
+			|| (found3[pos] == 1 && dist(pos, pos2) == 3)
+			|| (found4[pos] == 1 && dist(pos, pos1) == 3))
+		{
+			return true;
+		}
+		break;
+	}
+	default:
+		std::cerr << "WARNING: in isOnIsomerRing a ring with " << distance + 2 << " members has been found." << std::endl;
+	}
+
+	return false;
+}
+
+bool Molecola::isOnRO2IsoRing(int pos, int pos1, int pos2) // Ring 5, 6, 7. ring = dist + 4.
+{
+	//addetero(pos1, pos2);
+
+	int distance = dist(pos1, pos2);
+	switch (distance)
+	{
+	case 1:		// three members ring
+		// already satisfied by iseter(pos) check
+		break;
+	case 2:	// four members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		if (found1[pos] == 1 && found2[pos] == 1)
+			return true;
+		break;
+	}
+	case 3:		// 5 members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		if ((found1[pos] == 1 && dist(pos, pos2) == 2)
+			|| (found2[pos] == 1 && dist(pos, pos1) == 2))
+			return true;
+		break;
+	}
+	case 4: // JL250908 6 members ring
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+		int found3[SIZEMAX + 1];
+		scorri(pos1, 1, found1);
+		scorri(pos2, 1, found2);
+		scorri(pos1, 2, found3);
+
+		// 判断 pos 是否在从 pos1 或 pos2 出发的两条路径上，距离另一端为3（环总长6）
+		if ((found1[pos] == 1 && dist(pos, pos2) == 3)
+			|| (found2[pos] == 1 && dist(pos, pos1) == 3)
+			|| (found3[pos] == 1 && dist(pos, pos2) == 2))
+		{
+			return true;
+		}
+		break;
+	}
+	default:
+		std::cerr << "WARNING: in isOnRO2IsoRing a ring with " << distance + 4 << " members has been found. (check if dist == -1)" << std::endl;
+	}
+
+	return false;
+}
+
 bool Molecola::isInEthRing(int pos)
 {
 	if (isetero(pos))
@@ -855,8 +1238,87 @@ bool Molecola::isInEthRing(int pos)
 				return true;
 			break;
 		}
+		case 4: // JL250908 6 members ring
+		{
+			int found1[SIZEMAX + 1];
+			int found2[SIZEMAX + 1];
+			int found3[SIZEMAX + 1];
+			scorri(pos1, 1, found1);
+			scorri(pos2, 1, found2);
+			scorri(pos1, 2, found3);
+
+			// 判断 pos 是否在从 pos1 或 pos2 出发的两条路径上，距离另一端为3（环总长6）
+			if ((found1[pos] == 1 && dist(pos, pos2) == 3)
+				|| (found2[pos] == 1 && dist(pos, pos1) == 3)
+				|| (found3[pos] == 1 && dist(pos, pos2) == 2))
+			{
+				return true;
+			}
+			break;
+		}
 		default:
 			std::cerr << "WARNING: in isInEthRing a ring with " << distance+2 << " members has been found." << std::endl;
+		}
+	}
+
+	return false;
+}
+
+bool Molecola::isInCycooRing(int pos)
+{
+	if (iscycoo(pos))
+		return true;
+	for (int i = 0; i < numcycoo; i++)
+	{
+		int pos1 = cycoo[i + 1][0];
+		int pos2 = cycoo[i + 1][1];
+		int distance = dist(pos1, pos2);
+		switch (distance)
+		{
+		case 1:		// 4 members ring
+			// already satisfied by iseter(pos) check
+			break;
+		case 2:	// 5 members ring
+		{
+			int found1[SIZEMAX + 1];
+			int found2[SIZEMAX + 1];
+			scorri(pos1, 1, found1);
+			scorri(pos2, 1, found2);
+			if (found1[pos] == 1 && found2[pos] == 1)
+				return true;
+			break;
+		}
+		case 3:		// 6 members ring
+		{
+			int found1[SIZEMAX + 1];
+			int found2[SIZEMAX + 1];
+			scorri(pos1, 1, found1);
+			scorri(pos2, 1, found2);
+			if ((found1[pos] == 1 && dist(pos, pos2) == 2)
+				|| (found2[pos] == 1 && dist(pos, pos1) == 2))
+				return true;
+			break;
+		}
+		case 4: // JL250908 6 members ring
+		{
+			int found1[SIZEMAX + 1];
+			int found2[SIZEMAX + 1];
+			int found3[SIZEMAX + 1];
+			scorri(pos1, 1, found1);
+			scorri(pos2, 1, found2);
+			scorri(pos1, 2, found3);
+
+			// 判断 pos 是否在从 pos1 或 pos2 出发的两条路径上，距离另一端为3（环总长6）
+			if ((found1[pos] == 1 && dist(pos, pos2) == 3)
+				|| (found2[pos] == 1 && dist(pos, pos1) == 3)
+				|| (found3[pos] == 1 && dist(pos, pos2) == 2))
+			{
+				return true;
+			}
+			break;
+		}
+		default:
+			std::cerr << "WARNING: in isInCycooRing a ring with " << distance + 2 << " members has been found." << std::endl;
 		}
 	}
 
@@ -963,6 +1425,22 @@ int Molecola::size(void)
 			tipo(i) == 3 || tipo(i) == 4 ||
 			tipo(i) == 8 || tipo(i) == 9 || 
 			tipo(i) == 10 || tipo(i) == 11 || tipo(i) == 12 || tipo(i) == 13)  j++;
+
+	return j;
+};
+
+int Molecola::size1(void)
+{
+	int j = 0;
+	int i;
+	for (i = 1; i <= SIZEMAX; i++)
+		if (tipo(i) == 1 || tipo(i) == 2 ||
+			tipo(i) == 3 || tipo(i) == 4 ||
+			tipo(i) == 8 || tipo(i) == 9 ||
+			tipo(i) == 10 || tipo(i) == 11 || tipo(i) == 12 || tipo(i) == 13)  j++;
+
+	if (numcycoo > 0) j += 2;
+
 	return j;
 };
 
@@ -970,10 +1448,16 @@ Carbonio Molecola::tipoC(int gruppo)
 {
 	int trovati = 0;
 	for (int i = 1; i <= 4; i++)
-		if ((tipo(legato(gruppo, i)) < 5 &&
-			tipo(legato(gruppo, i)) > 0) || tipo(legato(gruppo, i)) == 9 
-			|| tipo(legato(gruppo, i)) == 10 || tipo(legato(gruppo, i)) == 11
+		if ((tipo(legato(gruppo, i)) < 5 &&	tipo(legato(gruppo, i)) > 0) || tipo(legato(gruppo, i)) == 9 || tipo(legato(gruppo, i)) == 10 || tipo(legato(gruppo, i)) == 11
 			|| tipo(legato(gruppo, i)) == 12 || tipo(legato(gruppo, i)) == 13) trovati++;
+	//Notice: this means that other groups connecting to one group is 1-4 or 10 or other.
+	// How, this group can also connect to an -OH (I am not saying an C-OH), which means if this group is C-OH (10) itself, trovati should minus 1.
+	//if (tipo(gruppo) == 10)
+	//{
+	//	trovati += 1; // JL250907
+	//	std::cout << "trovati: " << trovati << std::endl;
+	//}
+	
 	switch (trovati)
 	{
 	case 1: return Cp;
@@ -1084,7 +1568,13 @@ int Molecola::numH(int gruppo)	// TO DO add all groups
 	//else H = (3 - legami(gruppo));
 	if (ischeto(gruppo)) H -= 2;
 	if (isetero(gruppo)) H -= 1;
+	if (iscycoo(gruppo)) H -= 1;// JL250825
+	
+	//if (isole(gruppo))	
 	H -= numDoubleBonds(gruppo);
+	//if (iskyn(gruppo))	
+	H -= 2*numTripleBonds(gruppo);
+	
 	return H;
 };
 
@@ -1113,7 +1603,9 @@ int Molecola::numAbstractableH(int gruppo)	// TO DO add all groups
 	//else H = (3 - legami(gruppo));
 	if (ischeto(gruppo)) H -= 2;
 	if (isetero(gruppo)) H -= 1;
+	if (iscycoo(gruppo)) H -= 1;// JL250825
 	H -= numDoubleBonds(gruppo);
+	H -= 2 * numTripleBonds(gruppo); // JL250919
 	return H;
 };
 
@@ -1359,13 +1851,13 @@ for (i = 1; i <= numO; i++)
 	};
 	if (a->tipo(g1) == 9)
 	{
-		a->tipo(g1, 1);
+		a->tipo(g1, 1); 
 		if(a->ischeto(g1) == false)
 			a->addcheto(g1);
 	}
 	if (b->tipo(g2) == 9)
 	{
-		b->tipo(g2, 1);
+		b->tipo(g2, 1); 
 		if(b->ischeto(g2)==false)
 			b->addcheto(g2);
 	}
@@ -1484,15 +1976,17 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 		return 0;
 	}
 	if (isole(g1, g2)) return 0;
+	if (iskyn(g1, g2)) return 0;
 	//if (isole(g1) || isole(g2)) return 0; // JIAXIN. exclude the vinyC-allyC bond.
 	//if (isetero()) return 0;
 	if (trova(2) == g1 || trova(2) == g2) return 0;
+
+
+	// 生成从 g2 出发（屏蔽 g1 方向）的可达节点集合，存放在 fatti[]
 	int fatti[SIZEMAX + 1];
 	int fatti1[SIZEMAX + 1];
 	int i, j;
-	for (i = 1; i <= SIZEMAX; fatti[i++] = 0);
-
-
+	for (i = 1; i <= SIZEMAX; fatti[i++] = 0); // 初始化
 	for (i = 1; i <= SIZEMAX; i++)
 	{
 		for (j = 1; j <= SIZEMAX; fatti1[j++] = 0);
@@ -1502,8 +1996,14 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 		for (j = 1; j <= SIZEMAX; j++) if (fatti1[j] == 1) fatti[j] = 1;
 	};
 	fatti[g2] = 1;
-	//-------------- ora in fatti tutti i gruppi a dx di g2 valgono 1
-	//-------------- scorriamo fatti e ripartiamo la struttura
+
+	//std::cout << "g1: " << g1 << std::endl;
+	//std::cout << "g2: " << g2 << std::endl;
+	//std::cout << "fatti: " << fatti << std::endl;
+	//std::cout << "a: " << a << std::endl;
+	//std::cout << "b: " << b << std::endl;
+
+	// 利用 fatti 把原始结构 struttura 拆分成两个子结构
 	for (i = 1; i <= size(); i++)
 	{
 		if (fatti[i] == 0)
@@ -1520,6 +2020,31 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 			};  // end else
 	};  // end for i
 	//  ----------------togliamo il legame che e' stato spezzato
+
+	
+
+	if (this->inchiName() == "InChI=1S/C4H7O2/c1-4(2-5)3-6-4/h3,5H,2H2,1H3")
+	{
+		std::cout << "check here: " << g1 << std::endl;
+	}
+
+	if (this->inchiName() == "InChI=1S/C4H7O2/c1-4(5)2-6-3-4/h5H,1-3H2")
+	{
+		std::cout << "check here: " << g1 << std::endl;
+	}
+
+
+	//this->printStruttura();
+	//
+	//std::cout << "g1: " << g1 << std::endl;
+	//std::cout << "g2: " << g2 << std::endl;
+	//
+	//std::cout << "-a0: " << std::endl;
+	//a->printStruttura();
+	//std::cout << "-b0: " << std::endl;
+	//b->printStruttura();
+
+
 	int r = 2;
 	for (j = 2; j <= 5; j++) if (struttura[g1][j] != g2)
 	{
@@ -1549,6 +2074,11 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 	//  ---------------- ripartiamo i doppi legami
 	for (i = 1; i <= numole; i++)
 	{
+		//std::cout << "i: " << i << std::endl;
+		//std::cout << "ole[i][0]: " << ole[i][0] << std::endl;
+		//std::cout << "fatti[ole[i][0]]: " << fatti[ole[i][0]] << std::endl;
+		//std::cout << "a: " << a << std::endl;
+		//std::cout << "b: " << b << std::endl;
 		if (fatti[ole[i][0]] == 0)  // vede uno dei gruppi del doppio legame
 		{                   // e' nella molecola a
 			if (a->numAbstractableH(ole[i][0]) > 0 && a->numAbstractableH(ole[i][1]) > 0)
@@ -1559,6 +2089,21 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 		else
 		{
 			b->addole(ole[i][0], ole[i][1]);
+		};
+	};
+	// JL250921
+	for (i = 1; i <= numkyn; i++)
+	{
+		if (fatti[kyn[i][0]] == 0)  // vede uno dei gruppi del doppio legame
+		{                   // e' nella molecola a
+			if (a->numAbstractableH(kyn[i][0]) > 0 && a->numAbstractableH(kyn[i][1]) > 0)
+			{
+				a->addkyn(kyn[i][0], kyn[i][1]);
+			}
+		}
+		else
+		{
+			b->addkyn(ole[i][0], kyn[i][1]);
 		};
 	};
 	//  ---------------- ripartiamo gli =O
@@ -1574,8 +2119,13 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 			b->addcheto(doppioO[i]);
 		}
 	};
-	// ---------------se la molecola era un radicale bis. fare l' olefina
-	// if molcules was a radical add the olefins or transform the linear ether in ketone
+
+	//std::cout << "a0: " << std::endl;
+	//a->printStruttura();
+	//std::cout << "b0: " << std::endl;
+	//b->printStruttura();
+
+	// ---Check if the splitted species needs to form stable status.
 	if (trova(2) != 0 || trova(11) != 0)
 	{
 		int p;
@@ -1649,6 +2199,15 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 	//		b->addcheto(g2);
 	//}
 	// --------------------- distribute the cyclic -O-
+	//std::cout << "a: " << std::endl;
+	//a->printStruttura();
+	//std::cout << "b: " << std::endl;
+	//b->printStruttura();
+
+	// Three conditions:
+	// 1. -O- connects two carbons in a, b respectively;
+	// 2. -O- connects both carbons in a;
+	// 3. -O- connects both carbons in b.
 	for (i = 1; i <= numete; i++)
 	{
 		if (fatti[ete[i][0]] == 0 && fatti[ete[i][1]] == 0)	// cyclyc -O- is all in a
@@ -1661,14 +2220,13 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 			int pos = 1;
 			for (int k = 1; k <= SIZEMAX; k++)			// merge the two molecules
 			{
-				if (b->struttura[k][1] == 1 || b->struttura[k][1] == 2 || b->struttura[k][1] == 3 || b->struttura[k][1] == 4 || b->struttura[k][1] == 8 || b->struttura[k][1] == 9
-					|| b->struttura[k][1] == 10 || b->struttura[k][1] == 11 || b->struttura[k][1] == 12 || b->struttura[k][1] == 13)
+				if (b->struttura[k][1] == 1 || b->struttura[k][1] == 2 || b->struttura[k][1] == 3 || b->struttura[k][1] == 4 || b->struttura[k][1] == 8 || b->struttura[k][1] == 9 || b->struttura[k][1] == 10 || b->struttura[k][1] == 11 || b->struttura[k][1] == 12 || b->struttura[k][1] == 13)
 				{
 					for (int l = 1; l <= 5; l++) mol.struttura[k][l] = b->struttura[k][l];
 					pos++;
 				}
-				if (a->struttura[k][1] == 1 || a->struttura[k][1] == 2 || a->struttura[k][1] == 3 || a->struttura[k][1] == 4 || a->struttura[k][1] == 8 || b->struttura[k][1] == 9
-					|| b->struttura[k][1] == 10 || b->struttura[k][1] == 11 || b->struttura[k][1] == 12 || b->struttura[k][1] == 13)
+				if (a->struttura[k][1] == 1 || a->struttura[k][1] == 2 || a->struttura[k][1] == 3 || a->struttura[k][1] == 4 || a->struttura[k][1] == 8 || a->struttura[k][1] == 9
+					|| a->struttura[k][1] == 10 || a->struttura[k][1] == 11 || a->struttura[k][1] == 12 || a->struttura[k][1] == 13)
 				{
 					for (int l = 1; l <= 5; l++) mol.struttura[k][l] = a->struttura[k][l];
 					pos++;
@@ -1707,10 +2265,17 @@ int Molecola::spezza1(int g1, int g2, Molecola* a, Molecola* b) // JIAXIN. For R
 					pos++;
 				}
 			}
+			Molecola p = mol;
 			for (int k = 0; k < b->numole; k++)
 				mol.addole(b->ole[k + 1][0], b->ole[k + 1][1]);
 			for (int k = 0; k < a->numole; k++)
 				mol.addole(a->ole[k + 1][0], a->ole[k + 1][1]);
+
+			for (int k = 0; k < b->numkyn; k++)
+				mol.addkyn(b->kyn[k + 1][0], b->kyn[k + 1][1]);
+			for (int k = 0; k < a->numkyn; k++)
+				mol.addkyn(a->kyn[k + 1][0], a->kyn[k + 1][1]);
+
 			for (int k = 0; k < b->numO; k++)
 				if (mol.ischeto(b->doppioO[k + 1]) == false)
 					mol.addcheto(b->doppioO[k + 1]);
@@ -1760,6 +2325,11 @@ void Molecola::noempty(void)
 	{
 		ole[i][0] = conta[ole[i][0]];
 		ole[i][1] = conta[ole[i][1]];
+	};
+	for (i = 1; i <= numkyn; i++)
+	{
+		kyn[i][0] = conta[kyn[i][0]];
+		kyn[i][1] = conta[kyn[i][1]];
 	};
 	for (i = 1; i <= numete; i++)
 	{
@@ -1887,6 +2457,16 @@ int Molecola::operator==(Molecola b)
 					uguali = 0;
 					break;    // esce dal ciclo sugli etero
 				};
+			//if (numcycoo != 0) {
+			//	std::cout << "here";
+			//}
+			int n_coo = std::max(b.numCycoo(), numcycoo); // JL250908
+			for (int c = 1; c <= n_coo; c++) // JL250826
+				if (!b.iscycoo(corr[cycoo[c][0]], corr[cycoo[c][1]]))
+				{
+					uguali = 0;
+					break;    // esce dal ciclo sugli etero
+				};
 			if (uguali == 1) break;  // e' 1 se ha passato tutti gli etero
 		};
 	};
@@ -1920,7 +2500,7 @@ int Molecola::operator==(Molecola b)
 		int posa = 1;
 		int uguali = 0;
 		for (int posb = 1; posb <= ngruppi; posb++)    // cerca di sovrapporre
-		{                                           // A partendo da posa=1
+		{                                           
 			for (int k = 1; k <= SIZEMAX; fattia[k++] = 0);  // e B da posb variabile
 			for (int k = 1; k <= SIZEMAX; fattib[k++] = 0);
 			for (int k = 1; k <= SIZEMAX; corr[k++] = 0);
@@ -1933,6 +2513,13 @@ int Molecola::operator==(Molecola b)
 						uguali = 0;
 						break;    // esce dal ciclo sugli etero
 					};
+				for (int c = 1; c <= numcycoo; c++) // JL250908
+					if (!b.iscycoo(corr[cycoo[c][0]], corr[cycoo[c][1]]))
+					{
+						uguali = 0;
+						break;    // esce dal ciclo sugli etero
+					};
+
 				if (uguali == 1) break;  // e' 1 se ha passato tutti gli etero
 			};
 		};
@@ -1967,6 +2554,7 @@ int Molecola::confronta(Molecola* a, Molecola* b, int posa, int posb,
 	if (a->legami(posa) != b->legami(posb)) return 0;
 	if (a->ischeto(posa) != b->ischeto(posb)) return 0;
 	if (a->isole(posa) != b->isole(posb)) return 0;
+	if (a->iskyn(posa) != b->iskyn(posb)) return 0; // JL250919.
 	if (a->isetero(posa) != b->isetero(posb)) return 0;
 
 	fattia[posa] = 1;
@@ -1983,6 +2571,7 @@ int Molecola::confronta(Molecola* a, Molecola* b, int posa, int posb,
 			int nexta = a->legato(posa, i);
 			int nextb = b->legato(posb, j);
 			if (a->isole(posa, nexta) != b->isole(posb, nextb)) continue;
+			if (a->iskyn(posa, nexta) != b->iskyn(posb, nextb)) continue;
 			if (confronta(a, b, nexta, nextb, fattia, fattib, corr) == 1)
 			{
 				trovatoj = 1;
@@ -2070,8 +2659,9 @@ std::ostream& operator<<(std::ostream& stream, Molecola& obj)
 			break;
 
 		default:
-			stream << "ERR";
-			std::cerr << "Special molecule not recognized!";
+			stream << "ERR ";
+			std::cerr << "specialMoleculeID: " << obj.specialMolecule;
+			std::cerr << " Special molecule not recognized!";
 		}
 	}
 	else if (obj.output == MATRICE)
@@ -2089,6 +2679,11 @@ std::ostream& operator<<(std::ostream& stream, Molecola& obj)
 		{
 			stream << "Double bond between: " << obj.ole[i][0]
 				<< " e " << obj.ole[i][1] << std::endl;
+		};
+		for (int i = 1; i <= obj.numkyn; i++)
+		{
+			stream << "Triple bond between: " << obj.kyn[i][0]
+				<< " e " << obj.kyn[i][1] << std::endl;
 		};
 		for (int i = 1; i <= obj.numete; i++)
 		{
@@ -2188,7 +2783,7 @@ void Molecola::Formula(std::ostream& stream, int pos, int fatti[])
 	case 13: strcpy_s(nome, 10, "C(OH)OOH"); break; // JIAXIN judge from C=O (naming: CO).
 
 	};
-	if (isetero(pos)) stream << '^';
+	if (isetero(pos) || iscycoo(pos)) stream << '^'; // JL250822
 	stream << nome;
 	if (ischeto(pos)) stream << 'O';
 	//-------------------segna fatta la posizione
@@ -2207,7 +2802,10 @@ void Molecola::Formula(std::ostream& stream, int pos, int fatti[])
 		if (i != maxvicino)
 		{
 			int pos2 = legato(pos, i);
-			if (isole(pos, pos2)) { stream << "(="; }
+			if (isole(pos, pos2)) 
+			{ 
+				stream << "(="; 
+			}
 			else { stream << "(-"; };
 			Formula(stream, legato(pos, i), fatti);
 			stream << ")";
@@ -2215,7 +2813,15 @@ void Molecola::Formula(std::ostream& stream, int pos, int fatti[])
 		else
 		{
 			int pos2 = legato(pos, i);
-			if (isole(pos, pos2)) { stream << "="; }
+			if (isole(pos, pos2))
+			{
+				stream << "=";
+			}
+			else if (iskyn(pos, pos2))
+
+			{
+				stream << "#";
+			}
 			else { stream << "-"; };
 			Formula(stream, legato(pos, i), fatti);
 		};
@@ -2402,6 +3008,8 @@ int Molecola::numberOfO()				// number of oxygens in the molecule
 		}
 		numberOfOxygens += numete;
 		numberOfOxygens += numO;
+		numberOfOxygens += numcycoo; // JL250903
+		numberOfOxygens += numcycoo; // JL250903
 	}
 	else
 	{
@@ -2459,9 +3067,24 @@ int Molecola::numDoubleBonds(int pos)	// return the number of double bonds the a
 	return num;
 }
 
+int Molecola::numTripleBonds(int pos)	// return the number of double bonds the atom is involved into
+{
+	int num = 0;
+	for (int i = 1; i <= numkyn; i++)
+	{
+		if (kyn[i][0] == pos || kyn[i][1] == pos) num++;
+	};
+	return num;
+}
+
 int Molecola::numberOle()				// return the number of double bond present in the molecule
 {
 	return numole;
+}
+
+int Molecola::numKyn()
+{
+	return numkyn;
 }
 
 int Molecola::numberEthero()				// retunr the number of ethero present in the molecule
@@ -2528,6 +3151,11 @@ int Molecola::numCOH()					// Jiaxin return the number of -COH present in the mo
 	return num;
 }
 
+int Molecola::numCycoo()
+{
+	return numcycoo;
+}
+
 //
 bool Molecola::isLinear()
 {
@@ -2590,7 +3218,15 @@ int Molecola::posOle()
 		return std::min(ole[1][0], ole[1][1]);
 }
 
-int Molecola::posOles() // in dienes
+int Molecola::posKyn()
+{
+	if (numkyn == 0)
+		return 0;
+	else
+		return std::min(kyn[1][0], kyn[1][1]);
+}
+
+int Molecola::posOles() // This is to find the single bond between the two double bonds. Then break it in spezza1 function. 
 {
 	if (numole != 2)
 		return 0;
@@ -2600,16 +3236,17 @@ int Molecola::posOles() // in dienes
 		int ole11 = std::max(ole[1][0], ole[1][1]);
 		int ole20 = std::min(ole[2][0], ole[2][1]);
 		int ole21 = std::max(ole[2][0], ole[2][1]);
-		std::cout << ole10 << std::endl;
-		std::cout << ole11 << std::endl;
-		std::cout << ole20 << std::endl;
-		std::cout << ole21 << std::endl;
-		if (areBonded(ole11, ole20)) 
+		
+		// JL250907
+		if (areBonded(ole11, ole20))
 			return std::min(ole11, ole20);
-		else if (areBonded(ole21, ole10)) 
+		else if (areBonded(ole21, ole10))
 			return std::min(ole21, ole10);
+		else if ((ole10 == ole21) || (ole11 == ole20))
+			return 0; //
 		else {
-			std::cerr << "Dienes not found!" << std::endl;
+			std::cerr << "Dienes not found: " << std::endl;
+			std::cerr << this->inchiName() << std::endl;
 			return 0;
 		}
 	}
@@ -2630,6 +3267,24 @@ std::vector<int> Molecola::posOle(int num)
 	}
 	pos[0] = ole[num][0];
 	pos[1] = ole[num][1];
+	return pos;
+}
+
+std::vector<int> Molecola::posKyn(int num)
+{
+	std::vector<int> pos = { 0, 0 };
+	if (numkyn == 0)
+	{
+		std::cerr << "WARNING: posKyn called on a non Alkane!" << std::endl;
+		return pos;
+	}
+	if (num > numkyn)
+	{
+		std::cerr << "ERROR: posKyn called num>numberKyn!" << std::endl;
+		return pos;
+	}
+	pos[0] = kyn[num][0];
+	pos[1] = kyn[num][1];
 	return pos;
 }
 
@@ -2674,6 +3329,26 @@ std::vector<int> Molecola::posEthero()				// return the two positions of the eth
 		return pos;
 	}
 }
+
+
+std::vector<int> Molecola::posCycoo()
+{
+	std::vector<int> pos(2);
+	if (numcycoo == 0)
+	{
+		pos[0] = 0;
+		pos[1] = 0;
+		return pos;
+	}
+	else
+	{
+		pos[0] = std::min(cycoo[1][0], cycoo[1][1]);
+		pos[1] = std::max(cycoo[1][0], cycoo[1][1]);
+		return pos;
+	}
+}
+
+
 
 std::vector<int> Molecola::posOOHinPOOH2()
 {
@@ -3030,6 +3705,11 @@ void Molecola::fix()
 			ole[i][0] = map[ole[i][0]];
 			ole[i][1] = map[ole[i][1]];
 		}
+		for (int i = 1; i <= numkyn; i++)
+		{
+			ole[i][0] = map[kyn[i][0]];
+			ole[i][1] = map[kyn[i][1]];
+		}
 		for (int i = 1; i <= numete; i++)
 		{
 			ete[i][0] = map[ete[i][0]];
@@ -3039,7 +3719,12 @@ void Molecola::fix()
 		{
 			doppioO[i] = map[doppioO[i]];
 		}
-
+		// JL250825
+		for (int i = 1; i <= numcycoo; i++)
+		{
+			cycoo[i][0] = map[cycoo[i][0]];
+			cycoo[i][1] = map[cycoo[i][1]];
+		}
 		// DEBUG
 		//std::cout << *this << std::endl;
 	}
@@ -3098,6 +3783,9 @@ species Molecola::kindOfSPecies()
 	int numLinEth = numLinEther(); // JIAXIN modification
 	int numCOR = numCORad();
 	int numC_OH = numCOH();
+	int numCycOO = numCycoo();
+	int numAlkyn = numKyn();
+
 
 
 	std::stringstream nameMol;
@@ -3124,173 +3812,192 @@ species Molecola::kindOfSPecies()
 
 	if (specMol != 0)																	 // molecule is special molecule
 		return special_;
-	else if (numberR + numberCOO + numberCOOH + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0) // molecule is alkane
+	else if (numberR + numberCOO + numberCOOH + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0) // molecule is alkane
 		return fuel_;
 	else if (numberR == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0) // molecule is R
+		numC_OH + numberCOO + numberCOOH + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0) // molecule is R
 		return R_;
 	else if (numberCOO == 1 &&
-		numC_OH + numberR + numberCOOH + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is ROO
+		numC_OH + numberR + numberCOOH + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ROO
 		return ROO_;
 	else if (numberCOOH == 1 && numberR == 1 &&
-		numC_OH + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is QOOH
+		numC_OH + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is QOOH
 		return QOOH_;
 	else if (numberCOO == 1 && numberCOOH == 1 &&
-		numC_OH + numberR + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is OOQOOH
+		numC_OH + numberR + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is OOQOOH
 		return OOQOOH_;
 	else if (numberOLE == 1 &&
-		numC_OH + numberR + numberCOO + numberCOOH + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is olefin
+		numC_OH + numberR + numberCOO + numberCOOH + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is olefin
 		return OLE_;
 	else if (numberCO == 1 &&
-		numC_OH + numberR + numberCOO + numberCOOH + numberEther + numberOLE + numLinEth + numCOR == 0)	// molecule is CO
+		numC_OH + numberR + numberCOO + numberCOOH + numberEther + numberOLE + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is CO
 		return CO_;
 	else if (numberEther == 1 &&
-		numC_OH + numberR + numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is an ether
+		numC_OH + numberR + numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an ether
 		return cEth_;
 	else if (numberCO == 1 && numberR == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberEther + numberOLE + numLinEth + numCOR == 0)	// molecule is an RO
+		numC_OH + numberCOO + numberCOOH + numberEther + numberOLE + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an RO
 		return RO_;
 	else if (numberCO == 1 && numberCOOH == 1 &&
-		numC_OH + numberR + numberCOO + numberEther + numberOLE + numLinEth + numCOR == 0)	// molecule is KHP
+		numC_OH + numberR + numberCOO + numberEther + numberOLE + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is KHP
 		return KHP_;
 	else if (numberCOOH == 1 &&
-		numC_OH + numberR + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is ROOH
+		numC_OH + numberR + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ROOH
 		return ROOH_;
 	else if (numberCOOH == 2 &&
-		numC_OH + numberR + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is R(OOH)2
+		numC_OH + numberR + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is R(OOH)2
 		return ROOH2_;
 	else if (numberCOOH == 2 && numberR == 1 &&
-		numC_OH + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is P(OOH)2
+		numC_OH + numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is P(OOH)2
 		return POOH2_;
 	else if (numberCOOH == 1 && numberOLE == 1 &&
-		numC_OH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is ole-OOH
+		numC_OH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ole-OOH
 		return oleOOH_;
 	else if (numberEther == 1 && numberCOOH == 1 &&
-		numC_OH + numberR + numberCOO + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is an ether-OOH
+		numC_OH + numberR + numberCOO + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return cEthOOH_;
 	else if (numberR == 1 && numberOLE == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberEther + numberCO + numLinEth + numCOR == 0) // molecule is oleR
+		numC_OH + numberCOO + numberCOOH + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0) // molecule is oleR
 		return oleR_;
 	else if (numberOLE == 1 && numberCO == 1 &&
-		numC_OH + numberR + numberCOO + numberCOOH + numberEther + numLinEth + numCOR == 0)	// molecule is oleCO
+		numC_OH + numberR + numberCOO + numberCOOH + numberEther + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is oleCO
 		return oleCO_;
 	else if (numberEther == 1 && numberR == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is an etherR
+		numC_OH + numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an etherR
 		return cEthR_;
 	else if (numberEther == 1 && numberR == 1 && numberOLE == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberCO + numLinEth + numCOR == 0)	// molecule is an etherR
+		numC_OH + numberCOO + numberCOOH + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an etherR
 		return olecEthR_;
-
+	else if (numberEther == 1 && numberR == 1 && numC_OH == 1 &&
+		numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an etherR
+		return OHcEthR_;
 	else if (numberCO == 1 && numberR == 1 && numberOLE == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberEther + numLinEth + numCOR == 0)	// molecule is an etherR
+		numC_OH + numberCOO + numberCOOH + numberEther + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an etherR
 		return oleRO_;
 	else if (numberCO == 1 && numberEther == 1 &&
-		numC_OH + numberR + numberCOO + numberCOOH + numberOLE + numLinEth + numCOR == 0)	// molecule is etherCO
+		numC_OH + numberR + numberCOO + numberCOOH + numberOLE + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is etherCO
 		return cEthCO_;
 	else if (numberCO == 1 && numLinEth == 1 && numberR == 1 &&
-		numC_OH + numberCOO + numberCOOH + numberOLE + numberEther + numCOR == 0)	// molecule is linEtherRO
+		numC_OH + numberCOO + numberCOOH + numberOLE + numberEther + numCOR + numCycOO + numAlkyn == 0)	// molecule is linEtherRO
 		return lEthRO_;
 	else if (numberOLE == 1 && numCOR == 1 &&
-		numC_OH + numLinEth + numberCO + numberR + numberCOO + numberCOOH + numberEther == 0)	// molecule is alkenyl RO
+		numC_OH + numLinEth + numberCO + numberR + numberCOO + numberCOOH + numberEther + numCycOO + numAlkyn == 0)	// molecule is alkenyl RO
 		return alkRO_;
 	// JIAXIN
 	else if (numberOLE == 1 && numberCOO == 1 &&
-		numC_OH + numLinEth + numberCO + numberR + numCOR + numberCOOH + numberEther == 0)	// molecule is alkenyl RO
+		numC_OH + numLinEth + numberCO + numberR + numCOR + numberCOOH + numberEther + numCycOO + numAlkyn == 0)	// molecule is alkenyl RO
 		return oleROO_;
 	else if (numberOLE == 1 && numberCOOH == 1 && numberR == 1 &&
-		numC_OH + numLinEth + numberCO + numCOR + numberCOO + numberEther == 0)	// molecule is alkenyl QOOH
+		numC_OH + numLinEth + numberCO + numCOR + numberCOO + numberEther + numCycOO + numAlkyn == 0)	// molecule is alkenyl QOOH
 		return oleQOOH_;
 	else if (numberOLE == 1 && numberCOO == 1 && numberCOOH == 1 &&
-		numC_OH + numberR + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is alkenyl O2QOOH
+		numC_OH + numberR + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is alkenyl O2QOOH
 		return oleO2QOOH_;
 	else if (numberR == 1 && numberOLE == 1 && numberCOOH == 2 &&
-		numC_OH + numberCOO + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is alkenyl POOH2
+		numC_OH + numberCOO + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is alkenyl POOH2
 		return olePOOH2_;
-	else if (numberOLE == 2 && numC_OH + numberCOOH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR == 0)	// dienes.
+	else if (numberOLE == 2 && numC_OH + numberCOOH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// dienes.
 		return dienes_;
 	else if (numberEther == 1 && numberOLE == 1 &&
-		numC_OH + numberR + numberCOO + numberCOOH + numberCO + numLinEth + numCOR == 0)	// molecule is an ether
+		numC_OH + numberR + numberCOO + numberCOOH + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an ether
 		return olecEth_;
 	else if (numberCO == 1 && numberCOOH == 1 && numberOLE == 1 &&
-		numC_OH + numberR + numberCOO + numberEther + numLinEth + numCOR == 0)	// molecule is KHP
+		numC_OH + numberR + numberCOO + numberEther + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is KHP
 		return oleKHP_;
 	else if (numberCOOH == 1 && numberOLE == 2 &&
-		numC_OH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is ole-OOH
+		numC_OH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ole-OOH
 		return dieneOOH_;
 	else if (numC_OH == 1 && numberR == 1 &&
-		numberCOOH + numberOLE + numberCOO + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is ole-OOH
+		numberCOOH + numberOLE + numberCOO + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ole-OOH
 		return ROH_;
 	else if (numC_OH == 1 && numberCOO == 1 &&
-		numberCOOH + numberOLE + numberR + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is ole-OOH
+		numberCOOH + numberOLE + numberR + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ole-OOH
 		return ROHOO_;
 	else if (numC_OH == 1 && numberCOOH == 1 && numberR == 1 && // need to improve here.
-		numberCOO + numberOLE + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is ole-OOH
+		numberCOO + numberOLE + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is ole-OOH
 		return QOHOOH_;
 	//else if (numberOLE == 1 && numberCOOH == 1 &&
 	//	numberR + numC_OH + numLinEth + numberCO + numCOR + numberCOO + numberEther == 0)	// molecule is alkenyl QOOH
 	//	return oleROOH_;
 
 	else if (numberOLE == 1 && numC_OH == 1 &&
-		  numberR + numberCOO + numberCOOH + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is olefin
+		  numberR + numberCOO + numberCOOH + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is olefin
 		return oleOH_;
 	else if (numberEther == 1 && numC_OH == 1 &&
-		  numberR + numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is an ether
+		  numberR + numberCOO + numberCOOH + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an ether
 		return OHcEth_;
 	else if (numberCOO == 1 && numberCOOH == 1 && numC_OH == 1 &&
-		  numberR + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is OOQOOH
+		  numberR + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is OOQOOH
 		return O2QOHOOH_;
 	else if (numberOLE == 1 && numberCOOH == 1 && numC_OH == 1 &&
-		numberCOO + numberR + numberEther + numberCO + numLinEth + numCOR == 0)	// molecule is OOQOOH
+		numberCOO + numberR + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is OOQOOH
 		return OHoleOOH_;
 	else if (numberCO == 1 && numberCOOH == 1 && numC_OH == 1 &&
-		 numberR + numberCOO + numberEther + numberOLE + numLinEth + numCOR == 0)	// molecule is KHP
+		 numberR + numberCOO + numberEther + numberOLE + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is KHP
 		return OHKHP_;
 	else if (numberCOOH == 2 && numberR == 1 && numC_OH == 1 &&
-		  numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is P(OOH)2
+		  numberCOO + numberEther + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is P(OOH)2
 		return POHOOH_;
 	else if (numberCO == 1 && numberR == 1 && numC_OH == 1 &&
-		numberCOO + numberCOOH + numberEther + numberOLE + numLinEth + numCOR == 0)	// molecule is an RO
+		numberCOO + numberCOOH + numberEther + numberOLE + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an RO
 		return OHRO_;
 	else if (numberEther == 1 && numberCOOH == 1 && numC_OH == 1 &&
-		 numberR + numberCOO + numberOLE + numberCO + numLinEth + numCOR == 0)	// molecule is an ether-OOH
+		 numberR + numberCOO + numberOLE + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return OHcEthOOH_;
 	else if (numCOR == 1 && numberCOOH == 1 &&
-		numberEther + numC_OH +	numberR + numberCOO + numberOLE + numberCO + numLinEth == 0)	// molecule is an ether-OOH
+		numberEther + numC_OH +	numberR + numberCOO + numberOLE + numberCO + numLinEth + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return OROOHs_;
 	else if (numC_OH == 1 && numberCO == 1 &&
-		numCOR + numberCOOH + numberEther + numberR + numberCOO + numberOLE +  + numLinEth == 0)	// molecule is an ether-OOH
+		numCOR + numberCOOH + numberEther + numberR + numberCOO + numberOLE + numLinEth + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return COHCHO_;
 		 
 	else if (numberR == 1 && numberOLE == 1 && numberCO == 1 &&
-		numCOR + numberCOOH + numberEther + numC_OH + numberCOO +numLinEth == 0)	// molecule is an ether-OOH
+		numCOR + numberCOOH + numberEther + numC_OH + numberCOO +numLinEth + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return oleQO_;
 	else if (numberEther == 1 && numberOLE == 1 && numberCOOH == 1 &&
-		numberCO + numberR + numCOR + numC_OH + numberCOO + numLinEth == 0)	// molecule is an ether-OOH
+		numberCO + numberR + numCOR + numC_OH + numberCOO + numLinEth + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return olecEthOOH_;
 	else if (numberCO == 1 && numberOLE == 1 && numC_OH == 1 &&
-		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH == 0)	// molecule is an ether-OOH
+		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)	// molecule is an ether-OOH
 		return OHoleketo_;
 	else if (numberR == 1 && numberOLE == 1 && numC_OH == 1 &&
-		numberEther + numberCO + numCOR + numberCOO + numLinEth + numberCOOH == 0)
+		numberEther + numberCO + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)
 		return oleROH_;
-	else if (numberOLE == 2 && numC_OH == 1 && numberCOOH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR == 0)	// dienes.
+	else if (numberOLE == 2 && numC_OH == 1 && numberCOOH + numberR + numberCOO + numberEther + numberCO + numLinEth + numCOR + numCycOO + numAlkyn == 0)	// dienes.
 		return dienesOH_;
 	else if (numberR == 1 && numberOLE == 2 && numC_OH +
-		numberEther + numberCO + numCOR + numberCOO + numLinEth + numberCOOH == 0)
+		numberEther + numberCO + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)
 		return dienesR_;
 	else if (numberCO == 1 && numberOLE == 2 && numC_OH +
-		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH == 0)
+		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)
 		return dienesCO_;
 	else if (numberCO == 2 && numberOLE + numC_OH +
-		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH == 0)
+		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)
 		return diketo_;
 	else if (numberCO == 2 && numC_OH == 1 && numberOLE +
-		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH == 0)
+		numberEther + numberR + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)
 		return OHdiketo_;
 	else if (numberCO == 1 && numC_OH == 1 && numberR == 1 && numberOLE == 1 &&
-		numberEther + numCOR + numberCOO + numLinEth + numberCOOH == 0)
+		numberEther + numCOR + numberCOO + numLinEth + numberCOOH + numCycOO + numAlkyn == 0)
 		return OHoleRketo_;
-
+	else if (numCycOO == 1 && numberR == 1 &&
+		numberOLE + numberCO + numC_OH + numberEther + numCOR + numberCOO + numLinEth + numberCOOH + numAlkyn == 0)
+		return CycOO_;
+	else if (numC_OH == 1 && numberR == 1 && numLinEth == 1 && numberCO == 1 &&
+		numCycOO+ numberOLE + numberEther + numCOR + numberCOO + numberCOOH + numAlkyn == 0)
+		return OHCOlinER_;
+	else if (numAlkyn == 1 &&
+		numberR + numLinEth + numberCO + numC_OH + numCycOO + numberOLE + numberEther + numCOR + numberCOO + numberCOOH == 0)
+		return Alkyn_;
+	else if (numAlkyn == 1 && numC_OH == 1 && 
+		numberR + numLinEth + numberOLE + numberCO + numCycOO + numberEther + numCOR + numberCOO + numberCOOH == 0)
+		return AlkynOH_;
+	else if (numAlkyn == 1 && numberR == 1 &&
+		 numLinEth + numberCO + numC_OH + numberOLE + numCycOO + numberEther + numCOR + numberCOO + numberCOOH == 0)
+		return AlkynR_;
+	else if (numAlkyn == 1 && numberCO == 1 &&
+		numLinEth + numberR + numC_OH + numberOLE + numCycOO + numberEther + numCOR + numberCOO + numberCOOH == 0)
+		return AlkynCO_;
 
 	else
 		return unidentified_;
@@ -3407,8 +4114,9 @@ void Molecola::orderedListOfMeAndEt(std::vector<int>* chain, std::vector<int>* m
 	etPos->clear();
 	posToNamingPos->clear();
 
-	Molecola parent = parentFuel();
-
+	//Molecola parent = parentFuel();  // including =
+	Molecola parent = parentFuel_complete();  // excluding =. JL250820
+	//std::cout << parent << std::endl;
 	// find main chain
 	*chain = parent.mainChain();
 
@@ -3440,12 +4148,24 @@ void Molecola::orderedListOfMeAndEt(std::vector<int>* chain, std::vector<int>* m
 			{
 				Molecola prod1;
 				Molecola prod2;
-				if (parent.spezza(i, (*chain)[j], &prod1, &prod2) == 0)
+				//if (parent.inchiName() == "InChI=1S/C5H10O/c1-3-5(2)4-6/h6H,2-4H2,1H3")
+				//{
+				//	std::cout << "here" << std::endl;
+				//}
+				if (parent.spezza1(i, (*chain)[j], &prod1, &prod2) == 0) // Jiaxin
 				{
-					std::cerr << *this << std::endl;
-					std::cerr << parent << std::endl;
-					std::cerr << "pos 1 = " << i << ", pos 2 = " << (*chain)[j] << std::endl;
-					std::exit(EXIT_FAILURE);
+					if (!isole(i, (*chain)[j])) // Jiaxin
+					{
+						std::cerr << *this << std::endl;
+						std::cerr << parent << std::endl;
+						std::cerr << "pos 1 = " << i << ", pos 2 = " << (*chain)[j] << std::endl;
+						std::exit(EXIT_FAILURE);
+					}
+					else
+					{
+						std::cout << parent << std::endl;
+						std::cout << "Branch is an double bond" << std::endl; // JL250820
+					}
 				}
 				if (prod1 == CH3 || prod2 == CH3)
 				{
@@ -3891,6 +4611,10 @@ std::vector<int> Molecola::mainChain()
 					maxDist = dist(terminalCs[i], terminalCs[j]);
 					termC1 = terminalCs[i];
 					termC2 = terminalCs[j];
+					//std::cout << "maxDist: " << maxDist << std::endl;
+					//std::cout << termC1 << std::endl;
+					//std::cout << termC2 << std::endl;
+
 				}
 			}
 		}
@@ -3965,6 +4689,7 @@ Molecola Molecola::parentFuel()
 	//mol.numole = 0;
 	mol.numete = 0;
 	mol.numO = 0;
+	mol.numcycoo = 0;
 
 	return mol;
 }
@@ -4336,7 +5061,14 @@ std::string Molecola::inchiName()
 				at.bond_stereo[j] = INCHI_BOND_STEREO_NONE;
 
 				if (isole(i + 1, struttura[i + 1][j + 2]))
+				{
 					at.bond_type[j] = INCHI_BOND_TYPE_DOUBLE;
+				}
+				else if (iskyn(i + 1, struttura[i + 1][j + 2]))
+				{
+					//std::cout << "INCHI_BOND_TYPE_TRIPLE" << std::endl;
+					at.bond_type[j] = INCHI_BOND_TYPE_TRIPLE;
+				}
 				else
 					at.bond_type[j] = INCHI_BOND_TYPE_SINGLE;
 				numBonds++;
@@ -4844,10 +5576,14 @@ std::string Molecola::inchiName()
 		// update first carbon
 		int indFirstC = ete[i + 1][0] - 1;
 		int IDOxy = size() + indExtraAtom;
+
+
+
 		atoms[indFirstC].neighbor[atoms[indFirstC].num_bonds] = IDOxy;
 		atoms[indFirstC].bond_type[atoms[indFirstC].num_bonds] = INCHI_BOND_TYPE_SINGLE;
 		atoms[indFirstC].bond_stereo[atoms[indFirstC].num_bonds] = INCHI_BOND_STEREO_NONE;
 		atoms[indFirstC].num_bonds++;
+		//std::cout << atoms[indFirstC].num_bonds << std::endl;
 		indExtraAtom++;
 
 		// update second carbon
@@ -4876,6 +5612,69 @@ std::string Molecola::inchiName()
 		oxy.isotopic_mass = 0;
 		atoms[IDOxy] = oxy;
 	}
+	// add cycloperoxides
+	for (int i = 0; i < numcycoo; i++)
+	{
+		//std::cout << "ciceth" << std::endl;
+		// update first carbon
+		int indFirstC = cycoo[i + 1][0] - 1;
+		int IDOxy1 = size() + indExtraAtom;
+
+
+		atoms[indFirstC].neighbor[atoms[indFirstC].num_bonds] = IDOxy1;
+		atoms[indFirstC].bond_type[atoms[indFirstC].num_bonds] = INCHI_BOND_TYPE_SINGLE;
+		atoms[indFirstC].bond_stereo[atoms[indFirstC].num_bonds] = INCHI_BOND_STEREO_NONE;
+		//std::cout << atoms[indFirstC].num_bonds << std::endl;
+		atoms[indFirstC].num_bonds++;
+		indExtraAtom++;
+
+		// update second carbon
+		int indSecondC = cycoo[i + 1][1] - 1;
+		int IDOxy2 = size() + indExtraAtom;
+		atoms[indSecondC].neighbor[atoms[indSecondC].num_bonds] = IDOxy2;
+		atoms[indSecondC].bond_type[atoms[indSecondC].num_bonds] = INCHI_BOND_TYPE_SINGLE;
+		atoms[indSecondC].bond_stereo[atoms[indSecondC].num_bonds] = INCHI_BOND_STEREO_NONE;
+		atoms[indSecondC].num_bonds++;
+		indExtraAtom++;
+		// add oxygen1
+		INCHI_API::inchi_Atom oxy1;
+		//char oxyName[ATOM_EL_LEN] = "O";
+		//*(oxy.elname) = *oxyName;
+		oxy1.elname[0] = 'O';
+		oxy1.elname[1] = '\0';
+		oxy1.neighbor[0] = indFirstC;
+		oxy1.bond_type[0] = INCHI_BOND_TYPE_SINGLE;
+		oxy1.bond_stereo[0] = INCHI_BOND_STEREO_NONE;
+		oxy1.neighbor[1] = IDOxy2;
+		oxy1.bond_type[1] = INCHI_BOND_TYPE_SINGLE;
+		oxy1.bond_stereo[1] = INCHI_BOND_STEREO_NONE;
+		oxy1.charge = 0;
+		oxy1.radical = INCHI_RADICAL_NONE;
+		oxy1.num_iso_H[0] = -1;
+		oxy1.num_bonds = 2;
+		oxy1.isotopic_mass = 0;
+		atoms[IDOxy1] = oxy1;
+
+		// add oxygen2
+		INCHI_API::inchi_Atom oxy2;
+		//char oxyName[ATOM_EL_LEN] = "O";
+		//*(oxy.elname) = *oxyName;
+		oxy2.elname[0] = 'O';
+		oxy2.elname[1] = '\0';
+		oxy2.neighbor[0] = IDOxy1;
+		oxy2.bond_type[0] = INCHI_BOND_TYPE_SINGLE;
+		oxy2.bond_stereo[0] = INCHI_BOND_STEREO_NONE;
+		oxy2.neighbor[1] = indSecondC;
+		oxy2.bond_type[1] = INCHI_BOND_TYPE_SINGLE;
+		oxy2.bond_stereo[1] = INCHI_BOND_STEREO_NONE;
+		oxy2.charge = 0;
+		oxy2.radical = INCHI_RADICAL_NONE;
+		oxy2.num_iso_H[0] = -1;
+		oxy2.num_bonds = 2;
+		oxy2.isotopic_mass = 0;
+		atoms[IDOxy2] = oxy2;
+	}
+
 	molInchi.atom = atoms;
 
 	for (int i = 0; i < molInchi.num_atoms; i++)
@@ -4915,8 +5714,8 @@ std::string Molecola::inchiName()
 	//INCHI_API::Free_inchi_Input(&molInchi);
 	//delete[] at;
 	//std::cout << outStr << std::endl;
-	if (numKYN() == 1)
-		outStr = "InChI=1S/C2H2/c1-2/h1-2H"; // C2H2
+	//if (numKYN() == 1)
+	//	outStr = "InChI=1S/C2H2/c1-2/h1-2H"; // C2H2
 
 	return outStr;
 }

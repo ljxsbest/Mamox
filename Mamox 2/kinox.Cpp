@@ -1,4 +1,4 @@
-
+﻿
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -58,6 +58,94 @@ void readParameters(std::ifstream& input, int entries, RateRule& RR_)
 	}
 }
 
+
+void readParameters(std::ifstream& input, RateRule& RR_)
+{
+
+	std::streampos pos = input.tellg(); // 保存当前位置
+	std::string l;
+	int count = 0;
+
+	while (std::getline(input, l)) {
+		std::stringstream ss(l);
+		std::string firstCell;
+		if (!std::getline(ss, firstCell, ',')) break; // 没有第一列就结束
+		// 去掉空格
+		firstCell.erase(0, firstCell.find_first_not_of(" \t\r\n"));
+		firstCell.erase(firstCell.find_last_not_of(" \t\r\n") + 1);
+
+		if (firstCell.empty()) break; // 遇到空cell就停止
+		count++;
+	}
+
+	input.clear(); // 清除 EOF 状态
+	input.seekg(pos); // 回到计数前的位置
+	int entries = count; // Get entries automatically instead of manually input.
+
+	
+	//std::cout << "Num of Class "<< ": " << entries << std::endl;
+
+	std::string cell;
+	std::string line;
+	std::string identifier;
+	std::vector<std::string> dimension(RR_.dimensionality());
+	int maxDimensionality = 6; // maximum number of possible parameters for the rate rule.
+	double A;
+	double n;
+	double E;
+
+	for (int i = 0; i < entries; i++)
+	{
+		std::getline(input, line);
+		std::stringstream linS(line);
+		std::getline(linS, cell, ',');
+		identifier = cell;
+		std::getline(linS, cell, ','); std::getline(linS, cell, ','); // discard two cells
+
+		for (int j = 0; j < RR_.dimensionality(); j++)
+		{
+			std::getline(linS, cell, ',');
+			dimension[j] = cell;
+		}
+		for (int j = RR_.dimensionality(); j < maxDimensionality; j++)	//discard remaining cells
+			std::getline(linS, cell, ',');
+
+		std::getline(linS, cell, ',');		// get A
+		A = std::stod(cell);
+		std::getline(linS, cell, ',');		// get n
+		n = std::stod(cell);
+		std::getline(linS, cell, ',');		// get E
+		E = std::stod(cell);
+
+		RR_.addRate(identifier, dimension, A, n, E);
+	}
+}
+
+
+//int Kinox::ClassCount(std::istream& stream, int index_class) {
+//	std::streampos pos = stream.tellg(); // 保存当前位置
+//	std::string line;
+//	int count = 0;
+//
+//	while (std::getline(stream, line)) {
+//		std::stringstream ss(line);
+//		std::string firstCell;
+//		if (!std::getline(ss, firstCell, ',')) break; // 没有第一列就结束
+//		// 去掉空格
+//		firstCell.erase(0, firstCell.find_first_not_of(" \t\r\n"));
+//		firstCell.erase(firstCell.find_last_not_of(" \t\r\n") + 1);
+//
+//		if (firstCell.empty()) break; // 遇到空cell就停止
+//		count++;
+//	}
+//
+//	stream.clear(); // 清除 EOF 状态
+//	stream.seekg(pos); // 回到计数前的位置
+//	return count;
+//}
+
+
+
 Kinox::Kinox(std::string nome)  // TO DO: make the software read automatically the number of rate rules (so we don't have to define them by hand)
 {
 	//leggi(nome);
@@ -79,302 +167,342 @@ Kinox::Kinox(std::string nome)  // TO DO: make the software read automatically t
 		{
 		case 1:					// read initiation reaction parameters
 		{
-			readParameters(input, 4, initiation); // JIAXIN.
+			readParameters(input, initiation); // JIAXIN.
 			break;
 		}
 		case 2:
 		{
-			readParameters(input, 56, hAbstraction); // JIAXIN
+			readParameters(input, hAbstraction); // JIAXIN
 			break;
 		}
 
 		case 3:
 		{
-			readParameters(input, 18, isomerizationR); // JIAXIN.
+			readParameters(input, isomerizationR); // JIAXIN.
 			break;
 		}
 		case 4:
 		{
-			readParameters(input, 9, betaDecR); // JIAXIN 15 to 16.
+			readParameters(input, betaDecR); // JIAXIN 15 to 16.
 			break;
 		}
+
+
 		case 5:
 		{
-			readParameters(input, 1, oleFromR);
+			readParameters(input, HAddOle);
 			break;
 		}
+
 		case 6:
 		{
-			readParameters(input, 4, O2AdditionR);  // Jiaxin Change it to olefin format. 4 RRS totally in the rate rule file.
-			break;
-		}
-		case -6:
-		{
-			readParameters(input, 3, O2RemovalROO);
+			readParameters(input, OatomAddOle);
 			break;
 		}
 		case 7:
 		{
-			readParameters(input, 29, isomROO); // Jiaxin Change it from 27 to 29.
-			break;
-		}
-		case -7:
-		{
-			readParameters(input, 27, isomQOOH);
+			readParameters(input, o2addvinyR);
 			break;
 		}
 		case 8:
 		{
-			readParameters(input, 6, O2AdditionQOOH); // Jiaxin Change it from 3 to 6.
-			break;
-		}
-		case -8:
-		{
-			readParameters(input, 3, O2RemovalOOQOOH);
+			readParameters(input, HO2AddAllyR_rec);
 			break;
 		}
 		case 9:
 		{
-			readParameters(input, 45, OOQOOHToKHP); // Jiaxin 15 to 45
+			readParameters(input, HO2AddAllyR_dec);
 			break;
 		}
 		case 10:
 		{
-			readParameters(input, 6, KHPDecomp);
+			readParameters(input, rooh_to_ro);
 			break;
 		}
 		case 11:
 		{
-			readParameters(input, 7, oleFromROO); // Jiaxin. change to 7.
+			readParameters(input, ro_betadecom);
 			break;
 		}
 		case 12:
 		{
-			readParameters(input, 28, etherFromQOOH); // Jiaxin. 
+			readParameters(input, ch3AddAllyR);
 			break;
 		}
 		case 13:
 		{
-			readParameters(input, 9, oleqooh_decom);
+			readParameters(input, ho2AddOle);
+			break;
+		}
+		case 14:
+		{
+			readParameters(input, o2habsallyR);
+			break;
+		}
+		case 15:
+		{
+			readParameters(input, OHAddOle); // JIAXIN OH addition to olefins.
+			break;
+		}
+		case 16:
+		{
+			readParameters(input, ROHIsomReac); // JIAXIN betaROH isomerization.
+			break;
+		}
+		case 17:
+		{
+			readParameters(input, O2AddROH); // JIAXIN O2 addition to ROH.
+			break;
+		}
+		case 18:
+		{
+			readParameters(input, rohoo_wad);
+			break;
+		}
+		case 19:
+		{
+			readParameters(input, wad_decom);
+			break;
+		}
+		case 20:
+		{
+			readParameters(input, rohoo_elim);
+			break;
+		}
+		case 21:
+		{
+			readParameters(input, ROHO2IsomReac); // JIAXIN betaROH isomerization.
+			break;
+		}
+		case 22:
+		{
+			readParameters(input, bqohooh_decom);
+			break;
+		}
+		case 23:
+		{
+			readParameters(input, qohoohtocEther);
+			break;
+		}
+		case 24:
+		{
+			readParameters(input, o2addqohooh);
+			break;
+		}
+		case 25:
+		{
+			readParameters(input, o2qohoohelim);
+			break;
+		}
+		case 26:
+		{
+			readParameters(input, o2qohoohTokhp);
+			break;
+		}
+		case 27:
+		{
+			readParameters(input, ohkhpdecom);
+			break;
+		}
+		case 28:
+		{
+			readParameters(input, o2qohoohIsom);
+			break;
+		}
+		case 29:
+		{
+			readParameters(input, ohpoohdecom);
+			break;
+		}
+		case 30:
+		{
+			readParameters(input, ohpoohtoEther);
+			break;
+		}
+		case 31:
+		{
+			readParameters(input, O2AdditionR);  // Jiaxin Change it to olefin format. 4 RRS totally in the rate rule file.
+			break;
+		}
+		//case -6:
+		//{
+		//	readParameters(input, O2RemovalROO);
+		//	break;
+		//}
+		case 32:
+		{
+			readParameters(input, oleFromROO); // Jiaxin. change to 7.
+			break;
+		}
+		case 33:
+		{
+			readParameters(input, isomROO); // Jiaxin Change it from 27 to 29.
+			break;
+		}
+		//case -7:
+		//{
+		//	readParameters(input, isomQOOH);
+		//	break;
+		//}
+		case 34:
+		{
+			readParameters(input, oleqooh_decom);
 			//std::getline(input, line);
 			//readParameters(input, 9, oleFromGammaQOOH);
 			//std::getline(input, line);
 			//readParameters(input, 9, oleFromDeltaQOOH);
 			break;
 		}
-		case 14:
+		case 35:
 		{
-			readParameters(input, 29, isomOOQOOH);  // change it from 27 to 29.
+			readParameters(input, etherFromQOOH); // Jiaxin. 
 			break;
 		}
-		case -14:
+		case 36:
 		{
-			readParameters(input, 27, isomPOOH2);
+			readParameters(input, oleOHsConsum);
 			break;
 		}
-		case 15:
+		case 37:
 		{
-			std::vector<std::string> namesRows{ "P", "S", "T" };
-			std::vector<std::string> namesColumns{ "P", "S", "T" };
-			readParameters(input, 7, oleFromOOQOOH);    // JIAXIN 
+			readParameters(input, O2AdditionQOOH); // Jiaxin Change it from 3 to 6.
 			break;
 		}
-		case 16:
+		//case -8:
+		//{
+		//	readParameters(input, O2RemovalOOQOOH);
+		//	break;
+		//}
+		case 38:
 		{
-			readParameters(input, 12, etherFromPOOH2);
+			readParameters(input, OOQOOHToKHP); // Jiaxin 15 to 45
 			break;
 		}
-		case 17:
+		case 39:
 		{
-			readParameters(input, 10, POOH2Dec1);
+			readParameters(input, KHPDecomp);
+			break;
+		}
+		case 40:
+		{
+			readParameters(input, oleOOHDec);
+			break;
+		}
+		case 41:
+		{
+			readParameters(input, isomOOQOOH);  // change it from 27 to 29.
+			break;
+		}
+		//case -14:
+		//{
+		//	readParameters(input, isomPOOH2);
+		//	break;
+		//}
+		case 42:
+		{
+			readParameters(input, POOH2Dec1);
 			//std::getline(input, line);
 			//readParameters(input, 9, POOHDec2);
 			//std::getline(input, line);
 			//readParameters(input, 9, POOHDec3);
 			break;
 		}
-		case 18:
+		case 43:
 		{
-			readParameters(input, 2, oleOOHDec);
+			readParameters(input, etherFromPOOH2);
 			break;
 		}
-		case 19:
+		case 44:
 		{
-			readParameters(input, 2, etherOOHDec);
+			std::vector<std::string> namesRows{ "P", "S", "T" };
+			std::vector<std::string> namesColumns{ "P", "S", "T" };
+			readParameters(input, oleFromOOQOOH);    // JIAXIN 
 			break;
 		}
-		case 20:
+		case 45:
+		{
+			readParameters(input, etherOOHDec);
+			break;
+		}
+		case 46:
 		{
 			readParameters(input, 1, cycEthDec);
 			break;
 		}
-		case 21:
+
+		case 47:
 		{
-			readParameters(input, 3, allylicRadForm);
+			readParameters(input, etherOOHDec);
 			break;
 		}
-		case 22:
+		case 48:
 		{
-			readParameters(input, 1, alkenylROForm);
+			readParameters(input,1, cycEthDec1);
 			break;
 		}
-		case 23:
+		case 49:
 		{
-			readParameters(input, 4, alkenylRODec);
+			readParameters(input, oleOOHDec);
 			break;
 		}
-		case 24:
+		case 50:
 		{
-			readParameters(input, 1, aldDec);
+			readParameters(input, Alpha_qohooh);
 			break;
 		}
-		case 100:
+		case 51:
 		{
-			readParameters(input, 3, OHAddOle); // JIAXIN OH addition to olefins.
+			readParameters(input, cycloadd);
 			break;
 		}
-		case 101:
+		case 52:
 		{
-			readParameters(input, 2, O2AddROH); // JIAXIN O2 addition to ROH.
+			readParameters(input, cycoodec);
 			break;
 		}
-		case 102:
+		case 53:
 		{
-			readParameters(input, 12, ROHIsomReac); // JIAXIN betaROH isomerization.
-			break;
-		}
-		case 103:
-		{
-			readParameters(input, 22, ROHO2IsomReac); // JIAXIN betaROH isomerization.
-			break;
-		}
-		case 104:
-		{
-			readParameters(input, 3, HAddOle);
-			break;
-		}
-		case 105:
-		{
-			readParameters(input, 2, HO2AddAllyR_rec); 
-			break;
-		}
-		case 106:
-		{
-			readParameters(input, 2, HO2AddAllyR_dec);
-			break;
-		}
-		case 107:
-		{
-			readParameters(input, 1, ch3AddAllyR); 
-			break;
-		}
-		case 108:
-		{
-			readParameters(input, 3, ho2AddOle);
+			readParameters(input, qohooh_decom);
 			break;
 		}
 
-		case 109:
+		case 54:
 		{
-			readParameters(input, 4, OatomAddOle);
-			break;
-		}
-		case 110:
-		{
-			readParameters(input, 1, rooh_to_ro);
-			break;
-		}
-		case 111:
-		{
-			readParameters(input, 2, ro_betadecom);
-			break;
-		}
-		case 112:
-		{
-			readParameters(input, 3, o2addvinyR);
-			break;
-		}
-		case 113:
-		{
-			readParameters(input, 2, o2habsallyR);
+			readParameters(input, AllyRrecom);
 			break;
 		}
 
-		case 114:
+		case 55:
 		{
-			readParameters(input, 3, rohoo_wad);
+			readParameters(input, dieneDec);
 			break;
 		}
-		case 115:
-		{
-			readParameters(input, 3, wad_decom);
-			break;
-		}
-		case 116:
-		{
-			readParameters(input, 6, rohoo_elim);
-			break;
-		}
-		case 117:
-		{
-			readParameters(input, 6, bqohooh_decom);
-			break;
-		}
-		case 118:
-		{
-			readParameters(input, 28, qohoohtocEther);
-			break;
-		}
-		case 119:
-		{
-			readParameters(input, 2, qohooh_decom);
-			break;
-		}
-		case 120:
-		{
-			readParameters(input, 4, o2addqohooh);
-			break;
-		}
-		case 121:
-		{
-			readParameters(input, 6, o2qohoohelim);
-			break;
-		}
-		case 122:
-		{
-			readParameters(input, 15, o2qohoohTokhp);
-			break;
-		}
-		case 123:
-		{
-			readParameters(input, 6, ohkhpdecom);
-			break;
-		}
-		case 124:
-		{
-			readParameters(input, 13, o2qohoohIsom);
-			break;
-		}
-		case 125:
-		{
-			readParameters(input, 10, ohpoohdecom);
-			break;
-		}
-		case 126:
-		{
-			readParameters(input, 15, ohpoohtoEther);
-			break;
-		}
-		case 127:
-		{
-			readParameters(input, 1, oleOHsConsum);
-			break;
-		}
-		case 128:
-		{
-			readParameters(input, 2, Alpha_qohooh);
-			break;
-		}
+		
+		
+		//OHcEthOOH consumption
+		// 51, 52: cycloaddition to be done.
+		//case 21:
+		//{
+		//	readParameters(input, allylicRadForm);
+		//	break;
+		//}
+		//case 22:
+		//{
+		//	readParameters(input, alkenylROForm);
+		//	break;
+		//}
+		//case 23:
+		//{
+		//	readParameters(input, alkenylRODec);
+		//	break;
+		//}
+		//case 24:
+		//{
+		//	readParameters(input, aldDec);
+		//	break;
+		//}
+
+
 
 
 		default:
@@ -556,7 +684,7 @@ std::string PST(Carbonio c)
 		return "T";
 		break;
 	default:
-		std::cout << "Error in PST: " << c << " is not a valid value!" << std::endl;
+		std::cout << "Error in PST(C): " << c << " is not a valid value!" << std::endl;
 		break;
 	}
 }
@@ -632,6 +760,21 @@ std::string rr_sec_C(int c)
 	case 0:
 		return "none"; // here, 0/none means the C type is not secondary.
 		break;
+	case 12:
+		return "12";
+		break;
+	case 11:
+		return "11";
+		break;
+	case 10:
+		return "10";
+		break;
+	case 9:
+		return "9";
+		break;
+	case 8:
+		return "8";
+		break;
 	case 7:
 		return "7";
 		break;
@@ -641,8 +784,11 @@ std::string rr_sec_C(int c)
 	case 5:
 		return "5";
 		break;
+	case 4:
+		return "4";
+		break;
 	default:
-		std::cout << "Error in rr_sec_C: " << c << " the number exceeds range 5-7!" << std::endl;
+		std::cout << "Error in rr_sec_C: " << c << " the number exceeds range 5-12!" << std::endl;
 		break;
 	}
 }
@@ -763,7 +909,7 @@ std::string PST(Idrogeno h)
 		return "T";
 		break;
 	default:
-		std::cout << "Error in PST: " << h << " is not a valid value!" << std::endl;
+		std::cout << "Error in PST(h): " << h << " is not a valid value!" << std::endl;
 		break;
 	}
 }
@@ -900,18 +1046,34 @@ reactionComment Kinox::v_initiation(Radicale r1, int isomers, int IsRAlly)
 	if (MeEtPST(r1) == "me") strR = "me";
 	else strR = "other";
 	std::string RRID;
+	if (IsRAlly == 2) strR = "--"; // for vinylic bond scission, the type of R does not matter.
+	if (IsRAlly == 1) strR = "other"; // JL251007
 	std::vector<std::string> param = { strR , n_all_vyn(IsRAlly)};
 	std::vector<double> kinPar = initiation.returnRates(param, &RRID);
 	A = kinPar[0] * double(isomers);
 	n = kinPar[1];
 	E = kinPar[2];
-
 	std::string HRComm = "Type radical 1: ";
 	HRComm.append(MeEtPST_comm(r1));
 	//HRComm.append("; Type radical 2: ");
 	//HRComm.append(MeEtPST_comm(r2));
 
 	reactionComment comment(RRID, HRComm, 1, isomers);
+	return comment;
+}
+
+reactionComment Kinox::v_initiation1(int numH_posr)
+{
+	std::string RRID;
+	std::vector<std::string> param = { "H" , "ally" };
+	std::vector<double> kinPar = initiation.returnRates(param, &RRID);
+	A = kinPar[0] * double(numH_posr);
+	n = kinPar[1];
+	E = kinPar[2];
+
+	std::string HRComm = "Type radical 1: H";
+
+	reactionComment comment(RRID, HRComm, 1, numH_posr);
 	return comment;
 }
 
@@ -937,10 +1099,26 @@ reactionComment Kinox::v_h_abstraction(Molecola r, Carbonio c, int isAllOrVyn, i
 	return comment;
 }
 
-reactionComment Kinox::v_isomerization_r(Radicale r, Idrogeno h, Anello a, int numH, int Hally)
+reactionComment Kinox::v_dienes_dec(Molecola r, int numH)
 {
 	std::string RRID;
-	std::vector<std::string> param = { PST(r) , PST(h) , ring(a), n_all_vyn(Hally)};
+	std::vector<std::string> param = { nameHAbsRad(r) };
+	std::vector<double> kinPar = dieneDec.returnRates(param, &RRID);
+	A = kinPar[0] * numH;
+	n = kinPar[1];
+	E = kinPar[2];
+	//return A * pow(Temp, n) * exp(-E / R / Temp);
+	std::string comm = "unity ";
+	//comm.append(PST_comm(r));
+	reactionComment comment(RRID, comm);
+	return comment;
+}
+
+
+reactionComment Kinox::v_isomerization_r(Radicale r, Idrogeno h, Anello a, int numH, int Rally, int Hally)
+{
+	std::string RRID;
+	std::vector<std::string> param = { PST(r) , PST(h) , ring(a), n_all_vyn(Rally), n_all_vyn(Hally)};
 	std::vector<double> kinPar = isomerizationR.returnRates(param, &RRID);
 	A = kinPar[0] * double(numH);
 	n = kinPar[1];
@@ -988,7 +1166,11 @@ reactionComment Kinox::v_beta_dec_r(Radicale r1, Radicale r2, int isAllyOrNot)
 
 
 	std::string RRID;
-	std::vector<std::string> param = { PST(r1), strR, n_all_vyn(isAllyOrNot)};
+	std::vector<std::string> param;  // 先定义在外面
+	if (n_all_vyn(isAllyOrNot) != "none")
+		param = { "none", "none", n_all_vyn(isAllyOrNot)};
+	else
+		param = { PST(r1), strR, "none" };
 	std::vector<double> kinPar = betaDecR.returnRates(param, &RRID);
 	A = kinPar[0];
 	n = kinPar[1];
@@ -1094,6 +1276,27 @@ reactionComment Kinox::v_oh_add_ole(Carbonio c1, Carbonio c2)
 	return comment;
 }
 
+reactionComment Kinox::v_cycloadd(int ring, std::string label)
+{
+	//std::cout << "JL isAllyOrNot=" << isAllyOrNot << std::endl;
+
+	std::string RRID;
+	std::vector<std::string> param = { std::to_string(ring), label };
+	// std::vector<std::string> param = { nameHAbsRad(r) , PST(c), n_all_vyn(isAllOrVyn)};
+	std::vector<double> kinPar = cycloadd.returnRates(param, &RRID);
+	A = kinPar[0];
+	n = kinPar[1];
+	E = kinPar[2];
+
+	std::string comm = "cycloadd: ";
+	//comm.append(PST_comm(ring));
+	//comm.append("radical_site: ");
+	//comm.append(PST_comm(label));
+
+	reactionComment comment(RRID, comm);
+	return comment;
+}
+
 reactionComment Kinox::v_h_add_ole(Carbonio c1, Carbonio c2) // JIAXIN OH add
 {
 	std::string RRID;
@@ -1155,6 +1358,21 @@ reactionComment Kinox::v_ch3_add_allyR() // JIAXIN
 	reactionComment comment(RRID, comm);
 	return comment;
 }
+
+reactionComment Kinox::v_allyR_recom() // JIAXIN
+{
+	std::string RRID;
+	std::vector<std::string> param = { "none" };
+	// std::vector<std::string> param = { nameHAbsRad(r) , PST(c), n_all_vyn(isAllOrVyn)};
+	std::vector<double> kinPar = AllyRrecom.returnRates(param, &RRID);
+	A = kinPar[0];
+	n = kinPar[1];
+	E = kinPar[2];
+	std::string comm = "unity";
+	reactionComment comment(RRID, comm);
+	return comment;
+}
+
 reactionComment Kinox::v_ho2_add_ole(Carbonio c1, Carbonio c2) // JIAXIN 
 {
 	std::string RRID;
@@ -1501,6 +1719,11 @@ reactionComment Kinox::v_o2_rem_roo(Radicale r)
 reactionComment Kinox::v_isom_roo(Radicale r, Idrogeno h, Anello a, int numH, int Hally, int OOally) // Jiaxin, add 2 more conditions.
 {
 	std::string RRID;
+
+	//std::cout << ring(a) << std::endl;
+	//std::cout << n_all_vyn(OOally) << std::endl;
+	//std::cout << n_all_vyn(Hally) << std::endl;
+
 	std::vector<std::string> param = { PST(r), PST(h), ring(a) , n_all_vyn(OOally), n_all_vyn(Hally) };
 	std::vector<double> kinPar = isomROO.returnRates(param, &RRID);
 	A = kinPar[0] * double(numH);
@@ -1857,6 +2080,14 @@ reactionComment Kinox::v_ether_from_qooh(Radicale r1, Radicale r2, AnelloO a,
 	std::string correction, int OOHally, int Rally)
 {
 	std::string RRID;
+
+	//std::cout << PST(r1) << std::endl;
+	//std::cout << PST(r2) << std::endl;
+	//std::cout << ringO(a) << std::endl;
+	//std::cout << n_all_vyn(OOHally) << std::endl;
+	//std::cout << n_all_vyn(Rally) << std::endl;
+
+
 	std::vector<std::string> param = { PST(r1) , PST(r2), ringO(a), correction, n_all_vyn(OOHally) , n_all_vyn(Rally)};
 	std::vector<double> kinPar = etherFromQOOH.returnRates(param, &RRID);
 	A = kinPar[0];
@@ -1909,6 +2140,7 @@ reactionComment Kinox::v_oleooh_dec(Radicale r)
 	return comment;
 }
 
+
 reactionComment Kinox::v_etherooh_dec(Radicale r)
 {
 	std::string RRID;
@@ -1937,6 +2169,33 @@ reactionComment Kinox::v_cyc_eth_dec()
 	reactionComment comment(RRID);
 	return comment;
 }
+
+reactionComment Kinox::v_cyc_eth_dec1() // OHcyceth
+{
+	std::string RRID;
+	std::vector<std::string> param = { };
+	std::vector<double> kinPar = cycEthDec1.returnRates(param, &RRID);
+	A = kinPar[0];
+	n = kinPar[1];
+	E = kinPar[2];
+	//return A * pow(Temp, n) * exp(-E / R / Temp);
+	reactionComment comment(RRID);
+	return comment;
+}
+
+reactionComment Kinox::v_cycoodec(std::string label)
+{
+	std::string RRID;
+	std::vector<std::string> param = { label };
+	std::vector<double> kinPar = cycoodec.returnRates(param, &RRID);
+	A = kinPar[0];
+	n = kinPar[1];
+	E = kinPar[2];
+	//return A * pow(Temp, n) * exp(-E / R / Temp);
+	reactionComment comment(RRID);
+	return comment;
+}
+
 
 reactionComment Kinox::v_oleOHsConsum()
 {

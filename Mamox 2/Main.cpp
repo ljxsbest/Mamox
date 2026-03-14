@@ -1,4 +1,4 @@
-
+﻿
 /*
 
 888b     d888        d8888 888b     d888  .d88888b. Y88b   d88P  .d8888b.
@@ -31,7 +31,7 @@ WARNING
 	Sirio Brunialti (sirio.brunialti@kaust.edu.sa) and Tiziano Faravelli (tiziano.faravelli@polimi.it).
 
 LIMITED WARRANTY
-	The Software and related documentation are provided �AS IS� and without
+	The Software and related documentation are provided “AS IS” and without
 	any warranty of any kind and Seller EXPRESSLY DISCLAIMS ALL WARRANTIES,
 	EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 	OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -54,6 +54,7 @@ LIMITED WARRANTY
 #include <vector>
 #include <direct.h>
 #include <iomanip>
+#include <unordered_set>
 
 #include  "CKMechReader.h"
 #include "utilities.h"
@@ -136,6 +137,7 @@ std::vector<Reaction> HAdditionToOlefins(Molecola HC, Kinox* k); // JIAXIN H add
 std::vector<Reaction> HO2AddToAllyRrecom(std::vector<Molecola> Rs, Kinox* k); // JIAXIN RA+HO2=RAOOH.
 std::vector<Reaction> HO2AddToAllyRdecom(std::vector<Molecola> Rs, Kinox* k); // JIAXIN RA+HO2=RAO+OH
 std::vector<Reaction> CH3AddToAllyR(std::vector<Molecola> Rs, Kinox* k);      // JIAXIN RA+CH3=RACH3
+std::vector<Reaction> AllyRRecombination(std::vector<Molecola> Rs, Kinox* k);
 std::vector<Reaction> HO2AddOlefinToQOOH(Molecola HC, Kinox* k); // JIAXIN RA+CH3=RACH3
 
 std::vector<Reaction> OAtomAddToOlefins(Molecola HC, Kinox* k);      // JIAXIN
@@ -162,15 +164,16 @@ std::vector<Reaction> olefinsFromROOReactions(std::vector<Molecola> ROOs, Kinox*
 std::vector<Reaction> QOOHDecompositionReaction(std::vector<Molecola> QOOHs, Kinox* k); // include beta/gamma/also delta?
 std::vector<Reaction> QOOHToCEthReactions(std::vector<Molecola> QOOHs, Kinox* k);
 std::vector<Reaction> POOH2ToCEthOOHReactions(std::vector<Molecola> POOH2s, Kinox* k);
-std::vector<Reaction> POOH2DecompositionReaction(std::vector<Molecola> POOH2s, Kinox* k); // include beta/gamma/delta.
+std::vector<Reaction> POOH2DecompositionReaction(std::vector<Molecola> POOH2s, Kinox* k, ChemkinOut* chemOut); // include beta/gamma/delta.
 std::vector<Reaction> O2AdditionVinyRs(std::vector<Molecola> Rs, Kinox* k);
 
 std::vector<Reaction> oleOHConsumption(std::vector<Molecola> oleOHs1, Kinox* k, ChemkinOut* chemOut);
 std::vector<Reaction> oleOHOOHConsumption(std::vector<Molecola> OHoleOOHs, Kinox* k, ChemkinOut* chemOut);
 std::vector<Reaction> dienesOOHConsumption(std::vector<Molecola> dieneOOHs, Kinox* k);
-std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola> olecEthOOHs, Kinox* k);
-std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> olecEths, Kinox* k);
-std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcEthOOHs, Kinox* k);
+std::vector<Reaction> dienesConsumption(std::vector<Molecola> dienes, Kinox* k, ChemkinOut* chemOut);
+std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola> olecEthOOHs, Kinox* k, ChemkinOut* chemOut);
+std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> olecEths, Kinox* k, ChemkinOut* chemOut); // Jiaxin
+std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcEthOOHs, Kinox* k, ChemkinOut* chemOut);
 std::vector<Reaction> OHcEthDecompositionReactions(std::vector<Molecola> OHcEths, Kinox* k);
 std::vector<Reaction> alphaQOHOOHToKHP(std::vector<Molecola> QOHOOHs, Kinox* k);
 
@@ -201,6 +204,10 @@ std::vector<Reaction> O2AdditionToRReactions(std::vector<Molecola> Rs, Kinox* k)
 * @param k pointer to the kinox object that provides the rate rules
 * @return a vector containing all the reactions
 */
+
+std::vector<Reaction> Cycloaddition(std::vector<Molecola> ROOs, Kinox* k); // JL250822 cycloaddition
+std::vector<Reaction> CycOOdecomposition(std::vector<Molecola> cycoos, Kinox* k, ChemkinOut* chemOut); // 
+
 std::vector<Reaction> O2EliminationFromROOReactions(std::vector<Molecola> ROOs, Kinox* k);
 
 /**
@@ -386,7 +393,6 @@ std::vector<Reaction> ketonesDecompositionReactions(std::vector<Molecola> KETOs,
 */
 std::vector<Reaction> ketonesOlefinsDecompositionReactions(std::vector<Molecola> KETOOLEs, Kinox* k);
 
-
 /**
 * Decompose the cyclic ether radical
 * @param m the cyclic ether radical to decompose
@@ -412,6 +418,9 @@ std::vector<Molecola> decomposeketo(Molecola m2); // JIAXIN
 std::vector<Molecola> decomposeketo(Molecola m2); // JIAXIN
 std::vector<Molecola> DecomposeoleRO(Molecola m2);
 std::vector<Molecola> DecomposeDiene(Molecola m2);
+std::vector<Molecola> DecomposeDieneR(Molecola m2);
+std::vector<Molecola> DecomposeLargeDiene(Molecola m2);
+
 /**
 * Decompose the RO species and the eventually produced RO products
 * @param m the RO species to decompose
@@ -428,6 +437,7 @@ std::vector<Molecola> fullyDecomposeRO(Molecola vec);
 */
 std::vector<Molecola> fullyDecomposeRO(std::vector<Molecola> vec);
 std::vector<Molecola> fullyDecomposeRO1(std::vector<Molecola> vec);
+std::vector<Molecola> fullyDecomposeRO2(std::vector<Molecola> vec, ChemkinOut* chemOut);
 /**
 * Get all the products that belong to a specific family of species from all the provided
 * reactions. Duplicate species are skipped.
@@ -998,8 +1008,8 @@ int main(int argc, char* argv[])
 
 		// ### INITIATION REACTIONS (C-C breakage) ###
 		std::vector<Reaction> initReac = initiationReactions(HC, &k);
-		//for (auto& rea : initReac)
-			//std::cout << rea << std::endl;
+		for (auto& rea : initReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class01: Unimolecular decomposition reactions added.       ("
 			<< initReac.size() << " reactions)" << std::endl;
 
@@ -1025,8 +1035,8 @@ int main(int argc, char* argv[])
 		UTL::concatenate(&hAbsReac, &hAbsReacByCH3O);
 		UTL::concatenate(&hAbsReac, &hAbsReacByCH3O2);
 		UTL::concatenate(&hAbsReac, &hAbsReacByC2H5);
-		//for (auto& rea : hAbsReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : hAbsReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class02: H abstraction reactions added.       ("
 			<< hAbsReac.size() << " reactions)" << std::endl;
 		//
@@ -1060,103 +1070,103 @@ int main(int argc, char* argv[])
 			}
 			RIsomReac = newVec;
 		}
-		//for (auto& rea : RIsomReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : RIsomReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class03: Alkenyl radical isomerization added.       ("
 			<< RIsomReac.size() << " reactions)" << std::endl;
 
 		// ### RADICALS BETA DECOMPOSITION (R -> R' + OLE) ###
 		std::vector<Reaction> RBetaDecReac = RBetaDecompositioReactions(Rs, &k);
-		//for (auto& rea : RBetaDecReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : RBetaDecReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class04: Alkenyl radical beta scissions added.       ("
 			<< RBetaDecReac.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin H addition on olefins ###
 		std::vector<Reaction> oleHadd = HAdditionToOlefins(HC, &k);
 		std::vector<Molecola> alkylRS = getProducts(oleHadd, R_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : oleHadd)
+			std::cout << rea << std::endl;
 		std::cout << "- Class05: H addition to olefins reactions added.       ("
 			<< oleHadd.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin O atom addition to olefins ###
 		std::vector<Reaction> OaddOle = OAtomAddToOlefins(HC, &k);
 		//std::vector<Molecola> alkylQOOHs = getProducts(HO2addOle, QOOH_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : OaddOle)
+			std::cout << rea << std::endl;
 		std::cout << "- Class06: O addition to olefins reactions added.       ("
 			<< OaddOle.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin O2 addition on vinylic radicals ###
 		std::vector<Reaction> O2AddVinR = O2AdditionVinyRs(Rs, &k);
 		//		std::vector<Molecola> alkROs = getProducts(allyHO2add_dec, alkRO_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2AddVinR)
+			std::cout << rea << std::endl;
 		std::cout << "- Class07: O2 addition to vinylic radicals added.       ("
 			<< O2AddVinR.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin HO2 addition to allylic radicals ###
 		std::vector<Reaction> allyHO2add_rec = HO2AddToAllyRrecom(Rs, &k);
 		std::vector<Molecola> ROOHs = getProducts(allyHO2add_rec, oleOOH_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : allyHO2add_rec)
+			std::cout << rea << std::endl;
 		std::cout << "- Class08: HO2 addition to allyRs (RA+HO2=RAOOH) added.       ("
 			<< allyHO2add_rec.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin HO2 add ally producing alkRO_+OH ###
 		std::vector<Reaction> allyHO2add_dec = HO2AddToAllyRdecom(Rs, &k);
 		std::vector<Molecola> alkROs = getProducts(allyHO2add_dec, alkRO_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : allyHO2add_dec)
+			std::cout << rea << std::endl;
 		std::cout << "- Class09: HO2 addition to allyRs (RA+HO2=alkROs+OH) added.       ("
 			<< allyHO2add_dec.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin RAOOH=RAO+OH ###
 		std::vector<Reaction> ROOHdecom = ROOHdecomposition(ROOHs, &k);
 		//		std::vector<Molecola> alkROs = getProducts(allyHO2add_dec, alkRO_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : ROOHdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class10: RAOOH=RAO+OH reactions added.       ("
 			<< ROOHdecom.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin RAO decomposition ###
 		std::vector<Reaction> ROdecom = alkROdecomposition(alkROs, &k);
 		//		std::vector<Molecola> alkROs = getProducts(allyHO2add_dec, alkRO_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : ROdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class11: RAO decomposition reactions added.       ("
 			<< ROdecom.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin CH3 addition to allylic radicals ###
 		std::vector<Reaction> allyCH3add = CH3AddToAllyR(Rs, &k);
 		std::vector<Molecola> Higheroles = getProducts(allyCH3add, OLE_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : allyCH3add)
+			std::cout << rea << std::endl;
 		std::cout << "- Class12: CH3 addition to allyRs (RACH3) reactions added.       ("
 			<< allyCH3add.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin HO2 addition to olefins ###
 		std::vector<Reaction> HO2addOle = HO2AddOlefinToQOOH(HC, &k);
 		std::vector<Molecola> alkylQOOHs = getProducts(HO2addOle, QOOH_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : HO2addOle)
+			std::cout << rea << std::endl;
 		std::cout << "- Class13: HO2 addition to olefins reactions added.       ("
 			<< HO2addOle.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin allylic radicals HAA by O2 ###
 		std::vector<Reaction> O2absAllyR = O2allyRHabstraction(Rs, &k);
 		std::vector<Molecola> dienes = getProducts(O2absAllyR, dienes_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2absAllyR)
+			std::cout << rea << std::endl;
 		std::cout << "- Class14: allyRs HAA by O2 reactions added.       ("
 			<< O2absAllyR.size() << " reactions)" << std::endl;
 
 		// ### Jiaxin OH addition on olefins ###
 		std::vector<Reaction> oleOHadd = OHAdditionOnOlefins(HC, &k);
 		std::vector<Molecola> ROHs = getProducts(oleOHadd, ROH_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : oleOHadd)
+			std::cout << rea << std::endl;
 		std::cout << "- Class15: OH addition to olefins added.       ("
 			<< oleOHadd.size() << " reactions)" << std::endl;
 
@@ -1188,8 +1198,8 @@ int main(int argc, char* argv[])
 			}
 			ROHisomReac = newVec;
 		}
-		//for (auto& rea : RIsomReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : ROHisomReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class16: betaROH isomerization reactions added.       ("
 			<< ROHisomReac.size() << " reactions)" << std::endl;
 
@@ -1197,47 +1207,47 @@ int main(int argc, char* argv[])
 		ROHs.insert(ROHs.end(), ROHs1.begin(), ROHs1.end());
 		std::vector<Reaction> O2AddROH = O2AdditionToROH(ROHs, &k);
 		std::vector<Molecola> ROHOOs = getProducts(O2AddROH, ROHOO_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2AddROH)
+			std::cout << rea << std::endl;
 		std::cout << "- Class17: O2 addition to ROHs reactions added.       ("
 			<< O2AddROH.size() << " reactions)" << std::endl;
 
 		// ### ROHOO To Waddington (ROO -> QOOH) ###
 		std::vector<Reaction> ROHO2Waddington = ROHO2ToWaddington(ROHOOs, &k);
 		std::vector<Molecola> OROOHs = getProducts(ROHO2Waddington, OROOHs_);
-		//for (auto& rea : ROHO2Waddington)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : ROHO2Waddington)
+			std::cout << rea << std::endl;
 		std::cout << "- Class18: betaROHO2 Waddington mechanism mechanism added.       ("
 			<< ROHO2Waddington.size() << " reactions)" << std::endl;
 
 		// ### Waddington OROOH decomposition ###
 		std::vector<Reaction> Waddecom = WadOROOHdecomposition(OROOHs, &k);
-		//for (auto& rea : Waddecom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : Waddecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class19: Waddington product OROOH decompositions decompositions added.       ("
 			<< Waddecom.size() << " reactions)" << std::endl;
 
 		// ### beta-ROHO2 Elimination ###
 		std::vector<Reaction> betaROHO2Elim = betaROHO2Elimination(ROHOOs, &k);
 		std::vector<Molecola> oleOHs1 = getProducts(betaROHO2Elim, oleOH_);
-		//for (auto& rea : betaROHO2Elim)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : betaROHO2Elim)
+			std::cout << rea << std::endl;
 		std::cout << "- Class20: ROHO2 elimination reactions added added.       ("
 			<< betaROHO2Elim.size() << " reactions)" << std::endl;
 
 		// ### ISOMERIZATION ROHOO (ROO -> QOOH) ###
 		std::vector<Reaction> ROHO2Isom = ROHO2IsomerizationReac(ROHOOs, &k);
 		std::vector<Molecola> QOHOOHs = getProducts(ROHO2Isom, QOHOOH_);
-		//for (auto& rea : ROOIsomReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : ROHO2Isom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class21: ROHOO isomerization reactions added.       ("
 			<< ROHO2Isom.size() << " reactions)" << std::endl;
 
 		// ### beta-QOHOOH Elimination ###
 		std::vector<Reaction> betaQOHOOHscis = betaOHQOOHScission(QOHOOHs, &k);
 		std::vector<Molecola> oleOHs2 = getProducts(betaQOHOOHscis, oleOH_);
-		//for (auto& rea : betaQOHOOHscis)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : betaQOHOOHscis)
+			std::cout << rea << std::endl;
 		std::cout << "- Class22: beta-QOHOOH scissions added.       ("
 			<< betaQOHOOHscis.size() << " reactions)" << std::endl;
 
@@ -1251,72 +1261,72 @@ int main(int argc, char* argv[])
 		// ### QOHOOH decompositions ###
 		std::vector<Reaction> QOHOOHdecom = OHQOOHdecompositions(QOHOOHs, &k);
 		//std::vector<Molecola> OHcEths = getProducts(QOHOOHdecom, OHcEth_);
-		//for (auto& rea : QOHOOHdecom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : QOHOOHdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class22_combine: QOHOOH decomposition reactions added.       ("
 			<< QOHOOHdecom.size() << " reactions)" << std::endl;
 
 		// ### CycEther formation from QOHOOH ###
 		std::vector<Reaction> QOHOOHToEthers = OHQOOHToCycEther(QOHOOHs, &k);
 		std::vector<Molecola> OHcEths = getProducts(QOHOOHToEthers, OHcEth_);
-		//for (auto& rea : QOHOOHToEthers)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : QOHOOHToEthers)
+			std::cout << rea << std::endl;
 		std::cout << "- Class23: QOHOOH to cyclic ethers reactions added.       ("
 			<< QOHOOHToEthers.size() << " reactions)" << std::endl;
 
 		// ### O2 addition to QOHOOH ###
 		std::vector<Reaction> O2AddQOHOOH = O2AdditionToOHQOOH(QOHOOHs, &k);
 		std::vector<Molecola> O2QOHOOHs = getProducts(O2AddQOHOOH, O2QOHOOH_);
-		//for (auto& rea : O2AddQOHOOH)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2AddQOHOOH)
+			std::cout << rea << std::endl;
 		std::cout << "- Class24: O2 addition to QOHOOH reactions added.       ("
 			<< O2AddQOHOOH.size() << " reactions)" << std::endl;
 
 		// ### O2QOHOOH Elimination ###
 		std::vector<Reaction> O2QOHOOHElim = O2QOHOOHElimination(O2QOHOOHs, &k);
 		std::vector<Molecola> OHoleOOHs = getProducts(O2QOHOOHElim, OHoleOOH_);
-		//for (auto& rea : O2QOHOOHElim)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2QOHOOHElim)
+			std::cout << rea << std::endl;
 		std::cout << "- Class25: O2QOHOOH HO2 elimination reactions added.       ("
 			<< O2QOHOOHElim.size() << " reactions)" << std::endl;
 
 		// ### O2QOHOOH to OH-KHP ###
 		std::vector<Reaction> O2QOHOOH2KHP = O2QOHOOHToKHP(O2QOHOOHs, &k);
 		std::vector<Molecola> OHKHPs = getProducts(O2QOHOOH2KHP, OHKHP_);
-		//for (auto& rea : O2QOHOOH2KHP)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2QOHOOH2KHP)
+			std::cout << rea << std::endl;
 		std::cout << "- Class26: OH-KHP formation from O2QOHOOH reactions added.       ("
 			<< O2QOHOOH2KHP.size() << " reactions)" << std::endl;
 
 		// ### OH-KHP decomposition ###
 		std::vector<Reaction> OHKHPdecom = OHKHPdecomposition(OHKHPs, &k);
 		//std::vector<Molecola> OHKHPs = getProducts(O2QOHOOH2KHP, OHKHP_);
-		//for (auto& rea : OHKHPdecom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : OHKHPdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class27: OH-KHP decomposition reactions added.       ("
 			<< OHKHPdecom.size() << " reactions)" << std::endl;
 
 		// ### O2QOHOOH isomerization ###
 		std::vector<Reaction> O2QOHOOHIsom = O2QOHOOHIsomerization(O2QOHOOHs, &k);
 		std::vector<Molecola> POHOOHs = getProducts(O2QOHOOHIsom, POHOOH_);
-		//for (auto& rea : O2QOHOOHIsom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2QOHOOHIsom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class28: O2QOHOOH isomerization reactions added.       ("
 			<< O2QOHOOHIsom.size() << " reactions)" << std::endl;
 
 		// ### POHOOH decomposition ###
 		std::vector<Reaction> POHOOHdecom = POHOOHdecomposition(POHOOHs, &k);
 		//std::vector<Molecola> OHPOOH = getProducts(POHOOHdecom, OHPOOH_);
-		//for (auto& rea : POHOOHdecom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : POHOOHdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class29: POHOOH decomposition reactions added.       ("
 			<< POHOOHdecom.size() << " reactions)" << std::endl;
 
 		// ### POHOOH to ether-OHOOHs ###
 		std::vector<Reaction> POHOOHTocE = POHOOHToEthers(POHOOHs, &k);
 		std::vector<Molecola> OHcEthOOHs = getProducts(POHOOHTocE, OHcEthOOH_);
-		//for (auto& rea : POHOOHTocE)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : POHOOHTocE)
+			std::cout << rea << std::endl;
 		std::cout << "- Class30: POHOOH to ether-OHOOHs reactions added.       ("
 			<< POHOOHTocE.size() << " reactions)" << std::endl;
 
@@ -1334,16 +1344,16 @@ int main(int argc, char* argv[])
 		
 		// ### O2 ADDITION TO R (R+O2->ROO) ### Jiaxin
 		std::vector<Reaction> O2addToRReac = O2AdditionToRReactions(Rs, &k);
-		//for (auto& rea : O2addToRReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2addToRReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class31: O2 addition to oleR reactions added.       ("
 			<< O2addToRReac.size() << " reactions)" << std::endl;
 
 		// ### ROO TO OLEFINS (ROO -> ole_ole(dienes) + HO2) ###
 		std::vector<Reaction> oleFromROOReac = olefinsFromROOReactions(ROOs, &k);
 		std::vector<Molecola> dienes1 = getProducts(oleFromROOReac, dienes_);
-		//for (auto& rea : oleFromROOReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : oleFromROOReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class32: oleROO HO2 elimination reactions added.       ("
 			<< oleFromROOReac.size() << " reactions)" << std::endl;
 		//for (auto& prod : dienes1)
@@ -1352,8 +1362,8 @@ int main(int argc, char* argv[])
 
 		// ### ISOMERIZATION ROO (ROO -> QOOH) ###
 		std::vector<Reaction> ROOIsomReac = ROOIsomerizationReactions(ROOs, &k);
-		//for (auto& rea : ROOIsomReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : ROOIsomReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class33: oleROO isomerization reactions added.       ("
 			<< ROOIsomReac.size() << " reactions)" << std::endl;
 
@@ -1361,37 +1371,37 @@ int main(int argc, char* argv[])
 		// ### DECOMPOSITION beta/gamma/delta-QOOH ###
 		std::vector<Reaction> QOOHDecReac = QOOHDecompositionReaction(QOOHs, &k);
 		//getAdditionalProducts(&OLEs, oleFromRPlusO2reac, OLE_);
-		//for (auto& rea : betaQOOHDecReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : QOOHDecReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class34: oleQOOH decomposition reactions added.       ("
 			<< QOOHDecReac.size() << " reactions)" << std::endl;
 
 		// ### Cyclic ethers from QOOH (QOOH -> cEth + OH) ###
 		std::vector<Reaction> QOOHToCEthReac = QOOHToCEthReactions(QOOHs, &k);
 		std::vector<Molecola> olecEths = getProducts(QOOHToCEthReac, olecEth_);
-		//for (auto& rea : QOOHToCEthReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : QOOHToCEthReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class35: oleQOOH to cyclic ethers reactions added.       ("
 			<< QOOHToCEthReac.size() << " reactions)" << std::endl;
 
 		std::vector<Reaction> oleOHdecom = oleOHConsumption(oleOHs1, &k, &chemOut);
-		//for (auto& rea : oleOHdecom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : oleOHdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class36: OleOHs (roho2 elim) consumption reactions added.       ("
 			<< oleOHdecom.size() << " reactions)" << std::endl;
 
 		// ### O2 ADDITION TO QOOH (QOOH+O2->OOQOOH) ###
 		std::vector<Reaction> O2addToQOOHReac = O2AdditionToQOOHReactions(QOOHs, &k);
-		//for (auto& rea : O2addToQOOHReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : O2addToQOOHReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class37: O2 addition to oleQOOH reactions added.       ("
 			<< O2addToQOOHReac.size() << " reactions)" << std::endl;
 		
 		// ### KETOHYDROPEROXYDES FORMATION (OOQOOH -> KHP + OH) ###
 		std::vector<Reaction> KHPFormReac = KHPFormationReactions(OOQOOHs, &k);
 		std::vector<Molecola> KHPs = getProducts(KHPFormReac, oleKHP_);
-		//for (auto& rea : KHPFormReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : KHPFormReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class38: oleKHP formation reactions added.       ("
 			<< KHPFormReac.size() << " reactions)" << std::endl;
 
@@ -1414,26 +1424,26 @@ int main(int argc, char* argv[])
 		std::vector<Molecola> POOH2s = getProducts(OOQOOHIsomReac, olePOOH2_);
 		//for (auto& prod : POOH2s)
 		//	std::cout << prod << std::endl;
-		//for (auto& rea : OOQOOHIsomReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : OOQOOHIsomReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class41: oleO2QOOH isomerization reactions added.       ("
 			<< OOQOOHIsomReac.size() << " reactions)" << std::endl;
 
 		// ### beta/gamma/delta-P(OOH)2 DECOMPOSITION (BETA-P(OOH)2 -> OLE-OOH + HO2) ###
 		// ### GAMMA-P(OOH)2 DECOMPOSITION (GAMMA-P(OOH)2 -> OLE' + C''O + OH) ###
 		// ### DELTA-P(OOH)2 DECOMPOSITION (DELTAP(OOH)2 -> OLE' + P(OOH)2 + OH) ###
-		std::vector<Reaction> POOH2DecReac = POOH2DecompositionReaction(POOH2s, &k);
+		std::vector<Reaction> POOH2DecReac = POOH2DecompositionReaction(POOH2s, &k, &chemOut);
 		std::vector<Molecola> dieneOOHs = getProducts(POOH2DecReac, dieneOOH_);
-		//for (auto& rea : betaPOOH2DecReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : POOH2DecReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class42: oleP(OOH)2 decomposition added.       ("
 			<< POOH2DecReac.size() << " reactions)" << std::endl;
 		
 		// ### Cyclic ethers-OOH from P(OOH)2 (P(OOH)2 -> cEthOOH + OH) ###
 		std::vector<Reaction> POOH2ToCEthOOHReac = POOH2ToCEthOOHReactions(POOH2s, &k);
 		std::vector<Molecola> olecEthOOHs = getProducts(POOH2ToCEthOOHReac, olecEthOOH_);
-		//for (auto& rea : POOH2ToCEthOOHReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : POOH2ToCEthOOHReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class43: P(OOH)2 to cyclic ethers-OOH reactions added.       ("
 			<< POOH2ToCEthOOHReac.size() << " reactions)" << std::endl;
 
@@ -1441,49 +1451,79 @@ int main(int argc, char* argv[])
 		// ### OOQOOH TO OLE-OOH (OOQOOH -> OLE-OOH + HO2) ###
 		std::vector<Reaction> OOQOOHToOLEOOHReac = OOQOOHToOLEOOHReactions(OOQOOHs, &k);
 		//getAdditionalProducts(&OLEOOHs, OOQOOHToOLEOOHReac, oleOOH_);
-		//for (auto& rea : OOQOOHToOLEOOHReac)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : OOQOOHToOLEOOHReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class44: oleO2QOOH elimination to dienes-OOH reactions added.       ("
 			<< OOQOOHToOLEOOHReac.size() << " reactions)" << std::endl;
 
 
 		// ### CYCLICETHER-OOH DECOMPOSITION ###
-		std::vector<Reaction> cEthOOHDecReac = cyclicEtherOOHDecompositionReactions(olecEthOOHs, &k);
-		//for (auto& rea : cEthOOHDecReac)
-		//	std::cout << rea << std::endl;
+		std::vector<Reaction> cEthOOHDecReac = cyclicEtherOOHDecompositionReactions(olecEthOOHs, &k, &chemOut);
+		for (auto& rea : cEthOOHDecReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class45: olecEthOOHs (from oleP(OOH)2) consumption reactions added.       ("
 			<< cEthOOHDecReac.size() << " reactions)" << std::endl;
 		
 		// ### CYCLIC ETHERS DECOMPOSITION (CETH + OH -> DEC.PRO. + H2O) ###
-		std::vector<Reaction> cEthDecReac = cyclicEthersDecompositionReactions(olecEths, &k);
-		//for (auto& rea : cEthDecReac)
-		//	std::cout << rea << std::endl;
+		std::vector<Reaction> cEthDecReac = cyclicEthersDecompositionReactions(olecEths, &k, &chemOut);
+		for (auto& rea : cEthDecReac)
+			std::cout << rea << std::endl;
 		std::cout << "- Class46: olecEths (from oleQOOH) consumption reactions added.       ("
 			<< cEthDecReac.size() << " reactions)" << std::endl;
 
-		std::vector<Reaction> OHcEthOOHdec = OHcEthOOHDecompositionReactions(OHcEthOOHs, &k);
-		//for (auto& rea : OHcEthOOHdec)
-		//	std::cout << rea << std::endl;
+		std::vector<Reaction> OHcEthOOHdec = OHcEthOOHDecompositionReactions(OHcEthOOHs, &k, &chemOut);
+		for (auto& rea : OHcEthOOHdec)
+			std::cout << rea << std::endl;
 		std::cout << "- Class47: OHcEthOOHs (from POHOOH2) consumption reactions added.       ("
 			<< OHcEthOOHdec.size() << " reactions)" << std::endl;
 
 		std::vector<Reaction> OHcEthDec = OHcEthDecompositionReactions(OHcEths, &k);
-		//for (auto& rea : OHcEthDec)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : OHcEthDec)
+			std::cout << rea << std::endl;
 		std::cout << "- Class48: OHcEthDec (from QOHOOH) consumption reactions added.       ("
 			<< OHcEthDec.size() << " reactions)" << std::endl;
 
 		std::vector<Reaction> dieneOOHdecom = dienesOOHConsumption(dieneOOHs, &k);
-		//for (auto& rea : dieneOOHdecom)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : dieneOOHdecom)
+			std::cout << rea << std::endl;
 		std::cout << "- Class49: dieneOOHdecom (oleO2QOOH elim) consumption reactions added.       ("
 			<< dieneOOHdecom.size() << " reactions)" << std::endl;
 
 		std::vector<Reaction> alphaqohooh = alphaQOHOOHToKHP(QOHOOHs, &k);
-		//for (auto& rea : alphaqohooh)
-		//	std::cout << rea << std::endl;
+		for (auto& rea : alphaqohooh)
+			std::cout << rea << std::endl;
 		std::cout << "- Class50: alpha-QOHOOH To KHPs reactions added.       ("
 			<< alphaqohooh.size() << " reactions)" << std::endl;
+
+		std::vector<Reaction> cycloaddition = Cycloaddition(ROOs, &k);
+		std::vector<Molecola> cycoos = getProducts(cycloaddition, CycOO_);
+		//for (auto& prod : cycoos)
+		//	std::cout << prod << std::endl;
+		for (auto& rea : cycloaddition)
+			std::cout << rea << std::endl;
+		std::cout << "- Class51: Cycloaddition reactions added.       ("
+			<< cycloaddition.size() << " reactions)" << std::endl;
+
+		std::vector<Reaction> cycoodec = CycOOdecomposition(cycoos, &k, &chemOut);
+		for (auto& rea : cycoodec)
+			std::cout << rea << std::endl;
+		std::cout << "- Class52: Cycloperoxide decompositions added.       ("
+			<< cycoodec.size() << " reactions)" << std::endl;
+
+		// ### Jiaxin allylic radical recombination ###
+		std::vector<Reaction> allyRrecom = AllyRRecombination(Rs, &k);
+		std::vector<Molecola> LargeDienes = getProducts(allyRrecom, dienes_);
+		for (auto& rea : allyRrecom)
+			std::cout << rea << std::endl;
+		std::cout << "- Class54: allyR-allyR recombination (RA-RA) reactions added.     ("
+			<< allyRrecom.size() << " reactions)" << std::endl;
+
+		std::vector<Reaction> dienesdec = dienesConsumption(LargeDienes, &k, &chemOut);
+		for (auto& rea : dienesdec)
+			std::cout << rea << std::endl;
+		std::cout << "- Class55: dienes consumption reactions added.       ("
+			<< dienesdec.size() << " reactions)" << std::endl;
+
 
 
 		//// ### OLE-OOH DECOMPOSITION (OLE-OOH -> DEC.PROD. + OH) ###
@@ -1532,6 +1572,7 @@ int main(int argc, char* argv[])
 		UTL::printEmbeddedString('*', "Processing species and reactions");
 		std::vector<Molecola> allSpecies;
 		UTL::concatenate(&allSpecies, &specialMols);
+		//addNewSpecies(&allSpecies, &cycloaddition);
 		addNewSpecies(&allSpecies, &initReac);
 		addNewSpecies(&allSpecies, &hAbsReac);
 		addNewSpecies(&allSpecies, &O2addToRReac);
@@ -1568,6 +1609,7 @@ int main(int argc, char* argv[])
 		addNewSpecies(&allSpecies, &allyHO2add_rec);
 		addNewSpecies(&allSpecies, &allyHO2add_dec);
 		addNewSpecies(&allSpecies, &allyCH3add);
+		addNewSpecies(&allSpecies, &allyRrecom);
 		addNewSpecies(&allSpecies, &HO2addOle);
 
 		addNewSpecies(&allSpecies, &OaddOle);
@@ -1589,15 +1631,21 @@ int main(int argc, char* argv[])
 		addNewSpecies(&allSpecies, &O2QOHOOHIsom);
 		addNewSpecies(&allSpecies, &POHOOHdecom);
 		addNewSpecies(&allSpecies, &POHOOHTocE);
-
+		
 		addNewSpecies(&allSpecies, &oleOHdecom);
 		addNewSpecies(&allSpecies, &oleOHOOHdecom);
 		addNewSpecies(&allSpecies, &dieneOOHdecom);
+		addNewSpecies(&allSpecies, &dienesdec);
 		addNewSpecies(&allSpecies, &cEthOOHDecReac);
 		addNewSpecies(&allSpecies, &cEthDecReac);
 		addNewSpecies(&allSpecies, &OHcEthOOHdec);
 		addNewSpecies(&allSpecies, &OHcEthDec);
 		addNewSpecies(&allSpecies, &alphaqohooh);
+		addNewSpecies(&allSpecies, &cycloaddition);
+		addNewSpecies(&allSpecies, &cycoodec);
+
+
+
 
 		for (auto& mol : allSpecies)
 			mol.fix();
@@ -1610,9 +1658,21 @@ int main(int argc, char* argv[])
 
 			if (!allSpecies[i].isSpecialMolecule())
 			{
-				//std::cout << allSpecies[i] << std::endl;
+				std::cout << allSpecies[i] << std::endl;
+				//if (allSpecies[i].inchiName() == "InChI=1S/C3H5/c1-3-2/h1,3H,2H3")
+				//{
+				//	//Molecola p = allSpecies[i];
+				//	allSpecies[i].printStruttura();
+				//	std::cout << allSpecies[i].posOle();
+				//}
 				SpeciesInChINameList[i] = allSpecies[i].inchiName();
-				//std::cout << SpeciesInChINameList[i] << std::endl;
+				//
+				//
+				std::cout << SpeciesInChINameList[i] << std::endl;
+				//if (SpeciesInChINameList[i] == "InChI=1S/C5H9O2/c1-2-5-3-4-6-7-5/h3,5H,2,4H2,1H3")
+				//{
+				//	std::cout << "here";
+				//}
 				allNames[i] = chemOut.molToName(allSpecies[i]);
 				
 			}
@@ -1620,6 +1680,7 @@ int main(int argc, char* argv[])
 			{
 				SpeciesInChINameList[i] = std::to_string(i);
 				allNames[i] = chemOut.molToName(allSpecies[i]);
+				//std::cout << "SM ID: " << allSpecies[i].isSpecialMolecule() << std::endl;
 			}
 		}
 
@@ -1655,14 +1716,14 @@ int main(int argc, char* argv[])
 		//}
 
 
-
-		for (int i = 0; i < allNames.size(); i++)
-			for (int j = i + 1; j < allNames.size(); j++)
-				if(allNames[i] == allNames[j])
-				{
-					UTL::error("Two same names found");
-					std::cout << allNames[i] << "  " << allSpecies[i] << "   " << allSpecies[j] << std::endl;
-				}
+		// JL250909 Considered in the previous step
+		//for (int i = 0; i < allNames.size(); i++)
+		//	for (int j = i + 1; j < allNames.size(); j++)
+		//		if(allNames[i] == allNames[j])
+		//		{
+		//			UTL::error("Two same names found");
+		//			std::cout << allNames[i] << "  " << allSpecies[i] << "   " << allSpecies[j] << std::endl;
+		//		}
 
 
 		std::cout << " - List of all species compiled: " << allSpecies.size()
@@ -1705,6 +1766,7 @@ int main(int argc, char* argv[])
 		dupReac += processDuplicateReactions(&allyHO2add_rec);
 		dupReac += processDuplicateReactions(&allyHO2add_dec);
 		dupReac += processDuplicateReactions(&allyCH3add);
+		dupReac += processDuplicateReactions(&allyRrecom);
 		dupReac += processDuplicateReactions(&HO2addOle);
 
 		dupReac += processDuplicateReactions(&OaddOle);
@@ -1731,11 +1793,14 @@ int main(int argc, char* argv[])
 		dupReac += processDuplicateReactions(&oleOHdecom);
 		dupReac += processDuplicateReactions(&oleOHOOHdecom);
 		dupReac += processDuplicateReactions(&dieneOOHdecom);
+		dupReac += processDuplicateReactions(&dienesdec);
 		dupReac += processDuplicateReactions(&cEthOOHDecReac);
 		dupReac += processDuplicateReactions(&cEthDecReac);
 		dupReac += processDuplicateReactions(&OHcEthOOHdec);
 		dupReac += processDuplicateReactions(&OHcEthDec);
 		dupReac += processDuplicateReactions(&alphaqohooh);
+		dupReac += processDuplicateReactions(&cycloaddition);
+		dupReac += processDuplicateReactions(&cycoodec);
 
 
 
@@ -1817,6 +1882,9 @@ int main(int argc, char* argv[])
 				reac.setReversible(true);
 			for (auto& reac : allyCH3add)
 				reac.setReversible(true);
+			for (auto& reac : allyRrecom)
+				reac.setReversible(true);
+		
 			for (auto& reac : HO2addOle)
 				reac.setReversible(true);
 
@@ -1872,6 +1940,10 @@ int main(int argc, char* argv[])
 				reac.setReversible(true);
 			for (auto& reac : dieneOOHdecom)
 				reac.setReversible(true);
+			for (auto& reac : dienesdec)
+				reac.setReversible(true);
+
+			
 			for (auto& reac : cEthOOHDecReac)
 				reac.setReversible(true);
 			for (auto& reac : cEthDecReac)
@@ -1882,7 +1954,10 @@ int main(int argc, char* argv[])
 				reac.setReversible(true);
 			for (auto& reac : alphaqohooh)
 				reac.setReversible(true);
-			
+			for (auto& reac : cycloaddition)
+				reac.setReversible(true);
+			for (auto& reac : cycoodec)
+				reac.setReversible(true);
 		}
 
 		std::vector<Reaction> allReactions;
@@ -1923,10 +1998,13 @@ int main(int argc, char* argv[])
 		UTL::concatenate(&allReactions, &ROHisomReac);
 		UTL::concatenate(&allReactions, &ROHO2Isom);
 
+		
 		UTL::concatenate(&allReactions, &oleHadd);
 		UTL::concatenate(&allReactions, &allyHO2add_rec);
 		UTL::concatenate(&allReactions, &allyHO2add_dec);
 		UTL::concatenate(&allReactions, &allyCH3add);
+
+
 		UTL::concatenate(&allReactions, &HO2addOle);
 
 		UTL::concatenate(&allReactions, &OaddOle);
@@ -1953,12 +2031,17 @@ int main(int argc, char* argv[])
 		UTL::concatenate(&allReactions, &O2AddVinR);
 		UTL::concatenate(&allReactions, &oleOHOOHdecom);
 		UTL::concatenate(&allReactions, &dieneOOHdecom);
+
 		UTL::concatenate(&allReactions, &cEthOOHDecReac);
 		UTL::concatenate(&allReactions, &cEthDecReac);
 		UTL::concatenate(&allReactions, &OHcEthOOHdec);
 		UTL::concatenate(&allReactions, &OHcEthDec);
 		UTL::concatenate(&allReactions, &alphaqohooh);
+		UTL::concatenate(&allReactions, &cycloaddition);
+		UTL::concatenate(&allReactions, &cycoodec);
 
+		UTL::concatenate(&allReactions, &allyRrecom);
+		UTL::concatenate(&allReactions, &dienesdec);
 
 		std::cout << " - List of reactions created: " << allReactions.size() <<
 			" reactions" << std::endl;
@@ -2037,9 +2120,11 @@ int main(int argc, char* argv[])
 		OHcEths.erase(std::unique(OHcEths.begin(), OHcEths.end()), OHcEths.end());
 		printSpeciesInFile(&detailedMechanism, OHcEths, "OHcycEths/OHcycEthOOHs from QOHOOH/POHOOH elimination", &chemOut);
 		dienes.insert(dienes.end(), dienes1.begin(), dienes1.end());
+		dienes.insert(dienes.end(), LargeDienes.begin(), LargeDienes.end());
 		dienes.erase(std::unique(dienes.begin(), dienes.end()), dienes.end());
 		printSpeciesInFile(&detailedMechanism, dienes, "Dienes", &chemOut);
 		printSpeciesInFile(&detailedMechanism, dieneOOHs, "DieneOOHs", &chemOut);
+		printSpeciesInFile(&detailedMechanism, cycoos, "CycOOs", &chemOut); // JL250826
 
 
 		//printSpeciesInFile(&detailedMechanism, cEths, "cEth cyclic ethers", &chemOut);
@@ -2086,6 +2171,7 @@ int main(int argc, char* argv[])
 		std::vector<Molecola> OHketo(0);
 		std::vector<Molecola> OHKHP(0);
 		std::vector<Molecola> OHoleketo(0);
+		std::vector<Molecola> CycOO(0);
 
 		std::vector<Molecola> special_dec(0);
 
@@ -2209,14 +2295,22 @@ int main(int argc, char* argv[])
 			case OHKHP_:
 				OHKHP.push_back(mol);
 				break;
-				
+			case CycOO_:
+				CycOO.push_back(mol);
+				break;
+		
 			case special_:
 				break;
 				//oleROO_, oleQOOH_, oleO2QOOH_, olePOOH2_, dienes_, olecEth_, , dieneOOH_,
 				//	ROH_, , QOHOOH_, oleROOH_, oleOH_, OHcEth_, O2QOHOOH_, OHoleOOH_, OHKHP_,
 				//	POHOOH_, OHRO_, OHcEthOOH_, OROOHs_, COHCHO_
 			default:
-				UTL::warning("The following decomposition species should not be present");
+				// ******
+				// JL250909 comment the warnings here as it won't affect the complete mechanism,
+				// Also, the submech itself cannot be run. *******
+				// 
+				//UTL::warning("The following decomposition species should not be present");
+				//UTL::warning("The species will appear in COMPLETE mech but not in SUBMECHS.");
 				std::cout << mol << std::endl;
 				break;
 			}
@@ -2256,6 +2350,7 @@ int main(int argc, char* argv[])
 		printSpeciesInFile(&detailedMechanism, QOHOOH, "QOHOOH", &chemOut);
 		printSpeciesInFile(&detailedMechanism, OHketo, "OHketo", &chemOut);
 		printSpeciesInFile(&detailedMechanism, OHKHP, "OHKHP", &chemOut);
+		printSpeciesInFile(&detailedMechanism, CycOO, "CycOO", &chemOut);
 
 
 		detailedMechanism << "" << std::endl;
@@ -2287,6 +2382,9 @@ int main(int argc, char* argv[])
 		printReactions(&detailedMechanism, ROdecom, &chemOut);
 		detailedMechanism << std::endl << "! Class12: CH3 addition to allyRs (RACH3)" << std::endl;
 		printReactions(&detailedMechanism, allyCH3add, &chemOut);
+
+		
+
 		//detailedMechanism << std::endl << "! ClassXX: Produced higherOle consumption" << std::endl;
 		//printReactions(&detailedMechanism, Higheroleconsum, &chemOut);
 		detailedMechanism << std::endl << "! Class13: HO2 addition to olefins" << std::endl;
@@ -2307,13 +2405,10 @@ int main(int argc, char* argv[])
 		printReactions(&detailedMechanism, betaROHO2Elim, &chemOut);
 		detailedMechanism << std::endl << "! Class21: ROHOO isomerization" << std::endl;
 		printReactions(&detailedMechanism, ROHO2Isom, &chemOut);
-		
-
 		detailedMechanism << std::endl << "! Class22: beta-QOHOOH scissions" << std::endl;
 		printReactions(&detailedMechanism, betaQOHOOHscis, &chemOut);
 		detailedMechanism << std::endl << "! Class22_combine: QOHOOH decomposition reactions" << std::endl;
 		printReactions(&detailedMechanism, QOHOOHdecom, &chemOut);
-
 		detailedMechanism << std::endl << "! Class23: QOHOOH to cyclic ethers reactions" << std::endl;
 		printReactions(&detailedMechanism, QOHOOHToEthers, &chemOut);
 		detailedMechanism << std::endl << "! Class24: O2 addition to QOHOOH reactions" << std::endl;
@@ -2370,6 +2465,15 @@ int main(int argc, char* argv[])
 		printReactions(&detailedMechanism, dieneOOHdecom, &chemOut);
 		detailedMechanism << std::endl << "! Class50: alpha-QOHOOH To KHPs:" << std::endl;
 		printReactions(&detailedMechanism, alphaqohooh, &chemOut);
+		detailedMechanism << std::endl << "! Class51: Cycloaddition reactions:" << std::endl;
+		printReactions(&detailedMechanism, cycloaddition, &chemOut);
+		detailedMechanism << std::endl << "! Class52: Cycloperoxide decompositions:" << std::endl;
+		printReactions(&detailedMechanism, cycoodec, &chemOut);
+		detailedMechanism << std::endl << "! Class54: allyR-allyR recombination (RA-RA)" << std::endl;
+		printReactions(&detailedMechanism, allyRrecom, &chemOut);
+		detailedMechanism << std::endl << "! Class55: dienes consumption" << std::endl;
+		printReactions(&detailedMechanism, dienesdec, &chemOut);
+		
 
 		//detailedMechanism << std::endl << "! Cyclic ethers-OOH decomposition:" << std::endl;
 		//printReactions(&detailedMechanism, cEthOOHDecReac, &chemOut);
@@ -2452,7 +2556,7 @@ int main(int argc, char* argv[])
 		{
 			if (spec == N2)
 				continue;
-			detailedThermo << thermOut.NASAOutput(&spec);
+			//detailedThermo << thermOut.NASAOutput(&spec); JL250909 temperorarily commented out.
 		}
 		detailedThermo << "END";
 		detailedThermo.close();
@@ -2460,6 +2564,7 @@ int main(int argc, char* argv[])
 
 		UTL::concatenateUnique(&totalReactionsList, &allReactions);
 		UTL::concatenateUnique(&totalSpeciesList, &allSpecies);
+
 
 		currentTime = std::chrono::steady_clock::now();
 		timeFile << "Detailed generation for " << chemOut.molToName(HC) << " ended at " <<
@@ -2933,6 +3038,13 @@ int main(int argc, char* argv[])
 	// #########################################################################
 	//std::vector<bool> isSpeciesNonDecomposing(totalSpeciesList.size(), false);
 
+	// JL250908 去重 (通过比较molecola对象的不同)
+	//std::vector<Molecola> uniqueSpecies;
+	//UTL::concatenateUnique(&uniqueSpecies, &totalSpeciesList); // 一次完成去重
+	//
+	//totalSpeciesList = std::move(uniqueSpecies); // 替换原来的 vector
+
+
 	// total species list clean.
 	std::vector<std::string> totalSpecInChIList(totalSpeciesList.size());
 
@@ -2951,7 +3063,7 @@ int main(int argc, char* argv[])
 		
 	}
 
-	//totalSpecInChIList.push_back("InChI=1S/C2H2/c1-2/h1-2H");
+	// 对于重复的species，统一用第一个出现的species来表示
 	std::unordered_map<std::string, size_t> firstpos;
 	for (size_t i = 0; i < totalSpecInChIList.size(); ++i) {
 		const std::string& species = totalSpecInChIList[i];
@@ -2970,6 +3082,14 @@ int main(int argc, char* argv[])
 	}
 
 
+	// JL250908 去重
+	//std::vector<Molecola> uniqueSpecies;
+	//UTL::concatenateUnique(&uniqueSpecies, &totalSpeciesList); // 一次完成去重
+	//
+	//totalSpeciesList = std::move(uniqueSpecies); // 替换原来的 vector
+
+
+
 	for (int i = 0; i < totalReactionsList.size(); i++)
 	{
 		//if (!totalSpeciesList[i].isSpecialMolecule())
@@ -2982,7 +3102,9 @@ int main(int argc, char* argv[])
 			{
 				std::string inchi = reacs[j].inchiName();
 				int posr = find_pos(totalSpecInChIList, inchi);
-				//std::cout << "posr=" << totalSpeciesList[posr] << std::endl;
+				//std::cout << "posr=" << posr << std::endl;
+				//std::cout << "inchi=" << inchi << std::endl;
+				//std::cout << "name=" << totalSpeciesList[posr] << std::endl;
 				totalReactionsList[i].Reactants()[j] = totalSpeciesList[posr];
 			}
 		std::vector<Molecola> prods = totalReactionsList[i].Products();
@@ -2991,7 +3113,7 @@ int main(int argc, char* argv[])
 			{
 				std::string inchi1 = prods[z].inchiName();
 				
-				std::cout << inchi1 << std::endl;
+				//std::cout << inchi1 << std::endl;
 				int posp = find_pos(totalSpecInChIList, inchi1);
 				//if (inchi1 == "InChI=1S/C6H9O/c1-2-3-4-5-6-7/h3-6H,2H2,1H3")
 				//{
@@ -3233,7 +3355,8 @@ int main(int argc, char* argv[])
 	"QOHOOH","COHCHO","OHKHP","ROHOO", "OROOHs",
 	"OHcEth", "O2QOHOOH", "POHOOH", "OHcEthOOH", "olecEth",
 	"olePOOH2", "dieneOOH", "olecEthOOH", "oleROO", "oleQOOH",
-	"oleO2QOOH", "olecEthR", "oleROOH", "oleQO", "OHketo", "OHdiketo"};
+	"oleO2QOOH", "olecEthR", "oleROOH", "oleQO", "OHketo", "OHdiketo",
+	"CycOO", "AlkynOH"};
 
 	std::vector<species> classes =
 	{
@@ -3246,7 +3369,8 @@ int main(int argc, char* argv[])
 	QOHOOH_, COHCHO_, OHKHP_, ROHOO_, OROOHs_,
 	OHcEth_, O2QOHOOH_, POHOOH_, OHcEthOOH_, olecEth_, 
 	olePOOH2_, dieneOOH_, olecEthOOH_, oleROO_, oleQOOH_, 
-	oleO2QOOH_, olecEthR_, oleROOH_, oleQO_, OHketo_, OHdiketo_
+	oleO2QOOH_, olecEthR_, oleROOH_, oleQO_, OHketo_, OHdiketo_,
+	CycOO_, AlkynOH_
 	};
 
 	//for (auto& parFuel : allParentFules)
@@ -3263,6 +3387,16 @@ int main(int argc, char* argv[])
 		//	&& !UTL::isPresent(&baseMechSpeciesNames, chemOut.molToName(parFuel)))
 		//	printSpeciesInFile(&fullDetailedMech, std::vector<Molecola> {parFuel},
 		//		"fuel", & chemOut);
+
+		// JL250908 去重 (通过比较molecola对象的不同)
+		std::vector<Molecola> uniqueSpecies;
+		UTL::concatenateUnique(&uniqueSpecies, &totalSpeciesList); // 一次完成去重
+		
+		totalSpeciesList = std::move(uniqueSpecies); // 替换原来的 vector
+
+
+		// JL240910 temporary here. 
+
 		for (int i = 0; i < classes.size(); i++)
 		{
 			std::vector<std::string> tempList;
@@ -3278,10 +3412,11 @@ int main(int argc, char* argv[])
 				//if (spec.size() != parFuel.size())
 				//	continue;
 				std::string specName = chemOut.molToName(spec);
-				if (specName == "C2H2")
-					std::cout << "hereeee" << std::endl;
+				//if (specName == "C2H2")
+				//	std::cout << "hereeee" << std::endl;
 				if (!UTL::isPresent(&baseMechSpeciesNames, specName))
 					tempList.push_back(specName);
+
 			}
 			if (tempList.size() > 0)
 			{
@@ -3296,7 +3431,7 @@ int main(int argc, char* argv[])
 	fullDetailedMech << "" << std::endl;
 
 	// print reactions
-	fullDetailedMech << "REACTIONS" << std::endl;
+	fullDetailedMech << "REACTIONS MAXSP=8" << std::endl;
 	fullDetailedMech << "" << std::endl;
 	fullDetailedMech << "! BASE MECHANISM START" << std::endl;
 	fullDetailedMech << baseMech.reactionsText.str() << std::endl;
@@ -3355,6 +3490,11 @@ int main(int argc, char* argv[])
         "Class48: OHcEthDec (fromQOHOOH) consumption",
         "Class49: dieneOOHdecom (oleO2QOOHelim) consumption",
 		"Class50: alpha-QOHOOH To KHPs",
+		"Class51: Cycloaddition reactions",
+		"Class52: Cycloperoxide decompositions",
+		"Class54: allyR-allyR recombination (RA-RA)",
+		"Class55: dienes consumption",
+		
 		//"Initiation reactions",
 		//"H abstraction",
 		//"O2 addition to R",
@@ -3438,7 +3578,7 @@ int main(int argc, char* argv[])
 	{
 		if (spec == N2)
 			continue;
-		fullDetailedThermo << thermOut.NASAOutput(&spec);
+		//fullDetailedThermo << thermOut.NASAOutput(&spec); // JL250909
 	}
 	fullDetailedThermo << "END";
 	fullDetailedThermo.close();
@@ -3474,8 +3614,9 @@ int main(int argc, char* argv[])
 				continue;
 			if (totalSpeciesNamesList[i] == totalSpeciesNamesList[j])
 			{
+				//totalSpeciesNamesList[j] += "B";
 				std::stringstream warningMessage;
-				warningMessage << "Two different species found having the same naming: "
+				warningMessage << "Two different species found having the same naming: " // 存在InChI相同，但名称不同的物种。
 					<< std::endl << "    - " << totalSpeciesNamesList[i] << "  " <<
 					totalSpeciesList[i] << "   " << totalSpeciesInChIsList[i]
 					<< std::endl << "    - " << totalSpeciesNamesList[j] << "  " <<
@@ -3625,6 +3766,8 @@ void generateR(Molecola HC, std::vector<Molecola>* Rvec, std::vector<int>* cToRM
 		// exept the quaternary carbon                               
 		if (HC.tipo(i) != 1 && HC.tipo(i) != 10) continue; // JIAXIN
 		if (HC.tipoC(i) == Cq) continue;
+		if (HC.tipoC(i) == Ct && HC.tipo(i) == 10) continue; // JL250907 for oleOH generateR.
+		if (HC.tipoC(i) == Ct && HC.isole(i)) continue; // JIAXIN
 		Molecola newrad = HC;
 		if (HC.tipo(i) == 1) newrad.tipo(i, 2);
 		if (HC.tipo(i) == 10) newrad.tipo(i, 11);
@@ -3770,6 +3913,8 @@ void generateOOQOOH(Molecola HC, std::vector<Molecola>* OOQOOHvec,
 		mol.Crad_to_ROO(mol.trova(2));
 }
 
+// for C-H bond, only allylic bonds are considered.
+// for C-C bond, added vinylic bond breaks.
 std::vector<Reaction> initiationReactions(Molecola HC, Kinox* k)
 {
 	std::vector<Reaction> reactions;
@@ -3783,24 +3928,28 @@ std::vector<Reaction> initiationReactions(Molecola HC, Kinox* k)
 	std::vector < std::vector<int> > atomsInBond;
 	atomsInBond = HC.listOfCCBonds();
 
-	//for (int i = 0; i < atomsInBond.size(); i++)
-	//	std::cout << atomsInBond[i][0] << "   " << atomsInBond[i][1] << std::endl;
-
-	//std::cout << "atomsInBond.size() = " << atomsInBond.size() << std::endl;
-	//std::cout << "atomsInBond[1][0] = " << atomsInBond[1][0] << std::endl;
-	//std::cout << "atomsInBond[1][1] = " << atomsInBond[1][1] << std::endl;
-	//std::cout << "atomsInBond[2][0] = " << atomsInBond[2][0] << std::endl;
-	//std::cout << "atomsInBond[2][1] = " << atomsInBond[2][1] << std::endl;
-	//std::cout << "atomsInBond[3][0] = " << atomsInBond[3][0] << std::endl;
-	//std::cout << "atomsInBond[3][1] = " << atomsInBond[3][1] << std::endl;
-
 	int numberOfReactions = 0;
 	for (int i = 0; i < atomsInBond.size(); i++)
 	{
 		bool alreadyPresent = false;	// tells if the an equivalent reaction 
 		// is already present
-		int isPossible = HC.spezza(atomsInBond[i][0], atomsInBond[i][1], &temp1, &temp2);
+		Molecola temp1, temp2; // JL250821 add this line to clear cache each time.
+		int isPossible = HC.spezza1(atomsInBond[i][0], atomsInBond[i][1], &temp1, &temp2); // JL251003
 		if (isPossible == 0) continue; // JIAXIN. this line ignores the rest of single bonds; change from break to continue;
+
+		//if (temp1.inchiName() == "InChI=1S/C7H12/c1-3-5-7-6-4-2/h1,3,5H,4,6-7H2,2H3")
+		//{
+		//	std::cout << "here" << std::endl;
+		//}
+		//if (temp2.inchiName() == "InChI=1S/C7H12/c1-3-5-7-6-4-2/h1,3,5H,4,6-7H2,2H3")
+		//{
+		//	std::cout << "here" << std::endl;
+		//}
+
+		//Molecola temp3, temp4;
+		//int isPossible1 = HC.spezza(atomsInBond[i][0], atomsInBond[i][1], &temp3, &temp4);
+
+		//std::cout << temp4.inchiName() << std::endl;
 
 		for (int j = 1; j <= HC.size(); j++)
 		{
@@ -3808,7 +3957,7 @@ std::vector<Reaction> initiationReactions(Molecola HC, Kinox* k)
 				&& temp1 == secondRad[j])) // check if an equivalent reaction is already saved
 			{
 				firstRad[j].isomeri++;	// the number of equivalent reaction is stored 
-				// in the firsRad.isomeri just for convinience
+				// in the firsRad.isomeri just for convenience
 				alreadyPresent = true;
 				break;
 			}
@@ -3822,6 +3971,7 @@ std::vector<Reaction> initiationReactions(Molecola HC, Kinox* k)
 		}
 	}
 
+
 	for (int i = 1; i <= numberOfReactions; i++)
 	{
 		Radicale firstRadicalType = firstRad[i].tipoR(firstRad[i].trova(2));
@@ -3829,14 +3979,33 @@ std::vector<Reaction> initiationReactions(Molecola HC, Kinox* k)
 
 		int isAllorNot = 0;
 		if (firstRad[i].isAllylic(firstRad[i].trova(2)) || secondRad[i].isAllylic(secondRad[i].trova(2))) isAllorNot = 1;
+		if (firstRad[i].isole(firstRad[i].trova(2)) || secondRad[i].isole(secondRad[i].trova(2))) isAllorNot = 2; // JL251007 vinylic bond break.
 		reactionComment reacomm = k->v_initiation(firstRadicalType, firstRad[i].isomeri, isAllorNot);
-		if (isAllorNot == 1)
+		if (isAllorNot == 0)
+			reactions.push_back(Reaction(std::vector<Molecola>{ firstRad[i], secondRad[i] }, HC,
+				new double[3] { k->A, k->n, k->E }, "Class01: Unimolecular decompositions", reacomm));
+
+		else
 			reactions.push_back(Reaction(HC, std::vector<Molecola>{ firstRad[i], secondRad[i] },
 				new double[3] { k->A, k->n, k->E }, "Class01: Unimolecular decompositions", reacomm));
-		else
-		reactions.push_back(Reaction(std::vector<Molecola>{ firstRad[i], secondRad[i] }, HC,
-			new double[3] { k->A, k->n, k->E }, "Class01: Unimolecular decompositions", reacomm));
+
 	}
+	
+	// added C-H bond breaking reactions
+	std::vector<Molecola> Rs;
+	std::vector<int> cToRMap;
+	generateR(HC, &Rs, &cToRMap);
+	Molecola H(8);
+	for (auto& R : Rs)
+	{
+		int pos_rad = R.trova(2);
+		int numH_posr = HC.numAbstractableH(pos_rad);
+		if (HC.isAllylic(pos_rad) && HC.tipoC(pos_rad) != Ct) // make sure there are Hs to be abstracted.
+		{
+			reactionComment reacomm = k->v_initiation1(numH_posr);
+			reactions.push_back(Reaction(HC, std::vector<Molecola>{R, H}, new double[3] { k->A, k->n, k->E }, "Class01: Unimolecular decompositions", reacomm));
+		}
+	}  
 
 	return reactions;
 }
@@ -3906,6 +4075,52 @@ std::vector<Reaction> hAbstractionReactions(Molecola HC, Molecola absR, Kinox* k
 
 	return reactions;
 }
+
+
+std::vector<Reaction> dienesConsumption(std::vector<Molecola> dienes, Kinox* k, ChemkinOut* chemOut)
+{
+	std::vector<Reaction> reactions;
+	Molecola OH(4);
+	Molecola HO2(5);
+	Molecola H2O(6);
+	Molecola H2O2(7);
+	for (auto& diene : dienes)
+	{
+		if (diene.kindOfSPecies() != dienes_)
+		{
+			UTL::error("dienesConsumption called on a non diene_ species.");
+			continue;
+		}
+
+		std::vector<Molecola> Rs;
+		std::vector<int> cToRMap;
+		generateR(diene, &Rs, &cToRMap);
+		for (auto& R : Rs)
+		{
+			int pos_rad = R.trova(2);
+			if (!R.isAllylic(pos_rad))
+				continue;
+			std::vector<Molecola> prods;
+			prods.push_back(R);
+			std::cout << R.kindOfSPecies() << std::endl;
+			prods = fullyDecomposeRO2(prods, chemOut);
+
+			std::vector<Molecola> prods1 = prods;  // 
+			prods1.push_back(H2O);                 // 
+			reactionComment reacomm1 = k->v_dienes_dec(OH, R.numAbstractableH(R.trova(2)));
+			reactions.push_back(Reaction(std::vector<Molecola>{diene, OH}, prods1,
+				new double[3] { k->A, k->n, k->E }, "Class55: dienes consumption", reacomm1));
+
+			std::vector<Molecola> prods2 = prods;
+			prods2.push_back(H2O2);
+			reactionComment reacomm2 = k->v_dienes_dec(HO2, R.numAbstractableH(R.trova(2)));
+			reactions.push_back(Reaction(std::vector<Molecola>{diene, HO2}, prods2,
+				new double[3] { k->A, k->n, k->E }, "Class55: dienes consumption", reacomm2));
+		}
+	}
+	return reactions;
+}
+
 
 std::vector<Reaction> O2AdditionToRReactions(std::vector<Molecola> Rs, Kinox* k) // Class.
 {
@@ -4057,11 +4272,12 @@ std::vector<Reaction> RIsomerizationReaction(std::vector<Molecola> Rs, Kinox* k)
 		if (R_reac.isole(R_reac.trova(2)) == 1) continue; // JIAXIN. skip all the viny radicals.
 
 		// return the positions of the two C=C carbons.
-		int pos_ole1 = R_reac.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
+		std::vector<int> pos_ole = R_reac.posOle(1); // position of the first C=C carbon.
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
 
-		if (R_reac.inchiName() == "InChI=1S/C6H11/c1-3-5-6-4-2/h3H,1-2,4-6H2")
-			std::cout << "here" << std::endl;
+		//if (R_reac.inchiName() == "InChI=1S/C6H11/c1-3-5-6-4-2/h3H,1-2,4-6H2")
+		//	std::cout << "here" << std::endl;
 
 		for (int dist = 3; dist < 6; dist++)  // look for 5,6 and 7 atom ring isomerizations
 		{
@@ -4082,6 +4298,10 @@ std::vector<Reaction> RIsomerizationReaction(std::vector<Molecola> Rs, Kinox* k)
 				break;
 			}
 			int pos_rad = R_reac.trova(2);
+			int isRally = 0;
+			if (R_reac.isAllylic(pos_rad))
+				isRally = 1;
+
 			int trovati[SIZEMAX + 1];
 			//-----------------------------isomerization involving 5 atom ring
 			R_reac.scorri(pos_rad, dist, trovati);		// flag in the vector "trovati" all the carbons that are at 3 atom distance from the radical
@@ -4100,19 +4320,205 @@ std::vector<Reaction> RIsomerizationReaction(std::vector<Molecola> Rs, Kinox* k)
 					if (R_prod.isAllylic(R_prod.trova(2)))
 						isAllorNot = 1;
 					// compare if C=C (pos_ole1,2) is between radical and H site.
-					int pos_radd = pos_rad;
-					int j1 = j;
-					if (pos_radd > j1) std::swap(pos_radd, j1);
-					if ((pos_ole1 >= pos_radd && pos_ole1 <= j1) && (pos_ole2 >= pos_radd && pos_ole2 <= j1))
+		
+
+					if (R_reac.isOnRIsoRing(pos_ole1, j, pos_rad) && R_reac.isOnRIsoRing(pos_ole2, j, pos_rad))
 						continue;
+					//if ((pos_ole1 >= pos_radd && pos_ole1 <= j1) && (pos_ole2 >= pos_radd && pos_ole2 <= j1))
+					//	continue;
 
 					reactionComment reacomm = k->v_isomerization_r(R_reac.tipoR(pos_rad), R_reac.tipoH(j),
-						ring, R_reac.numAbstractableH(j), isAllorNot);
+						ring, R_reac.numAbstractableH(j), isRally, isAllorNot);
 					reactions.push_back(Reaction(R_reac, R_prod, new double[3] { k->A, k->n, k->E },
 						"Class03: Alkenyl radical isomerization", reacomm));
 				}
 			}
 		}
+	}
+	return reactions;
+}
+
+std::vector<Reaction> Cycloaddition(std::vector<Molecola> ROOs, Kinox* k)
+{
+/*algo:	1. find the distance between ROO (pos) and C=C (pos1 and pos2, pos1 must be closer than pos2). if dis=n, ring=n+2;
+		2. get the parent fuel ROO (eliminate the double bond);
+		3. add radical to pos1, then add cycoo on pos and pos2 (), RR: exo;
+		4. similarly, add radical to pos2, then add cycoo on pos and pos1, RR: endo; */
+	std::vector<Reaction> reactions;
+	for (auto& ROO : ROOs)
+	{
+		//if (ROO.kindOfSPecies() != ROO_)   // JIAXIN convert ROO_ to oleROO_
+		if (ROO.kindOfSPecies() != oleROO_)
+		{
+			UTL::error("Cycloaddition called on a non oleROO species");
+			continue;
+		}
+		int pos_o2 = ROO.trova(3);
+		int trovati[SIZEMAX + 1];
+		//int pos_ole1 = ROO.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
+
+		std::vector<int> pos_ole = ROO.posOle(1); // position of the first C=C carbon.
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
+
+		int dist1 = ROO.dist(pos_o2, pos_ole1);
+		int dist2 = ROO.dist(pos_o2, pos_ole2);
+
+		if (std::min(dist1, dist2) > 3) continue; // JL250908
+
+		Molecola cycoo1 = ROO.parentFuel_complete();
+		Molecola cycoo2 = ROO.parentFuel_complete();
+		//std::cout << cycoo1 << std::endl;
+
+		cycoo1.addcycoo(pos_o2, pos_ole1);
+		cycoo1.C_to_Crad(pos_ole2);
+		cycoo2.addcycoo(pos_o2, pos_ole2);
+		cycoo2.C_to_Crad(pos_ole1);
+
+		std::string addlabel1, addlabel2;
+		int ring_size1, ring_size2;
+		ring_size1 = dist1 + 3;
+		ring_size2 = dist2 + 3;
+
+		if (std::abs(dist1 - dist2) != 1)
+		{
+			std::cerr << "Error: distance is not 1!" << std::endl;
+			std::exit(EXIT_FAILURE);
+		}
+		else if (dist1 < dist2)
+		{
+			addlabel1 = "exo";
+			addlabel2 = "endo";
+		}
+		else
+		{
+			addlabel1 = "endo";
+			addlabel2 = "exo";
+		}
+
+		int ring_size = dist1 + 2;
+
+		//std::cout << "kind: " << cycoo1.kindOfSPecies() << std::endl;
+		//std::cout << "kind: " << cycoo2.kindOfSPecies() << std::endl;
+
+		reactionComment reacomm = k->v_cycloadd(ring_size1, addlabel1);
+		reactions.push_back(Reaction(ROO, cycoo1, new double[3] { k->A, k->n, k->E },
+			"Class51: Cycloaddition reactions", reacomm));
+		reactionComment reacomm1 = k->v_cycloadd(ring_size2, addlabel2);
+		reactions.push_back(Reaction(ROO, cycoo2, new double[3] { k->A, k->n, k->E },
+			"Class51: Cycloaddition reactions", reacomm1));
+	}
+	return reactions;
+
+}
+
+
+std::vector<Reaction> CycOOdecomposition(std::vector<Molecola> cycoos, Kinox* k, ChemkinOut* chemOut)
+{
+	/*algo:	
+	1. break the -O-O- bond;
+	2. finds the two pos_cycoo, pos1: closer to radical; pos2: far away from radical;
+	3. Add cycEther between posr and pos1;
+	4. Add CO* at pos2;
+	5. Start to decompose this radical.
+	
+	*/       
+
+	std::vector<Reaction> reactions;
+	for (auto& CycOO : cycoos)
+	{
+		//if (ROO.kindOfSPecies() != ROO_)   // JIAXIN convert ROO_ to oleROO_
+		if (CycOO.kindOfSPecies() != CycOO_)
+		{
+			UTL::error("CycOOdecomposition called on a non CycOO species");
+			continue;
+		}
+		int posr = CycOO.trova(2);
+		auto pos = CycOO.posCycoo();
+		int pos1 = pos[0], pos2 = pos[1];
+		//std::cout << CycOO << std::endl;
+
+		std::string label = "No";
+		if (CycOO.isInCycooRing(posr)) label = "Yes";
+
+		int dist1 = CycOO.dist(posr, pos1);
+		int dist2 = CycOO.dist(posr, pos2);
+		if (dist1 > dist2) std::swap(pos1, pos2);
+		Molecola temp = CycOO.parentFuel();
+		temp.addetero(posr, pos1);
+		temp.C_to_COrad(pos2);
+		//std::cout << cycoo1 << std::endl;
+		int foun[SIZEMAX + 1]; // JIAXIN
+		std::vector<int> positions;
+		temp.scorri(pos2, 1, foun); // JIAXIN
+		for (int z = 1; z <= SIZEMAX; z++) // JIAXIN
+		{
+			if (foun[z] == 1)
+				positions.push_back(z);
+		}
+		//if (positions.size() == 1) 	int pos = positions[0];
+		//else if (positions.size() == 2) 
+		//{
+		//	int p1 = positions[0];
+		//	int p2 = positions[1];
+		//	int d1 = temp.dist(posr, p1);
+		//	int d2 = temp.dist(posr, p2);
+		//	if (d1 > d2) std::swap(p1, p2);
+		//	int pos = p1;
+		//}
+		//else if (positions.size() == 3)
+		//{
+		//	int p1 = positions[0];
+		//	int p2 = positions[1];
+		//	int p3 = positions[2];
+		//	int d1 = temp.dist(posr, p1);
+		//	int d2 = temp.dist(posr, p2);
+		//	int d3 = temp.dist(posr, p3);
+		//	int pos;
+		//	if (d1 <= d2 && d1 <= d3) {
+		//		pos = p1;
+		//	}
+		//	else if (d2 <= d1 && d2 <= d3) {
+		//		pos = p2;
+		//	}
+		//	else {
+		//		pos = p3;
+		//	}
+		//}
+		//else
+		//{
+		//	std::cerr << "Error in returned cycoo bond" << std::endl;
+		//	exit(200);
+		//}
+		if (positions.empty() || positions.size() > 3) {
+			std::cerr << "Error in returned cycoo bond" << std::endl;
+			exit(200);
+		}
+		int pos_min = *std::min_element(
+			positions.begin(), positions.end(),
+			[&](int a, int b) {
+				return temp.dist(posr, a) < temp.dist(posr, b);
+			}
+		);
+		Molecola m1, m2;
+		std::vector<Molecola> products;
+		std::vector<Molecola> products1;
+		std::vector<Molecola> dec_prod;
+		if (CycOO.inchiName() == "InChI=1S/C7H13O2/c1-2-4-6-8-9-7-5-3-1/h4H,1-3,5-7H2")
+		{
+			std::cout << "here" << std::endl;
+		}
+		temp.spezza1(pos2, pos_min, &m1, &m2);
+		products.push_back(m1);
+		products.push_back(m2);
+		dec_prod = fullyDecomposeRO2(products, chemOut);
+		for (auto& pr : dec_prod)
+			products1.push_back(pr);
+
+		reactionComment reacomm = k->v_cycoodec(label);
+		reactions.push_back(Reaction(CycOO, products1, new double[3] { k->A, k->n, k->E },
+			"Class52: Cycloperoxide decompositions", reacomm));
 	}
 	return reactions;
 }
@@ -4128,12 +4534,16 @@ std::vector<Reaction> ROOIsomerizationReactions(std::vector<Molecola> ROOs, Kino
 			UTL::error("ROOIsomerizationReactions called on a non ROO species");
 			continue;
 		}
-		if (ROO.inchiName() == "InChI=1S/C7H13O2/c1-3-5-6-7(4-2)9-8/h4,7H,2-3,5-6H2,1H3")
-			std::cout << "Is olefin? = 1" << std::endl;
+		//if (ROO.inchiName() == "InChI=1S/C7H13O2/c1-3-5-6-7(4-2)9-8/h4,7H,2-3,5-6H2,1H3")
+		//	std::cout << "Is olefin? = 1" << std::endl;
 		int pos_o2 = ROO.trova(3);
 		int trovati[SIZEMAX + 1];
-		int pos_ole1 = ROO.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
+		//int pos_ole1 = ROO.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
+		std::vector<int> pos_ole = ROO.posOle(1); // position of the first C=C carbon.
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
+
 		// JIAXIN
 		int isOOally = 0;
 		//std::cout << "R_trova=" << R.trova(2) << std::endl;
@@ -4175,14 +4585,17 @@ std::vector<Reaction> ROOIsomerizationReactions(std::vector<Molecola> ROOs, Kino
 				int isole = 0;
 				if (ROO.isole(j)) isole = 1;
 				// Jiaxin modify the judging condition.
-				int posO21 = pos_o2;
-				int j1 = j;
-				if (posO21 > j1) std::swap(posO21, j1);
-					if ((pos_ole1 >= posO21 && pos_ole1 <= j1) && (pos_ole2 >= posO21 && pos_ole2 <= j1))
-						continue;
+				//int posO21 = pos_o2;
+				//int j1 = j;
+				//if (posO21 > j1) std::swap(posO21, j1);
+				//	if ((pos_ole1 >= posO21 && pos_ole1 <= j1) && (pos_ole2 >= posO21 && pos_ole2 <= j1))
+				//		continue;
+
 
 				if (trovati[j] == 1 && ROO.numAbstractableH(j) != 0 && isole != 1)
 				{
+					if (ROO.isOnRO2IsoRing(pos_ole1, j, pos_o2) && ROO.isOnRO2IsoRing(pos_ole2, j, pos_o2))
+						continue;
 					// JIAXIN
 					int isHally = 0;
 
@@ -4262,8 +4675,12 @@ std::vector<Reaction> OOQOOHIsomerizationReactions(std::vector<Molecola> OOQOOHs
 		}
 		int j;
 		int pos_o2 = OOQOOH.trova(3);
-		int pos_ole1 = OOQOOH.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
+		//int pos_ole1 = OOQOOH.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
+
+		std::vector<int> pos_ole = OOQOOH.posOle(1); // position of the first C=C carbon.
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
 
 		int trovati[SIZEMAX + 1];
 		for (int distance = 1; distance <= 4; distance++)
@@ -4312,11 +4729,14 @@ std::vector<Reaction> OOQOOHIsomerizationReactions(std::vector<Molecola> OOQOOHs
 
 					//std::cout << "R_trova=" << R.trova(2) << std::endl;
 					if (OOQOOH.isAllylic(j))	isHally = 1;
-					int pos_o2dup = pos_o2;
-					int j1 = j;
-					if (pos_o2dup > j1) std::swap(pos_o2dup, j1);
-					if ((pos_ole1 >= pos_o2dup && pos_ole1 <= j1) && (pos_ole2 >= pos_o2dup && pos_ole2 <= j1))
+					//int pos_o2dup = pos_o2;
+					//int j1 = j;
+					//if (pos_o2dup > j1) std::swap(pos_o2dup, j1);
+					//if ((pos_ole1 >= pos_o2dup && pos_ole1 <= j1) && (pos_ole2 >= pos_o2dup && pos_ole2 <= j1))
+					//	continue;
+					if (OOQOOH.isOnRO2IsoRing(pos_ole1, j, pos_o2) && OOQOOH.isOnRO2IsoRing(pos_ole2, j, pos_o2))
 						continue;
+
 
 					reactionComment reacomm = k->v_isom_ooqooh(OOQOOH.tipoROO(
 						OOQOOH.trova(3)), OOQOOH.tipoH(j), ring,
@@ -4469,12 +4889,18 @@ std::vector<Reaction> RBetaDecompositioReactions(std::vector<Molecola> Rs, Kinox
 						if (isPossible == 0)
 							continue;
 
+						//std::cout << "j=" << j << std::endl;
+						//std::cout << "z=" << z << std::endl;
+
 						if (!m1.isCRad()) std::swap(m1, m2);
 
 						int isAllorNot = 0;
-						if (m1.isole(m1.trova(2)) == 1)
+						if (R.isole(j) || R.isole(z))
 							isAllorNot = 2;
 						if (m1.isAllylic(m1.trova(2)))
+							isAllorNot = 1;
+
+						if (R.isAllylic(j,z) == 1) // JL250908
 							isAllorNot = 1;
 
 						reactionComment reacomm = k->v_beta_dec_r(R.tipoR(pos_rad),
@@ -4492,6 +4918,27 @@ std::vector<Reaction> RBetaDecompositioReactions(std::vector<Molecola> Rs, Kinox
 				}
 			}
 		}			// end pos alfa
+
+		// added C-H bond breaking reactions
+		//Molecola H(8);
+		//int posalfaH[SIZEMAX + 1];
+		//R.scorri(pos_rad, 1, posalfaH);
+		//Molecola diene = R;
+		//for (int j = 1; j <= SIZEMAX; j++)
+		//{
+		//	if (posalfaH[j] == 1 && !R.isole(j) && R.numAbstractableH(j) > 0) // find the C in alpha
+		//	{
+		//		diene.Crad_to_C(pos_rad);
+		//		diene.addole(pos_rad, j);
+		//		reactionComment reacomm = k->v_beta_dec_r(R.tipoR(pos_rad), m1.tipoR(m1.trova(2)), isAllorNot);
+		//		if (isAllorNot == 0)
+		//			reactions.push_back(Reaction(R, std::vector<Molecola>{ m1, H },
+		//				new double[3] { k->A, k->n, k->E }, "Class04: Alkenyl radical beta-scissions", reacomm));
+		//
+		//	}
+		//}
+
+
 	}
 	return reactions;
 }
@@ -4644,9 +5091,12 @@ std::vector<Reaction> QOOHToCEthReactions(std::vector<Molecola> QOOHs, Kinox* k)
 		std::string correction = "none";
 		int posR = QOOH.trova(2);
 		int posOOH = QOOH.trova(4);
-		int pos_ole1 = QOOH.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
+		//int pos_ole1 = QOOH.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
  
+		std::vector<int> pos_ole = QOOH.posOle(1);
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
 		// JIAXIN
 		int isOOHally = 0;
 		int isR = 0;
@@ -4714,19 +5164,23 @@ std::vector<Reaction> QOOHToCEthReactions(std::vector<Molecola> QOOHs, Kinox* k)
 			continue;
 
 
-		int posOOHdup = posOOH;
-		int posRdup = posR;
+		//int posOOHdup = posOOH;
+		//int posRdup = posR;
+		//
+		//if (posOOHdup > posRdup) std::swap(posOOHdup, posRdup);
+		//if ((pos_ole1 >= posOOHdup && pos_ole1 <= posRdup) && (pos_ole2 >= posOOHdup && pos_ole2 <= posRdup))
+		//	continue;
 
-		if (posOOHdup > posRdup) std::swap(posOOHdup, posRdup);
-		if ((pos_ole1 >= posOOHdup && pos_ole1 <= posRdup) && (pos_ole2 >= posOOHdup && pos_ole2 <= posRdup))
+		if (QOOH.isOnRIsoRing(pos_ole1, posOOH, posR) && QOOH.isOnRIsoRing(pos_ole2, posOOH, posR))
 			continue;
 
+		//correction = "none"; // Jiaxin
 		// This part is to generate the products based on QOOH;
 		Molecola olecEth = QOOH.parentFuel(); // removes/cleans oles, ethers, Os on a QOOH. 
 		olecEth.addetero(posR, posOOH);  // add the ether O between the two positions on the "cleaned" molec.
-
+		correction = "none"; // Jiaxin
 		reactionComment reacomm = k->v_ether_from_qooh(QOOH.tipoROOH(posOOH),
-			QOOH.tipoR(posR), ring, correction, isOOHally, isR);
+			QOOH.tipoR(posR), ring, "none", isOOHally, isR);
 		//// DEBUG
 		//bool toMultiply = false;
 		//for (int i = 1; i <= QOOH.size(); i++)
@@ -4760,8 +5214,13 @@ std::vector<Reaction> POOH2ToCEthOOHReactions(std::vector<Molecola> POOH2s, Kino
 			UTL::error("POOH2ToCEthOOHReactions called on a non P(OOH)2 species.");
 			continue;
 		}
-		int pos_ole1 = POOH2.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
+		//int pos_ole1 = POOH2.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
+
+		std::vector<int> pos_ole = POOH2.posOle(1);
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
+
 		std::vector<int> posOOHs = POOH2.posOOHinPOOH2();
 		int posR = POOH2.trova(2);
 		for (auto& posOOH : posOOHs)
@@ -4786,10 +5245,13 @@ std::vector<Reaction> POOH2ToCEthOOHReactions(std::vector<Molecola> POOH2s, Kino
 			if (POOH2.tipoROOH(posOOH) == Rp && POOH2.tipoR(posR) == Rp && ring == ao3)
 				continue;
 
-			int posOOHdup = posOOH;
-			int posRdup = posR;
-			if ((pos_ole1 >= posOOHdup && pos_ole1 <= posRdup) && (pos_ole2 >= posOOHdup && pos_ole2 <= posRdup))
+			//int posOOHdup = posOOH;
+			//int posRdup = posR;
+			//if ((pos_ole1 >= posOOHdup && pos_ole1 <= posRdup) && (pos_ole2 >= posOOHdup && pos_ole2 <= posRdup))
+			//	continue;
+			if (POOH2.isOnRIsoRing(pos_ole1, posOOH, posR) && POOH2.isOnRIsoRing(pos_ole2, posOOH, posR))
 				continue;
+
 			Molecola cEthOOH = POOH2;
 			cEthOOH.removeOOH(posOOH);
 			cEthOOH.Crad_to_C(posR);
@@ -4803,7 +5265,7 @@ std::vector<Reaction> POOH2ToCEthOOHReactions(std::vector<Molecola> POOH2s, Kino
 	return reactions;
 }
 
-std::vector<Reaction> POOH2DecompositionReaction(std::vector<Molecola> POOH2s, Kinox* k)
+std::vector<Reaction> POOH2DecompositionReaction(std::vector<Molecola> POOH2s, Kinox* k, ChemkinOut* chemOut)
 {
 	std::vector<Reaction> reactions;
 	Molecola HO2(5);
@@ -4935,9 +5397,16 @@ std::vector<Reaction> POOH2DecompositionReaction(std::vector<Molecola> POOH2s, K
 			if (isPossible == 0)
 				continue;
 
+			std::vector<Molecola> prods;
+			prods.push_back(m1);
+			prods.push_back(m2);
+			prods = fullyDecomposeRO2(prods, chemOut);
+
+
+
 			reactionComment reacomm = k->v_pooh2_decom(POOH2.tipoROOH(posOOH),
 				POOH2.tipoR(posR), 3);
-			Reaction reac(POOH2, std::vector<Molecola>{ m1, m2},
+			Reaction reac(POOH2, std::vector<Molecola>{ prods},
 				new double[3] { k->A, k->n, k->E }, "Class42: oleP(OOH)2 decomposition", reacomm);
 			UTL::addUnique(&reactions, reac);
 		}
@@ -4970,11 +5439,15 @@ std::vector<Reaction> oleOHConsumption(std::vector<Molecola> oleOHs1, Kinox* k, 
 		std::vector<int> cToRMap;
 
 
-		if (oleOH.inchiName() == "InChI=1S/C7H14O/c1-3-5-6-7(8)4-2/h4,7-8H,2-3,5-6H2,1H3")
+		//if (oleOH.inchiName() == "InChI=1S/C7H14O/c1-3-5-6-7(8)4-2/h4,7-8H,2-3,5-6H2,1H3")
+		//{
+		//	std::cout << "here" << std::endl;
+		//}
+		if (oleOH.inchiName() == "InChI=1S/C7H14O/c1-3-4-5-6-7(2)8/h5-8H,3-4H2,1-2H3")
 		{
-			std::cout << "here" << std::endl;
+			std::cout << "here:" << std::endl;
+			//std::cout << oleOHR.inchiName() << std::endl;
 		}
-
 		
 		generateR(oleOH, &oleOHRs, &cToRMap);
 		std::string nameHrad = k->nameHAbsRad(OH);
@@ -4998,6 +5471,7 @@ std::vector<Reaction> oleOHConsumption(std::vector<Molecola> oleOHs1, Kinox* k, 
 
 			int posalfa[SIZEMAX + 1];
 			oleOHR.scorri(pos_rad, 1, posalfa);
+
 			for (int j = 1; j <= SIZEMAX; j++)
 			{
 				if (posalfa[j] == 1 || posalfa[j] == 10) // find the C in alpha
@@ -5021,31 +5495,46 @@ std::vector<Reaction> oleOHConsumption(std::vector<Molecola> oleOHs1, Kinox* k, 
 							bool IsInClud = isSpeciesIncluded(m1, chemOut);
 							if (m1.kindOfSPecies() == dienesOH_ && !IsInClud)
 							{
-								if (m1.inchiName() == "InChI=1S/C5H8O/c1-2-3-4-5-6/h2-6H,1H3")
-									std::cout << "here" << std::endl; //DecomposeoleRO(m1);
 								std::vector<Molecola> dienesOH_decom;
 								int dien1 = m1.posOles();
-								int dien2 = dien1 + 1;
-								std::cout << dien1 << std::endl;
-								Molecola m3, m4;
-								int isPossible = m1.spezza1(dien1, dien2, &m3, &m4);
-								if (isPossible != 0)
+
+								if (dien1 != 0)
 								{
-									products.push_back(m3);
-									products.push_back(m4);
+									int dien2 = dien1 + 1;
+									//std::cout << dien1 << std::endl;
+
+									Molecola m3, m4;
+									//std::cout << "dien1 = " << dien1 << std::endl;
+									//std::cout << "dien2 = " << dien2 << std::endl;
+
+									int isPossible = m1.spezza1(dien1, dien2, &m3, &m4);
+									if (isPossible != 0)
+									{
+										products.push_back(m3);
+										products.push_back(m4);
+									}
+									else
+									{
+										products.push_back(m1);
+									}
 								}
-								else 
+								else
 								{
 									products.push_back(m1);
 								}
+
 							}
 							else
 								products.push_back(m1);
 
-							products = fullyDecomposeRO1(products);
+							products = fullyDecomposeRO2(products, chemOut);
 							products.push_back(H2O);
 
+							for (auto& pr : products)
+								std::cout << pr << std::endl;
+
 							reactionComment reacomm = k->v_oleOHsConsum();
+							//std::cout << "products: " << products << std::endl;
 							reactions.push_back(Reaction(std::vector<Molecola>{oleOH, OH}, products, new double[3] { k->A, k->n, k->E },
 								"Class36: OleOHs (roho2elim) consumption", reacomm));
 						}		// end pos beta
@@ -5092,8 +5581,8 @@ std::vector<Reaction> oleOHOOHConsumption(std::vector<Molecola> OHoleOOHs, Kinox
 				if (m1.kindOfSPecies() == OHoleketo_ && !IsInClud)  //do not consider reactions that lead
 					//to cyclic ethers CO
 				{
-					if (m1.inchiName() == "InChI=1S/C5H8O2/c6-4-2-1-3-5-7/h2,7H,1,3,5H2")
-						std::cout << "here" << std::endl;
+					//if (m1.inchiName() == "InChI=1S/C5H8O2/c6-4-2-1-3-5-7/h2,7H,1,3,5H2")
+					//	std::cout << "here" << std::endl;
 					std::vector<Molecola> OHoleKeto_dec = decomposeketo(m1);
 					for (auto& pr : OHoleKeto_dec)
 						prods.push_back(pr);
@@ -5107,7 +5596,8 @@ std::vector<Reaction> oleOHOOHConsumption(std::vector<Molecola> OHoleOOHs, Kinox
 				prods.push_back(OH);
 
 
-				prods = fullyDecomposeRO1(prods);
+				//prods = fullyDecomposeRO1(prods);
+				prods = fullyDecomposeRO2(prods, chemOut);
 
 
 				reactionComment reacomm = k->v_oleooh_dec(OHoleOOH.tipoROOH(OHoleOOH.trova(4)));
@@ -5155,7 +5645,9 @@ std::vector<Reaction> dienesOOHConsumption(std::vector<Molecola> dieneOOHs, Kino
 	}
 	return reactions;
 }
-std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcEthOOHs, Kinox* k) 
+
+
+std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcEthOOHs, Kinox* k, ChemkinOut* chemOut)
 {
 	std::vector<Reaction> reactions;
 	Molecola OH(4);
@@ -5187,6 +5679,19 @@ std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcE
 				reactionComment reacomm = k->v_etherooh_dec(cEthOOH.tipoROOH(cEthOOH.trova(4)));
 				//std::cout << "decom_sp" << m1.inchiName() << std::endl;
 
+				//if (cEthOOH.inchiName() == "InChI=1S/C5H10O4/c6-5(1-2-9-7)3-8-4-5/h6-7H,1-4H2")
+				//{
+				//	std::cout << "here" << std::endl;
+				//}
+
+				//std::cout << "cEthOOH1: " << cEthOOH << std::endl;
+				//std::cout << "cEthOOH1: " << cEthOOH.inchiName() << std::endl;
+
+				//if (cEthOOH.inchiName() == "InChI=1S/C8H16O4/c1-7(2)3-8(4-9,12-10)6-11-5-7/h9-10H,3-6H2,1-2H3")
+				//{
+				//	std::cout << "here" << std::endl;
+				//}
+
 				std::vector<Molecola> prods;
 				//std::cout << etherOOH[i] << std::endl;
 				if (m2.size() == 0)    // if the ring was opened
@@ -5194,10 +5699,14 @@ std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcE
 					m1.Crad_to_keto(cEthOOH.trova(4));
 					prods = decomposeLinEthRO(m1);
 				}
-				else if (m2.kindOfSPecies() == cEthR_)  //do not consider reactions that lead
+				else if (m2.kindOfSPecies() == cEthR_ || m2.kindOfSPecies() == OHcEthR_)  // JL250904 added OHcEthR_ for completion.
 					//to cyclic ethers CO
 				{
 					m1.Crad_to_keto(m1.trova(2));
+					//if (m2.inchiName() == "InChI=1S/C4H7O2/c1-4(2-5)3-6-4/h3,5H,2H2,1H3")
+					//{
+					//	std::cout << "check here: " << std::endl;
+					//}
 					prods = decomposeCEthR(m2);
 					prods.push_back(m1);
 				}
@@ -5208,12 +5717,16 @@ std::vector<Reaction> OHcEthOOHDecompositionReactions(std::vector<Molecola> OHcE
 
 				if (prods.size() < 2)
 				{
-					UTL::error("In OHcEthOOHDecom less than 2 decomposition products have been found");
+					std::cout << "Error: species" << cEthOOH << std::endl;
+					UTL::error("In OHcEthOOHDecom less than 2 decom prods for cEthOOH");
 					continue;
 				}
 				prods.push_back(OH);
-				prods = fullyDecomposeRO1(prods);
-				prods = fullyDecomposeRO1(prods);
+				prods = fullyDecomposeRO2(prods, chemOut);
+				//prods = fullyDecomposeRO1(prods);
+
+				//std::cout << "cEthOOH2: " << cEthOOH << std::endl;
+				//std::cout << "cEthOOH2: " << cEthOOH.inchiName() << std::endl;
 			
 				reactions.push_back(Reaction(cEthOOH, prods, new double[3] { k->A, k->n, k->E },
 					"Class47: OHcEthOOHs (fromPOHOOH2) consumption", reacomm));
@@ -5316,7 +5829,7 @@ std::vector<Reaction> OHcEthDecompositionReactions(std::vector<Molecola> OHcEths
 				prods = fullyDecomposeRO1(prods);
 				prods.push_back(H2O);
 
-				reactionComment reacomm = k->v_cyc_eth_dec(); // TO DO replace 0 with allylic or vynilic
+				reactionComment reacomm = k->v_cyc_eth_dec1(); // TO DO replace 0 with allylic or vynilic
 				reactions.push_back(Reaction(std::vector<Molecola>{ cEth, OH },
 					prods, new double[3] { k->A, k->n, k->E },
 					"Class48: OHcEthDec (fromQOHOOH) consumption", reacomm));
@@ -5487,7 +6000,7 @@ std::vector<Reaction> OHcEthDecompositionReactions(std::vector<Molecola> OHcEths
 						std::cin >> input_keyboard;
 					}
 
-					reactionComment reacomm = k->v_cyc_eth_dec();
+					reactionComment reacomm = k->v_cyc_eth_dec1();
 
 					if (ism1RO == true && RO_dec_prod.size() == 2)
 					{
@@ -5534,7 +6047,7 @@ std::vector<Reaction> OHcEthDecompositionReactions(std::vector<Molecola> OHcEths
 	return reactions;
 }
 
-std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola> olecEthOOHs, Kinox* k)
+std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola> olecEthOOHs, Kinox* k, ChemkinOut* chemOut)
 {
 	std::vector<Reaction> reactions;
 	Molecola OH(4);
@@ -5563,11 +6076,11 @@ std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola>
 				//std::cout << m1 << std::endl << m2 << std::endl << std::endl;
 				reactionComment reacomm = k->v_etherooh_dec(cEthOOH.tipoROOH(cEthOOH.trova(4)));
 
-				if (m2.size() != 0)
-				{
-					if (m2.inchiName() == "InChI=1S/C5H7O/c1-2-3-4-5-6/h2,4-5H,1,3H2")
-						std::cout << "here" << std::endl;
-				}
+				//if (m2.size() != 0)
+				//{
+				//	if (m2.inchiName() == "InChI=1S/C5H7O/c1-2-3-4-5-6/h2,4-5H,1,3H2")
+				//		std::cout << "here" << std::endl;
+				//}
 				
 				//
 				//if (m2.inchiName() == "InChI=1S/C5H7O/c1-2-3-4-5-6/h2,4-5H,1,3H2")
@@ -5583,19 +6096,33 @@ std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola>
 				else if (m2.kindOfSPecies() == olecEthR_ || m2.kindOfSPecies() == cEthR_)  // JIAXIN
 					//do not consider reactions that lead to cyclic ethers CO
 				{
+					if (cEthOOH.inchiName() == "InChI=1S/C5H8O3/c6-8-2-1-5-3-7-4-5/h1,6H,2-4H2")
+						std::cout << "here" << std::endl;
+
 					m1.Crad_to_keto(m1.trova(2));
 					prods = decomposeCEthR(m2);
+					// if m2 if the only value in prods, m2.Allylic_structure() and decompose again.
+					if (prods.size() == 1 && prods[0] == m2)
+					{
+						if (m2.isAllylic(m2.posCrad()))
+						{
+							m2.Allylic_structure();
+							prods = decomposeCEthR(m2);
+						}
+							
+					}
+
 					prods.push_back(m1);
 				}
 				else
 				{
 					continue;
 				}
-				prods = fullyDecomposeRO1(prods);
-
+				prods = fullyDecomposeRO2(prods, chemOut);
 				if (prods.size() < 2)
 				{
-					UTL::error("In cyclicEtherOOHDecompositionReactions less than 2 decomposition products have been found");
+					std::cout << "cEthOOH: " << cEthOOH << std::endl;
+					UTL::error("In cEthOOHdecomposition less than 2 decomposition products have been found");
 					continue;
 				}
 
@@ -5611,7 +6138,7 @@ std::vector<Reaction> cyclicEtherOOHDecompositionReactions(std::vector<Molecola>
 	}
 	return reactions;
 }
-std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> olecEths, Kinox* k)
+std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> olecEths, Kinox* k, ChemkinOut* chemOut)
 {
 	std::vector<Reaction> reactions;
 	Molecola H2O(6);
@@ -5694,9 +6221,16 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 				m1.Crad_to_C(posRadM1);
 				m1.addcheto(posRadM1);
 
+				std::vector<Molecola> prods;
+				prods.push_back(m1);
+				prods.push_back(m2);
+				//prods = fullyDecomposeRO1(prods);
+				prods = fullyDecomposeRO2(prods, chemOut);
+				prods.push_back(H2O);
+
 				reactionComment reacomm = k->v_cyc_eth_dec(); // TO DO replace 0 with allylic or vynilic
 				reactions.push_back(Reaction(std::vector<Molecola>{ cEth, OH },
-					std::vector<Molecola>{ m1, m2, H2O }, new double[3] { k->A, k->n, k->E },
+					prods, new double[3] { k->A, k->n, k->E },
 					"Class46: olecEths (fromoleQOOH) consumption", reacomm));
 			}
 			else if (numH == 0 && numH2 != 0)
@@ -5767,7 +6301,7 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 					{
 						if (alfa_cheto[l] == 1 && alfa_rad[l] == 1)
 						{
-							interm.spezza(posCheto, l, &m1, &m2);
+							interm.spezza1(posCheto, l, &m1, &m2);
 							reactionHappened = true;
 							break;
 						}
@@ -5792,7 +6326,7 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 							{
 								if (beta_cheto[h] == 1 && alfa_rad[h] == 1)
 								{
-									interm.spezza(h, l, &m1, &m2);
+									interm.spezza1(h, l, &m1, &m2);
 									reactionHappened = true;
 									break;
 								}
@@ -5810,22 +6344,24 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 
 				if (reactionHappened)
 				{
+					//std::cout << m1.kindOfSPecies() << std::endl;
+					//std::cout << m2.kindOfSPecies() << std::endl;
 					std::vector<Molecola> RO_dec_prod;
 					bool ism1RO = false;
 					bool ism2RO = false;
-					if (m1.kindOfSPecies() == RO_)
+					if (m1.kindOfSPecies() == oleRO_)
 					{
-						RO_dec_prod = decomposeRO(m1);
+						RO_dec_prod = decomposeRO1(m1);
 						ism1RO = true;
 					}
 
-					if (m2.kindOfSPecies() == RO_)
+					if (m2.kindOfSPecies() == oleRO_)
 					{
-						RO_dec_prod = decomposeRO(m2);
+						RO_dec_prod = decomposeRO1(m2);
 						ism2RO = true;
 					}
 
-					if (m1.kindOfSPecies() == RO_ && m2.kindOfSPecies() == RO_)
+					if (m1.kindOfSPecies() == oleRO_ && m2.kindOfSPecies() == oleRO_)
 					{
 						std::cerr << "ERROR: in decomposition of cyclic ethers,"
 							<< " two RO are formed, this should not happen!" << std::endl;
@@ -5843,7 +6379,8 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 						prods.push_back(RO_dec_prod[1]);
 						prods.push_back(m2);
 						prods.push_back(H2O);
-						prods = fullyDecomposeRO1(prods);
+						//prods = fullyDecomposeRO1(prods);
+						prods = fullyDecomposeRO2(prods, chemOut);
 
 						reactions.push_back(Reaction(std::vector<Molecola>{ cEth, OH },
 							prods,new double[3] { k->A, k->n, k->E },
@@ -5856,7 +6393,8 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 						prods.push_back(RO_dec_prod[0]);
 						prods.push_back(RO_dec_prod[1]);
 						prods.push_back(H2O);
-						prods = fullyDecomposeRO1(prods);
+						//prods = fullyDecomposeRO1(prods);
+						prods = fullyDecomposeRO2(prods, chemOut);
 
 						reactions.push_back(Reaction(std::vector<Molecola>{ cEth, OH },
 							prods, new double[3] { k->A, k->n, k->E },
@@ -5868,7 +6406,8 @@ std::vector<Reaction> cyclicEthersDecompositionReactions(std::vector<Molecola> o
 						prods.push_back(m1);
 						prods.push_back(m2);
 						prods.push_back(H2O);
-						prods = fullyDecomposeRO1(prods);
+						//prods = fullyDecomposeRO1(prods);
+						prods = fullyDecomposeRO2(prods, chemOut);
 						reactions.push_back(Reaction(std::vector<Molecola>{ cEth, OH },
 							prods, new double[3] { k->A, k->n, k->E },
 							"Class46: olecEths (fromoleQOOH) consumption", reacomm));
@@ -5978,14 +6517,21 @@ std::vector<Reaction> KHPFormationReactions(std::vector<Molecola> OOQOOHs, Kinox
 		}
 		int posOO = OOQOOH.trova(3);		// find the position of the oo group
 		int posOOH = OOQOOH.trova(4);		// find the position of the ooh group
-		int pos_ole1 = OOQOOH.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
+		//int pos_ole1 = OOQOOH.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
 
-		int posOO1 = posOO;
-		int posOOH1 = posOOH;
+		std::vector<int> pos_ole = OOQOOH.posOle(1);
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
 
-		if (posOOH1 > posOO1) std::swap(posOO1, posOOH1);
-		if ((pos_ole1 >= posOOH1 && pos_ole1 <= posOO1) && (pos_ole2 >= posOOH1 && pos_ole2 <= posOO1))
+		//int posOO1 = posOO;
+		//int posOOH1 = posOOH;
+		//
+		//if (posOOH1 > posOO1) std::swap(posOO1, posOOH1);
+		//if ((pos_ole1 >= posOOH1 && pos_ole1 <= posOO1) && (pos_ole2 >= posOOH1 && pos_ole2 <= posOO1))
+		//	continue;
+
+		if (OOQOOH.isOnRO2IsoRing(pos_ole1, posOO, posOOH) && OOQOOH.isOnRO2IsoRing(pos_ole2, posOO, posOOH))
 			continue;
 
 		int dist = OOQOOH.dist(posOO, posOOH);	// find the distance between the oo 
@@ -6118,7 +6664,7 @@ std::vector<Reaction> KHPDecompositionReactions(std::vector<Molecola> KHPs, Kino
 		else
 			products.push_back(m1);
 
-		products = fullyDecomposeRO1(products);
+		products = fullyDecomposeRO2(products, chemOut);
 
 		products.push_back(OH);
 
@@ -6127,64 +6673,6 @@ std::vector<Reaction> KHPDecompositionReactions(std::vector<Molecola> KHPs, Kino
 		reactions.push_back(Reaction(KHP, products, new double[3] { k->A, k->n, k->E },
 			"Class39: oleKHP decomposition", reacomm));
 	}
-	return reactions;
-}
-
-std::vector<Reaction> O2AdditionVinyRs(std::vector<Molecola> Rs, Kinox* k) 
-{
-	std::vector<Reaction> reactions;
-	Molecola O2(2);
-	for (auto& R : Rs)
-	{
-		if (R.kindOfSPecies() != oleR_)
-		{
-			UTL::error("O2AdditionVinyRs called on a non oleR species.");
-			continue;
-		}
-		if (!R.isole(R.trova(2))) continue;
-		int pos_ole1 = R.posOle(); // position of the first C=C carbon.
-		int pos_ole2 = pos_ole1 + 1;
-		Molecola temp = R.parentFuel_complete();
-
-		Molecola* firstRad;			// array of molecules where the first product is stored
-		Molecola* secondRad;		// array of molecules where the second product is stored
-		Molecola temp1, temp2;		// molecules where to temporary save the products
-		firstRad = new Molecola[R.size() + 1]; if (!firstRad) exit(200);
-		secondRad = new Molecola[R.size() + 1]; if (!secondRad) exit(201);
-
-
-		bool alreadyPresent = false;	// tells if the an equivalent reaction 
-		// is already present
-		int isPossible = temp.spezza(pos_ole1, pos_ole2, &temp1, &temp2);
-		if (isPossible == 0) continue; // JIAXIN. this line ignores the rest of single bonds; change from break to continue;
-
-		for (int j = 1; j <= R.size(); j++)
-		{
-			if ((temp1 == firstRad[j] && temp2 == secondRad[j]) || (temp2 == firstRad[j]
-				&& temp1 == secondRad[j])) // check if an equivalent reaction is already saved
-			{
-				firstRad[j].isomeri++;	// the number of equivalent reaction is stored 
-				// in the firsRad.isomeri just for convinience
-				alreadyPresent = true;
-				break;
-			}
-			int asd = 1;
-		}
-		if (!alreadyPresent)
-		{
-			firstRad[0] = temp1;
-			secondRad[0] = temp2;
-		}
-
-		firstRad[0].addcheto(firstRad[0].trova(2));
-		secondRad[0].addcheto(secondRad[0].trova(2));
-		if (R.trova(2) == pos_ole1) firstRad[0].Crad_to_C(firstRad[0].trova(2));
-		if (R.trova(2) == pos_ole2) secondRad[0].Crad_to_C(secondRad[0].trova(2));
-
-		reactionComment reacomm = k->v_o2_add_vinyR(R.tipoR(R.trova(2)));
-		reactions.push_back(Reaction(std::vector<Molecola>{ R, O2}, std::vector<Molecola>{firstRad[0], secondRad[0]},
-			new double[3] { k->A, k->n, k->E }, "Class07: O2 addition to vinylic radicals", reacomm));
-		}
 	return reactions;
 }
 
@@ -6895,6 +7383,7 @@ std::vector<Molecola> decomposeketo(Molecola m2) // JIAXIN decompose CCCC=O
 			m2.spezza1(pos2, k, &m3, &m4);
 			vec.push_back(m3);
 			vec.push_back(m4);
+			break; // JL250820
 		}
 		else if (found[k] == 1 && m2.isole(pos2))
 		{
@@ -6906,7 +7395,9 @@ std::vector<Molecola> decomposeketo(Molecola m2) // JIAXIN decompose CCCC=O
 					m2.spezza1(k, j, &m3, &m4);
 					vec.push_back(m3);
 					vec.push_back(m4);
+					break; ; // JL250820
 				}
+			break; // JL250820
 		}
 		else continue;
 	}
@@ -6980,6 +7471,73 @@ std::vector<Molecola> DecomposeoleRO(Molecola m2) // JIAXIN decompose CCCC=O
 }
 
 
+std::vector<Molecola> DecomposeDieneR(Molecola m2) // JL260119
+{
+	
+	std::vector<Molecola> vec;
+
+	int pos_rad = m2.posCrad();
+	int posalfa[SIZEMAX + 1];
+	m2.scorri(pos_rad, 1, posalfa);
+	int count = 0;
+	for (int j = 1; j <= SIZEMAX; j++)
+	{
+		if (posalfa[j] == 1) // find the C in alpha
+		{
+			int posbeta[SIZEMAX + 1];
+			m2.scorri(j, 1, posbeta);  // find the C in beta
+			for (int z = 1; z <= SIZEMAX; z++)
+			{
+				if (posbeta[z] == 1 && z != pos_rad)
+				{
+					Molecola m3, m4;
+					int isPossible = m2.spezza1(j, z, &m3, &m4);
+					if (isPossible != 0)
+					{
+						if (m3.numberOle() > 2 || m4.numberOle() > 2)
+						{
+							std::cout << "here" << std::endl;
+							continue;
+						}
+
+						vec.push_back(m3);
+						vec.push_back(m4);
+						return vec;
+					}
+				
+				}
+			}
+		}
+	}
+
+	vec.push_back(m2);
+	return vec;
+}
+
+
+std::vector<Molecola> DecomposeLargeDiene(Molecola m2)
+{
+	std::vector<Molecola> vec;
+	for (int i = 1; i <= SIZEMAX; i++)
+	{
+		int posalfa[SIZEMAX + 1];
+		m2.scorri(i, 1, posalfa);
+		for (int j = 1; j <= SIZEMAX; j++)
+		{
+			if (posalfa[j] == 1 && m2.isAllyBond(i, j)) // find the C in alpha
+			{
+				Molecola m3, m4;
+				int isPossible = m2.spezza1(i, j, &m3, &m4);
+				vec.push_back(m3);
+				vec.push_back(m4);
+				return vec;
+			}
+		}
+	}
+	vec.push_back(m2);
+	return vec;
+}
+
 std::vector<Molecola> fullyDecomposeRO(Molecola m2) // decompose m2 and its products too (if they are RO) and return the products
 {
 	std::vector<Molecola> decProds;
@@ -7040,6 +7598,7 @@ std::vector<Molecola> fullyDecomposeRO1(std::vector<Molecola> vec)
 		//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
 		//	std::cout << "here" << std::endl;
 		if (m2.size() < 3) continue;
+
 
 		if (m2.kindOfSPecies() == RO_)
 		{
@@ -7148,6 +7707,186 @@ std::vector<Molecola> fullyDecomposeRO1(std::vector<Molecola> vec)
 			vec.insert(vec.end(), decProds.begin(), decProds.end());
 		}
 
+
+	}
+	return vec;
+}
+
+
+std::vector<Molecola> fullyDecomposeRO2(std::vector<Molecola> vec, ChemkinOut* chemOut)
+{
+	std::vector<Molecola> decProds;
+	for (int j = 0; j < vec.size(); j++)
+	{
+		Molecola m2 = vec[j];
+
+		if (m2.size() < 3) continue;
+		if (m2.inchiName() == "InChI=1S/C2H2O/c1-2-3/h1,3H")
+			std::cout << "here" << std::endl;
+		bool IsInClud = isSpeciesIncluded(m2, chemOut);
+		if (IsInClud) continue;
+		
+		if (m2.kindOfSPecies() == RO_)
+		{
+			decProds = decomposeRO1(m2);
+			if (decProds.size() > 1)
+			{
+				for (int i = 0; i < decProds.size(); i++)
+				{
+					if (decProds[i].kindOfSPecies() == RO_ || decProds[i].kindOfSPecies() == OHRO_ || decProds[i].kindOfSPecies() == oleRO_)
+					{
+						std::vector<Molecola> secDecProds;
+						secDecProds = decomposeRO1(decProds[i]);
+						decProds.erase(decProds.begin() + i);
+						decProds.insert(decProds.end(), secDecProds.begin(), secDecProds.end());
+					}
+				}
+			}
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == oleRO_)
+		{
+			decProds = decomposeOleRO(m2);
+			if (decProds.size() == 1)
+			{
+				if (m2.isAllylic(m2.trova(2)))
+				{
+					m2.Allylic_structure();
+					decProds = decomposeOleRO(m2);
+				}
+			}
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == OHRO_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeOleRO(m2);
+
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == oleROH_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeOleRO(m2);
+			if (decProds.size() == 1)
+			{
+				//if (m2.inchiName() == "InChI=1S/C4H7O/c1-2-3-4-5/h2-5H,1H3")
+				//	std::cout << "here" << std::endl;
+				if (m2.isAllylic(m2.trova(2)))
+				{
+					m2.Allylic_structure();
+					decProds = decomposeOleRO(m2);
+				}
+				if (m2.isAllylic(m2.trova(11)))
+				{
+					m2.Allylic_structure();
+					decProds = decomposeOleRO(m2);
+				}
+
+			}
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == OHoleketo_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeketo(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == COHCHO_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeketo(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == OHdiketo_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeketo(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == dienesCO_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeketo(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == oleCO_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//	std::cout << "here" << std::endl;
+			decProds = decomposeketo(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == cEthR_) // JL250903
+		{
+			decProds = decomposeCEthR(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == OHcEthR_) // JL250909
+		{
+			decProds = decomposeCEthR(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == OHCOlinER_) // JL250907
+		{
+			decProds = decomposeLinEthRO(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == lEthRO_) // JL250907
+		{
+			decProds = decomposeLinEthRO(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == olecEthR_) // JL250907
+		{
+			decProds = decomposeCEthR(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == dienesR_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//std::cout << "here" << std::endl;
+			decProds = DecomposeDieneR(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == dienes_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//std::cout << "here" << std::endl;
+			decProds = DecomposeLargeDiene(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+		else if (m2.kindOfSPecies() == oleR_)
+		{
+			//if (m2.inchiName() == "InChI=1S/C3H5O2/c1-3(5)2-4/h3,5H,1H3")
+			//std::cout << "here" << std::endl;
+			decProds = DecomposeDieneR(m2);
+			vec.erase(vec.begin() + j);
+			vec.insert(vec.end(), decProds.begin(), decProds.end());
+		}
+
 	}
 	return vec;
 }
@@ -7252,6 +7991,62 @@ std::vector<Molecola> decomposeLinEthRO(Molecola mol)
 		vec.push_back(m4);
 	}
 
+	else if (dist == 3)
+	{
+		int found1[SIZEMAX + 1];
+		int found2[SIZEMAX + 1];
+
+		int found3[SIZEMAX + 1];
+		int found4[SIZEMAX + 1];
+
+		mol.scorri(mol.trova(8), 1, found1);
+		mol.scorri(mol.posCrad(), 2, found2);
+
+		mol.scorri(mol.trova(8), 2, found3);
+		mol.scorri(mol.posCrad(), 1, found4);
+
+		int pos1 = 0;
+		int pos2 = 0;
+		for (int i = 0; i < SIZEMAX + 1; i++)
+			if (found1[i] == 1 && found2[i] == 1)
+				pos1 = i;
+		for (int i = 0; i < SIZEMAX + 1; i++)
+			if (found3[i] == 1 && found4[i] == 1)
+				pos2 = i;
+
+		Molecola m1, m2;
+		mol.spezza1(pos1, pos2, &m1, &m2);
+		vec.push_back(m1);
+		vec.push_back(m2);
+	}
+
+	else // dist > 3 JL250904
+	{
+		int posr = mol.posCrad();
+		Molecola m3, m4;
+		int posalfa[SIZEMAX + 1];
+		mol.scorri(posr, 1, posalfa);
+		for (int j = 1; j <= SIZEMAX; j++)
+		{
+			if (posalfa[j] == 1) // find the C in alpha
+			{
+				int posbeta[SIZEMAX + 1];
+				mol.scorri(j, 1, posbeta);  // find the C in beta
+				for (int z = 1; z <= SIZEMAX; z++)
+				{
+					if (posbeta[z] == 1 && z != posr)
+					{
+						int isPossible = mol.spezza1(j, z, &m3, &m4);
+						if (isPossible == 0)
+							continue;
+						vec.push_back(m3);
+						vec.push_back(m4);
+						continue; // JL250907
+					}
+				}
+			}
+		}
+	}
 	return vec;
 }
 
@@ -7367,7 +8162,7 @@ std::vector<Molecola> decomposeCEthR(Molecola m2)
 					for (int k = 0; k < SIZEMAX + 1; k++)
 						if (found[k] == 1 && found2[k] == 1)
 							pos1 = k;
-					m3.spezza(pos1, m3.trova(8), &m5, &m6);
+					m3.spezza1(pos1, m3.trova(8), &m5, &m6);
 					//std::cout << m5 << std::endl << m6 << std::endl;
 					vec.push_back(m5);
 					vec.push_back(m6);
@@ -7381,8 +8176,39 @@ std::vector<Molecola> decomposeCEthR(Molecola m2)
 						vec.push_back(prod[1]);
 				}
 			}
+			else  // JL250903
+			{
+				int posr = m2.posCrad();
+
+				int posalfa[SIZEMAX + 1];
+				m2.scorri(posr, 1, posalfa);
+				for (int j = 1; j <= SIZEMAX; j++)
+				{
+					if (posalfa[j] == 1) // find the C in alpha
+					{
+						int posbeta[SIZEMAX + 1];
+						m2.scorri(j, 1, posbeta);  // find the C in beta
+						for (int z = 1; z <= SIZEMAX; z++)
+						{
+							if (posbeta[z] == 1 && z != posr)
+							{
+								int isPossible = m2.spezza1(j, z, &m3, &m4);
+								if (isPossible == 0)
+									continue;
+									
+								vec.push_back(m3);
+								vec.push_back(m4);
+							}
+						}
+ 
+					}
+				}
+			}
 		}
 	}
+	// JL250910. When m2 cannot break, return m2 itself.
+	if (vec.empty()) vec.push_back(m2);
+
 	return vec;
 }
 
@@ -7396,8 +8222,13 @@ std::vector<Reaction> OHAdditionOnOlefins(Molecola HC, Kinox* k)
 		UTL::error("OH add reactions called with HC that is not an olefin!");
 		return std::vector<Reaction> {};
 	}
-	int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
-	int pos_ole2 = pos_ole1 + 1; 
+	//int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
+	//int pos_ole2 = pos_ole1 + 1; 
+
+	std::vector<int> pos_ole = HC.posOle(1);
+	int pos_ole1 = pos_ole[0];
+	int pos_ole2 = pos_ole[1];
+
 	// next, change pos1 into radical, change pos2 into -C-OH.
 	
 	Molecola ROH1 = HC;
@@ -7405,10 +8236,10 @@ std::vector<Reaction> OHAdditionOnOlefins(Molecola HC, Kinox* k)
 	ROH1.ole_to_ROH(pos_ole1, pos_ole2); // first pos is the -OH site; second the radical site;
 	ROH2.ole_to_ROH(pos_ole2, pos_ole1);
 
-	reactionComment reacomm = k->v_oh_add_ole(ROH1.tipoC(pos_ole1), ROH1.tipoC(pos_ole2)); // JIAXIN
+	reactionComment reacomm = k->v_oh_add_ole(HC.tipoC(pos_ole1), HC.tipoC(pos_ole2)); // JIAXIN
 	reactions.push_back(Reaction(std::vector<Molecola>{ HC, OH }, ROH1, new double[3]
 		{ k->A, k->n, k->E }, "Class15: OH addition to olefins", reacomm));
-	reactionComment reacomm1 = k->v_oh_add_ole(ROH2.tipoC(pos_ole2), ROH2.tipoC(pos_ole1)); // JIAXIN
+	reactionComment reacomm1 = k->v_oh_add_ole(HC.tipoC(pos_ole2), HC.tipoC(pos_ole1)); // JIAXIN
 	reactions.push_back(Reaction(std::vector<Molecola>{ HC, OH }, ROH2, new double[3]
 		{ k->A, k->n, k->E }, "Class15: OH addition to olefins", reacomm1));
 	
@@ -7544,15 +8375,17 @@ std::vector<Reaction> ROHO2IsomerizationReac(std::vector<Molecola> ROHOOs, Kinox
 						int isOHRing = 1;
 						if (dist != 4) 
 						{
-							if ((pos_oh > pos_o2 && pos_oh < j) || (pos_oh > j && pos_oh < pos_o2))
+							//if ((pos_oh > pos_o2 && pos_oh < j) || (pos_oh > j && pos_oh < pos_o2))
+
+							if (ROO.isOnRO2IsoRing(pos_oh, j, pos_o2))
 							{ // check if -OH is on the ring.
 								isOHRing = 2;
 							}
-							std::cout << "here1 " << pos_oh << std::endl;
-							std::cout << "here2 " << j << std::endl;
+							//std::cout << "here1 " << pos_oh << std::endl;
+							//std::cout << "here2 " << j << std::endl;
 							if (pos_oh == j)
 							{
-								std::cout << "here" << std::endl;
+								//std::cout << "here" << std::endl;
 								isOHRing = 2;
 							}
 							
@@ -7588,9 +8421,12 @@ std::vector<Reaction> HAdditionToOlefins(Molecola HC, Kinox* k)
 		UTL::error("H add reactions called with HC that is not an olefin!");
 		return std::vector<Reaction> {};
 	}
-	int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
-	int pos_ole2 = pos_ole1 + 1;
+	//int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
+	//int pos_ole2 = pos_ole1 + 1;
 	// next, change pos1 into radical, change pos2 into -C-OH.
+	std::vector<int> pos_ole = HC.posOle(1);
+	int pos_ole1 = pos_ole[0];
+	int pos_ole2 = pos_ole[1];
 
 	Molecola R1 = HC;
 	Molecola R2 = HC;
@@ -7687,6 +8523,36 @@ std::vector<Reaction> CH3AddToAllyR(std::vector<Molecola> Rs, Kinox* k)
 	}
 	return reactions;
 }
+
+// JIAXIN CH3 addition to allyRs
+std::vector<Reaction> AllyRRecombination(std::vector<Molecola> Rs, Kinox* k)
+{
+	std::vector<Reaction> reactions;
+	//Molecola CH3;
+	//Molecola CH3;
+	//CH3.makeCH3();
+	for (auto& R : Rs)
+	{
+		//JIAXIN std::cout << "R.kindOfSPecies   = " << R.kindOfSPecies() << std::endl;
+		if (R.kindOfSPecies() != oleR_) // Jiaxin Convert R_ to oleR_.
+		{
+			UTL::error("AllyR2AllyRRecom called on a non radical species");
+			continue;
+		}
+		if (!R.isAllylic(R.trova(2))) continue;
+
+		Molecola largerHC = R;
+		largerHC.allRrecom(R.trova(2));
+		//Radicale radicalType = R.tipoR(R.trova(2));
+		reactionComment reacomm = k->v_allyR_recom(); // JIAXIN
+		reactions.push_back(Reaction(std::vector<Molecola>{ R, R }, largerHC, new double[3]
+			{ k->A, k->n, k->E }, "Class54: allyR-allyR recombination (RA-RA)", reacomm));
+		//chemout.wrireaDetailed( 3, k.A, k.n, k.E, r[i], roo[i]);
+	}
+	return reactions;
+}
+
+
 // JIAXIN HO2 addition to olefins.
 std::vector<Reaction> HO2AddOlefinToQOOH(Molecola HC, Kinox* k)
 {
@@ -7697,8 +8563,11 @@ std::vector<Reaction> HO2AddOlefinToQOOH(Molecola HC, Kinox* k)
 		UTL::error("HO2AddOlefinToQOOH called with HC that is not an olefin!");
 		return std::vector<Reaction> {};
 	}
-	int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
-	int pos_ole2 = pos_ole1 + 1;
+	//int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
+	//int pos_ole2 = pos_ole1 + 1;
+	std::vector<int> pos_ole = HC.posOle(1);
+	int pos_ole1 = pos_ole[0];
+	int pos_ole2 = pos_ole[1];
 	// next, change pos1 into radical, change pos2 into -C-OH.
 
 	Molecola QOOH1 = HC;
@@ -7731,9 +8600,12 @@ std::vector<Reaction> OAtomAddToOlefins(Molecola HC, Kinox* k)      // JIAXIN
 		UTL::error("OAtomAddToOlefins called with HC that is not an olefin!");
 		return std::vector<Reaction> {};
 	}
-	int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
-	int pos_ole2 = pos_ole1 + 1;
+	//int pos_ole1 = HC.posOle(); // position of the first C=C carbon.
+	//int pos_ole2 = pos_ole1 + 1;
 	// next, change pos1 into radical, change pos2 into -C-OH.
+	std::vector<int> pos_ole = HC.posOle(1);
+	int pos_ole1 = pos_ole[0];
+	int pos_ole2 = pos_ole[1];
 
 	Molecola RO1 = HC;
 	Molecola RO2 = HC;
@@ -7746,53 +8618,90 @@ std::vector<Reaction> OAtomAddToOlefins(Molecola HC, Kinox* k)      // JIAXIN
 	*/
 	Molecola P11 = RO1; //channel1 of RO1
 	Molecola P21 = RO2; //channel1 of RO2
-	P11.addcheto1(pos_ole1); // replace -CO* with C=O.
-	P21.addcheto1(pos_ole2); // replace -CO* with C=O.
-	
-	reactionComment reacomm = k->v_o_add_ole(P11.tipoC(pos_ole1), "H"); // JIAXIN
-	reactions.push_back(Reaction(std::vector<Molecola>{ HC, O }, std::vector<Molecola> {P11, H}, new double[3]
-		{ k->A, k->n, k->E }, "Class06: O addition to olefins", reacomm));
-	
-	reactionComment reacomm1 = k->v_o_add_ole(P21.tipoC(pos_ole2), "H"); // JIAXIN
-	reactions.push_back(Reaction(std::vector<Molecola>{ HC, O }, std::vector<Molecola> {P21, H}, new double[3]
-		{ k->A, k->n, k->E }, "Class06: O addition to olefins", reacomm1));
+
+	if (P11.numAbstractableH(pos_ole1) != 0) // JL: avoid C=O on Ct.
+	{
+		P11.addcheto1(pos_ole1); // replace -CO* with C=O.
+		reactionComment reacomm = k->v_o_add_ole(P11.tipoC(pos_ole1), "H"); // JIAXIN
+		reactions.push_back(Reaction(std::vector<Molecola>{ HC, O }, std::vector<Molecola> {P11, H}, new double[3]
+			{ k->A, k->n, k->E }, "Class06: O addition to olefins", reacomm));
+	}
+
+	if (P21.numAbstractableH(pos_ole2) != 0)
+	{
+		P21.addcheto1(pos_ole2); // replace -CO* with C=O.
+		reactionComment reacomm1 = k->v_o_add_ole(P21.tipoC(pos_ole2), "H"); // JIAXIN
+		reactions.push_back(Reaction(std::vector<Molecola>{ HC, O }, std::vector<Molecola> {P21, H}, new double[3]
+			{ k->A, k->n, k->E }, "Class06: O addition to olefins", reacomm1));
+	}
 
 
 	Molecola P12 = RO1; //channel2 of RO1
 	int posalfa[SIZEMAX + 1];
-	P12.scorri(pos_ole2, 1, posalfa);
+
+	int posr1 = RO1.trova(2);
+	int posO1 = RO1.trova(9);
+
+	P12.scorri(posr1, 1, posalfa);
 	for (int j = 1; j <= SIZEMAX; j++)
 	{
-		if ((posalfa[j] == 1) && (j == pos_ole1)) // find the C in alpha
+		if ((posalfa[j] == 1) && (j == posO1)) // find the C in alpha
 		{
 			int posbeta[SIZEMAX + 1];
 			P12.scorri(j, 1, posbeta);  // find the C in beta
+			P12.COrad_to_COH(posO1);
 			for (int z = 1; z <= SIZEMAX; z++)
 			{
-				if (posbeta[z] == 1 && z != pos_ole2)
+				if (posbeta[z] == 1 && z != posr1)
 				{
 					Molecola m1, m2;
+					
 					int isPossible = P12.spezza1(j, z, &m1, &m2);
 					if (isPossible == 0)
 						continue;
-					if (m1.kindOfSPecies() == OLE_) {
-						for (int k = 1; k <= SIZEMAX; k++)
-						{
-							if (m1.isole(k) && m1.tipoC(k) == Cp)
-							{
-								m1.tipo(k, 9);
-							}
-						}
-					}
-					if (m2.kindOfSPecies() == OLE_) {
-						for (int k = 1; k <= SIZEMAX; k++)
-						{
-							if (m2.isole(k) && m2.tipoC(k) == Cp)
-							{
-								m2.tipo(k, 9);
-							}
-						}
-					}
+
+					m1.COH_to_COrad(m1.posCOH());
+					//if (m1.kindOfSPecies() == OLE_) 
+					//{
+					//	for (int k = 1; k <= SIZEMAX; k++)
+					//	{
+					//		
+					//		if (m1.isole(k) && m1.tipoC(k) == Cp)
+					//		{
+					//			m1.tipo(k, 9);
+					//			break;
+					//		}
+					//	}
+					//	// (Cp0== 1) // no terminal C
+					//	//
+					//	//or (int k = 1; k <= SIZEMAX; k++)
+					//	//
+					//	//
+					//	//if (m1.isole(k) && m1.tipoC(k) == Cs)
+					//	//{
+					//	//	m1.tipo(k, 9);
+					//	//	break;
+					//	//}
+					//	//
+					//	//
+					//	//int pos = m2.trova(9);
+					//	//m2.Crad_to_C(pos);
+					//	//m2.addcheto(pos);
+					//}
+					//
+					//
+					//if (m2.kindOfSPecies() == OLE_) {
+					//	for (int k = 1; k <= SIZEMAX; k++)
+					//	{
+					//		if (m2.isole(k) && m2.tipoC(k) == Cp)
+					//		{
+					//			m2.tipo(k, 9);
+					//		}
+					//	}
+					//	//int pos = m1.trova(9);
+					//	//m1.Crad_to_C(pos);
+					//	//m1.addcheto(pos);
+					//}
 
 					reactionComment reacomm = k->v_o_add_ole(P12.tipoC(pos_ole1), "Other"); // JIAXIN
 					reactions.push_back(Reaction(std::vector<Molecola>{ HC, O }, std::vector<Molecola>{ m1, m2 }, new double[3] 
@@ -7803,42 +8712,147 @@ std::vector<Reaction> OAtomAddToOlefins(Molecola HC, Kinox* k)      // JIAXIN
 	}
 
 	Molecola P22 = RO2; //channel2 of RO2
+
+	//RO2.printStruttura();
 	int posalfa1[SIZEMAX + 1];
-	P22.scorri(pos_ole1, 1, posalfa1);
+
+	int posr = RO2.trova(2);
+	int posO = RO2.trova(9);
+
+	P22.scorri(posr, 1, posalfa1);
 	for (int j = 1; j <= SIZEMAX; j++)
 	{
-		if ((posalfa1[j] == 1) && (j == pos_ole2)) // find the C in alpha
+		if ((posalfa1[j] == 1) && (j == posO)) // find the C in alpha
 		{
 			int posbeta1[SIZEMAX + 1];
 			P22.scorri(j, 1, posbeta1);  // find the C in beta
+			P22.COrad_to_COH(posO);
 			for (int z = 1; z <= SIZEMAX; z++)
 			{
-				if (posbeta1[z] == 1 && z != pos_ole1)
+				if (posbeta1[z] == 1 && z != posr)
 				{
+
 					Molecola m3, m4;
 					int isPossible = P22.spezza1(j, z, &m3, &m4);
 					if (isPossible == 0)
 						continue;
 
-					if (m3.kindOfSPecies() == R_) 
-					{
-						int pos = m3.trova(2);
-						m3.Crad_to_C(pos);
-						m3.addcheto(pos);
+					m3.COH_to_COrad(m3.posCOH());
+					//m4.CO_to_COrad(m4.posKeto());
+					//if (m3.kindOfSPecies() == OLE_)
+					//{
+					//	for (int k = 1; k <= SIZEMAX; k++)
+					//	{
+					//		if (m3.isole(k) && m3.tipoC(k) == Cp)
+					//		{
+					//			m3.tipo(k, 9);
+					//			break;
+					//		}
+					//	}
+					//	// (Cp1 == 1) // no terminal C
+					//	//
+					//	//or (int k = 1; k <= SIZEMAX; k++)
+					//	//
+					//	//
+					//	//if (m3.isole(k) && m3.tipoC(k) == Cs)
+					//	//{
+					//	//	m3.tipo(k, 9);
+					//	//	break;
+					//	//}
+					//	//
+					//	//
+					//	
+					//	//int pos = m2.trova(9);
+					//	//m2.Crad_to_C(pos);
+					//	//m2.addcheto(pos);
+					//}
 
-					}
-					if (m4.kindOfSPecies() == R_) 
-					{
-						int pos1 = m4.trova(2);
-						m4.Crad_to_C(pos1);
-						m4.addcheto(pos1);
-					}
+					//if (m3.kindOfSPecies() == R_) 
+					//{
+					//	int pos = m3.trova(2);
+					//	m3.Crad_to_C(pos);
+					//	m3.addcheto(pos);
+					//	//int pos = m4.trova(9);
+					//	//m3.Crad_to_C(pos);
+					//	//m3.addcheto(pos);
+					//
+					//}
+					//if (m4.kindOfSPecies() == R_) 
+					//{
+					//	int pos1 = m4.trova(2);
+					//	m4.Crad_to_C(pos1);
+					//	m4.addcheto(pos1);
+					//	//int pos = m3.trova(9);
+					//	//m4.Crad_to_C(pos);
+					//	//m4.addcheto(pos);
+					//}
 					reactionComment reacomm = k->v_o_add_ole(P22.tipoC(pos_ole2), "Other"); // JIAXIN
 					reactions.push_back(Reaction(std::vector<Molecola>{ HC, O }, std::vector<Molecola>{ m3, m4 }, new double[3]
 						{ k->A, k->n, k->E }, "Class06: O addition to olefins", reacomm));
 				}		// end pos beta
 			}
 		}
+	}
+	return reactions;
+}
+
+std::vector<Reaction> O2AdditionVinyRs(std::vector<Molecola> Rs, Kinox* k)
+{
+	std::vector<Reaction> reactions;
+	Molecola O2(2);
+	for (auto& R : Rs)
+	{
+		if (R.kindOfSPecies() != oleR_)
+		{
+			UTL::error("O2AdditionVinyRs called on a non oleR species.");
+			continue;
+		}
+		if (!R.isole(R.trova(2))) continue;
+		//int pos_ole1 = R.posOle(); // position of the first C=C carbon.
+		//int pos_ole2 = pos_ole1 + 1;
+		std::vector<int> pos_ole = R.posOle(1);
+		int pos_ole1 = pos_ole[0];
+		int pos_ole2 = pos_ole[1];
+		Molecola temp = R.parentFuel_complete();
+
+		Molecola* firstRad;			// array of molecules where the first product is stored
+		Molecola* secondRad;		// array of molecules where the second product is stored
+		Molecola temp1, temp2;		// molecules where to temporary save the products
+		firstRad = new Molecola[R.size() + 1]; if (!firstRad) exit(200);
+		secondRad = new Molecola[R.size() + 1]; if (!secondRad) exit(201);
+
+
+		bool alreadyPresent = false;	// tells if the an equivalent reaction 
+		// is already present
+		int isPossible = temp.spezza(pos_ole1, pos_ole2, &temp1, &temp2);
+		if (isPossible == 0) continue; // JIAXIN. this line ignores the rest of single bonds; change from break to continue;
+
+		for (int j = 1; j <= R.size(); j++)
+		{
+			if ((temp1 == firstRad[j] && temp2 == secondRad[j]) || (temp2 == firstRad[j]
+				&& temp1 == secondRad[j])) // check if an equivalent reaction is already saved
+			{
+				firstRad[j].isomeri++;	// the number of equivalent reaction is stored 
+				// in the firsRad.isomeri just for convinience
+				alreadyPresent = true;
+				break;
+			}
+			int asd = 1;
+		}
+		if (!alreadyPresent)
+		{
+			firstRad[0] = temp1;
+			secondRad[0] = temp2;
+		}
+
+		firstRad[0].addcheto(firstRad[0].trova(2));
+		secondRad[0].addcheto(secondRad[0].trova(2));
+		if (R.trova(2) == pos_ole2) firstRad[0].Crad_to_C(firstRad[0].trova(2));
+		if (R.trova(2) == pos_ole1) secondRad[0].Crad_to_C(secondRad[0].trova(2));
+
+		reactionComment reacomm = k->v_o2_add_vinyR(R.tipoR(R.trova(2)));
+		reactions.push_back(Reaction(std::vector<Molecola>{ R, O2}, std::vector<Molecola>{firstRad[0], secondRad[0]},
+			new double[3] { k->A, k->n, k->E }, "Class07: O2 addition to vinylic radicals", reacomm));
 	}
 	return reactions;
 }
@@ -7930,9 +8944,10 @@ std::vector<Reaction> O2allyRHabstraction(std::vector<Molecola> Rs, Kinox* k)   
 		int pos_abs = 0;
 		for (int j = 1; j <= SIZEMAX; j++)
 		{
-			if ((posalfa[j] == 1) && (!R.isole(j))) // find the C in alpha
+			if ((posalfa[j] == 1) && (!R.isole(j)) && (R.tipoC(j) != Cq)) // find the C in alpha // JL0821 avoid the Q carbon
 			{
 				//if (!Diene.isole(j)) continue;
+				R.printStruttura();
 				Diene.Crad_to_C(pos_ally);
 				Diene.addole(pos_ally, j);
 				pos_abs = j;
@@ -8069,7 +9084,8 @@ std::vector<Reaction> betaOHQOOHScission(std::vector<Molecola> QOHOOHs, Kinox* k
 
 		}
 
-		if (std::abs(pos_rad - pos_o2h) != 1) continue;
+		//if (std::abs(pos_rad - pos_o2h) != 1) continue;
+		if (QOHOOH.dist(pos_o2h, pos_rad) != 1) continue; // JL250908
 
 		Molecola oleOH = QOHOOH;
 		oleOH.removeOOH(pos_o2h);
@@ -8785,37 +9801,6 @@ std::vector<Reaction> POHOOHToEthers(std::vector<Molecola> POHOOHs, Kinox* k)   
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int getAdditionalProducts(std::vector<Molecola>* molVec,
 	std::vector<Reaction> reactions, species kind)
 {
@@ -8826,8 +9811,11 @@ int getAdditionalProducts(std::vector<Molecola>* molVec,
 		for (auto& prod : singProd)
 		{
 			if (prod->kindOfSPecies() == kind)
+			{
+				//std::cout << prod << std::endl;
 				if (UTL::addUnique(molVec, *prod) == -1)
 					newElemCount++;
+			}
 		}
 	}
 	return newElemCount;
@@ -8970,7 +9958,7 @@ void printReaction(std::ofstream* outfile, Reaction reac, ChemkinOut* chemOut)
 	{
 		reactantsSide << chemOut->molToName(*(reactants[i]));
 		if (i != reactants.size() - 1)
-			reactantsSide << " + ";
+			reactantsSide << "+";
 	}
 
 	std::stringstream productsSide;
@@ -8978,20 +9966,40 @@ void printReaction(std::ofstream* outfile, Reaction reac, ChemkinOut* chemOut)
 	{
 		productsSide << chemOut->molToName(*(products[i]));
 		if (i != products.size() - 1)
-			productsSide << " + ";
+			productsSide << "+";
 	}
 
 	char cost[50];
 	sprintf_s(cost, 50, "   %9.3e %8.3f %8.0f ", reac.A(), reac.n(), reac.E());
 
-	*outfile << std::left << std::setw(23) << reactantsSide.str();
+	std::stringstream reactionSide; // JL0820
+	//*outfile << std::left << std::setw(23) << reactantsSide.str();
+	//*outfile << reactantsSide.str(); // JL0820
+	reactionSide << reactantsSide.str(); // JL0820
 	if(reac.isReversible() == false)
-		*outfile << " => ";
+		reactionSide << "=>";
 	else
-		*outfile << " <=> ";
-	*outfile << std::setw(40) << productsSide.str() << " "
-		<< std::setw(30) << cost << " "
-		<< "!" << reac.printComment() << std::endl;
+		reactionSide << "<=>";
+	//*outfile << std::setw(40) << productsSide.str() << " "
+	//	<< std::setw(30) << cost << " "
+	//	<< "!" << reac.printComment() << std::endl;
+	reactionSide << productsSide.str();  // JL0820
+
+	const int paramColumn = 50;
+	std::string reactionStr = reactionSide.str();
+
+	*outfile << reactionStr;
+
+	// 
+	int padding = paramColumn - (int)reactionStr.size();
+	if (padding < 1) padding = 1;  // 
+
+	*outfile << std::string(padding, ' '); // 
+
+
+
+	*outfile << " " << cost << " !" << reac.printComment() << std::endl; // JL0820
+
 	if (reac.isDuplicate())
 		*outfile << "DUP" << std::endl;
 

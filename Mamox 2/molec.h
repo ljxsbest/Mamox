@@ -22,13 +22,13 @@ enum AnelloO { ao3, ao4, ao5, ao6 };
 enum Direz { dir, inv };
 enum Output { MATRICE, FORMULA, FORMULA2 };
 enum HAbsRad { o2, oh, h, o, ho2, ch3, c2h5 , ch3o, ch3o2, ch3oh, ch3o2h}; // JIAXIN
-enum species { fuel_, R_, ROO_, QOOH_, OOQOOH_, OLE_, CO_, cEth_, RO_, KHP_, ROOH_, 
-	POOH2_, ROOH2_, oleOOH_, cEthOOH_, oleR_, oleCO_, cEthR_, cEthCO_, lEthRO_, alkRO_,
-	special_, unidentified_, 
-	oleROO_, oleQOOH_, oleO2QOOH_, olePOOH2_, dienes_, olecEth_, olecEthR_, oleKHP_, dieneOOH_,
-	ROH_, ROHOO_, QOHOOH_, oleROOH_, oleOH_, OHcEth_, O2QOHOOH_, OHoleOOH_, OHKHP_,
-	POHOOH_, OHRO_, OHcEthOOH_, OROOHs_, COHCHO_, oleQO_, olecEthOOH_, OHketo_, OHoleketo_, oleROH_, dienesOH_,
-	oleRO_, dienesR_, dienesCO_, diketo_, OHdiketo_, OHoleRketo_}; // JIAXIN
+enum species { fuel_, R_, ROO_, QOOH_, OOQOOH_, OLE_, CO_, cEth_, RO_, KHP_, 
+	ROOH_, POOH2_, ROOH2_, oleOOH_, cEthOOH_, oleR_, oleCO_, cEthR_, cEthCO_, lEthRO_, 
+	alkRO_, special_, unidentified_, oleROO_, oleQOOH_, oleO2QOOH_, olePOOH2_, dienes_, olecEth_, olecEthR_, 
+	oleKHP_, dieneOOH_, ROH_, ROHOO_, QOHOOH_, oleROOH_, oleOH_, OHcEth_, O2QOHOOH_, OHoleOOH_, 
+	OHKHP_, POHOOH_, OHRO_, OHcEthOOH_, OROOHs_, COHCHO_, oleQO_, olecEthOOH_, OHketo_, OHoleketo_, 
+	oleROH_, dienesOH_, oleRO_, dienesR_, dienesCO_, diketo_, OHdiketo_, OHoleRketo_, CycOO_, OHcEthR_,
+    OHCOlinER_, COlinER_, Alkyn_, AlkynR_, AlkynOH_, AlkynCO_}; // JIAXIN
 #endif
 
 
@@ -56,9 +56,11 @@ class Molecola
 protected:
 	int struttura[SIZEMAX + 1][5 + 1];
 	int ole[SIZEMAX + 1][2];
+	int kyn[SIZEMAX + 1][2]; // JL250919 add alkynes.
 	int ete[SIZEMAX + 1][2];  // refers to cyclic ethers
+	int cycoo[SIZEMAX + 1][2];  // JL250822 refers to cycloperoxide.
 	int doppioO[SIZEMAX + 1]; // =O oxygen connected with a double bond
-	int numole, numete, numO;
+	int numole, numete, numO, numcycoo; // JL250822 add cycloperoxide.
 	int numkyn; // num of alkynes.
 
 	void init(void);                                    // usata da costr
@@ -94,8 +96,8 @@ public:
 	Molecola(void);
 	Molecola(int specialMoleculeID);
 	Molecola(std::string filePath);
-	Molecola(int size_, std::vector<int> structure, int numOle_, std::vector<int> oleBonds, int numEthe_,
-		std::vector<int> etheBonds, int numKeto_, std::vector<int> ketoPos);
+	Molecola(int size_, std::vector<int> structure, int numOle_, std::vector<int> oleBonds, int numKyn_, std::vector<int> kynBonds, int numEthe_,
+		std::vector<int> etheBonds, int numKeto_, std::vector<int> ketoPos, int numCycoo_, std::vector<int> cycooBonds);
 
 	//						operators
 	int operator==(Molecola);
@@ -109,14 +111,21 @@ public:
 
 	int isIsomer(Molecola* other);
 	int addole(int, int);	// add double bond between the two positions
+	int addkyn(int, int);   
 	int isole(int, int);	// true if there is a double bond between the 2 carbons in the position pos1 and pos2
 	int isole(int);			// true if the carbon in position int is involved in a double bond
+	int iskyn(int, int);	// true if there is a double bond between the 2 carbons in the position pos1 and pos2
+	int iskyn(int);			// true if the carbon in position int is involved in a double bond
 	int isAllylic(int position); // true if the carbon is an allylic carbon
+	int isAllylic(int pos1, int pos2); // true if the bond between pos1 and pos2 is allylic
 	int isole(void);		// true if there is a double bond in the molecule
 	int isCRad(void);		// true if molecule is a C* radical, false otherwise.
 	int addetero(int, int); // add cyclic ether
+	int addcycoo(int, int); // JL250822. add cyclo peroxy (cycloaddition product).
 	int isetero(int, int);	// check if there is a cyclic ether between these two positions
+	int iscycoo(int, int);
 	int isetero(int);       // check if this position is connected to a cyclic ether
+	int iscycoo(int);       // check if cycloperoxide
 	int isetero(void);      // check if the molecule contains any cyclic ethers
 	int addcheto(int);		// add a =O to this position
 	int addcheto1(int);		// JIAXIN
@@ -126,7 +135,11 @@ public:
 	int isKetene(int pos);		// returns:	0 if the atom is not part of a ketene
 								//			1 if the atom is the -C= of the ketene
 								//			2 if the atom is the =C=O of the ketene
-	bool isInEthRing(int pos);	// return true if the atom in position pos is part of a cyclyc ether ring
+
+	bool isOnRIsoRing(int pos, int pos1, int pos2); // tell if a pos on the isomerization pos12 or not.
+	bool isOnRO2IsoRing(int pos, int pos1, int pos2);
+	bool isInEthRing(int pos);	// return true if the atom in position pos is part of a cyclic ether ring
+	bool isInCycooRing(int pos);
 	int isRO();					// true if the molecule is an RO (has one C* radical and a =O group)
 	bool isAldehyde();			// true if the molecules is an aldehyde (no other functional group present)
 	bool isOleAldehyde();		// true if the molecules is an olefin and aldehyde (no other functional group present)
@@ -144,6 +157,12 @@ public:
 	int C_to_Crad(int pos);		// convert a C group (in position pos) to a C* group, return 1 if possible, return 0 if not possible
 	int Crad_to_C(int pos);		// convert a C* group (in position pos) to a C group, return 1 if possible, return 0 if not possible
 	int COHrad_to_C(int pos);
+
+	int COrad_to_COH(int pos);
+	int COH_to_COrad(int pos);
+
+	
+
 	int Crad_to_COOH(int pos);	// convert a C* group (in position pos) to a COOH group, return 1 if possible, return 0 if not possible
 	int Crad_to_ROO(int pos);	// convert a C* group (in position pos) to a COO* group, return 1 if possible, return 0 if not possible
 	int Crad_to_ROOH(int pos);	// Jiaxin here. This is for HO2 addition on allyRs.
@@ -154,6 +173,7 @@ public:
 	int COOH_to_COOrad(int pos);	// convert a COOH group (in position pos) to a COOrad group, return 1 if possible, return 0 if not possible
 	int COOrad_to_Crad(int pos);	// convert a COOrad group (in position pos) to a C* group, return 1 if possible, return 0 if not possible
 	int COrad_to_CO(int pos);	// convert a COrad group (in position pos) to a CO group, return 1 if possible, return 0 if not possible
+	int CO_to_COrad(int pos);	// 
 	int oleR_to_oleROO(int pos); // JIAXIN. convert a ole_R to ole_ROO
 	int oleROO_to_oleQOOH(int pos); // JIAXIN. convert a ole_ROO to ole_QOOH
 	int Crad_to_keto(int pos);  // convert a C* group (in position pos) to a C=O group, return 1 if possible, return 0 if not possible
@@ -167,6 +187,7 @@ public:
 	int ole_to_QO(int pos1, int pos2);   // Jiaxin this is for O addition to olefins.
 
 	int addch3(int pos);  // add a ch3 on Rs.
+	int allRrecom(int pos);
 
 	int removeAtom(int pos);	// remove the atom in position pos, return 1 if possible, return 0 if not possible
 	bool isGroup(int pos);		// return true if the atom in pos is involved in any kind of group
@@ -184,8 +205,11 @@ public:
 	int numberOfH();				// number of hydrogens in the molecule 
 	int numberOfO();				// number of oxygens in the molecule
 	int numDoubleBonds(int pos);	// return the number of double bonds the atom is involved into
+	int numTripleBonds(int pos);    // return the number of triple bonds the atom is involved into
 	int size(void);					// numero dei gruppi
+	int size1(void);					// numero dei gruppi
 	int numberOle();				// return the number of double bond present in the molecule
+	int numKyn();
 	int numberEthero();				// return the number of ethero present in the molecule
 	int numLinEther();				// return the number of linear ether in the molecule
 	int numKeto();					// return the number of cheto groups in the molecule
@@ -195,6 +219,7 @@ public:
 	int numCORad();					// return the number of CO* present in the molecule
 	int numCOOH();					// return the number of COOH present in the molecule
 	int numCOH();       // JIAXIN return the number of C-OH in the molecule.
+	int numCycoo();       // JL250822 return the number of cycOO in the molecule.
 	bool isLinear();				// return true if the molecule is linear
 
 	int posCGroup(int group);		// return the position of the specified carbon group (C*, COO* and COOH), return 0 if the group is not present in the moelcule 
@@ -203,11 +228,14 @@ public:
 	int posCOrad();					// return the position of the CO* radical, return 0 if no radical is present
 	int posCOOH();					// return the position of the COOH group, return 0 if no COOH group is present
 	int posOle();					// return the position of the first carbon involved in the double bond, return 0 if no double bond is present
+	int posKyn();
+	std::vector<int> posKyn(int num);
 	int posOles(); // pos in dienes
 	std::vector<int> posOle(int num);	// return the position of the two carbons involved in the num-th double bond
 	int posKeto();					// return the position of =O, return 0 if no =O is present
 	int posKeto1();  //position of the second C=O
 	std::vector<int> posEthero();	// return the two positions of the ether, return [0,0] if no ether is present
+	std::vector<int> posCycoo(); // return the two positions of cycloperoxide.
 	int posCOH(); // return the position of -OH group;
 	std::vector<int> posOOHinPOOH2();	// return the two positions of the OOHs in a P(OOH) molecule, return [0,0] if molecule is not a P(OOH)2
 	std::vector<int> posOOHinROOH2();	// return the two positions of the OOHs in a R(OOH) molecule, return [0,0] if molecule is not a R(OOH)2

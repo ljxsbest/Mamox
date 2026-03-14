@@ -1,4 +1,4 @@
-
+﻿
 #include "chemkinOut.h"
 
 ChemkinOut::ChemkinOut(CKMechReader* baseMechanism)
@@ -70,10 +70,18 @@ std::string ChemkinOut::nameCOBranch(Molecola branch)
 
 std::string ChemkinOut::molToName(Molecola mol)
 {
+	//if (mol.size() == 2 && mol.numKyn() == 1)
+	//{
+	//	if (mol.inchiName() == "InChI=1S/C2H2O/c1-2-3/h1,3H")
+	//	{
+	//		std::cout << mol.inchiName() << std::endl;
+	//	}
+	//}
+		
 
 	std::string name;
 	species type = mol.kindOfSPecies();
-	//std::cout << "1" << std::endl;
+	//std::cout << type << std::endl;
 	if (type == unidentified_)
 	{
 		std::cerr << "Error in naming the molecule " << mol << ", it doesn't match any expected molecule type." << std::endl;
@@ -86,6 +94,7 @@ std::string ChemkinOut::molToName(Molecola mol)
 		std::cerr << "specMol = " << mol.isSpecialMolecule()<< std::endl;
 		std::cerr << "numLinEth = " << mol.numLinEther()<< std::endl;
 		std::cerr << "numCOR = " << mol.numCORad()<< std::endl;
+		std::cerr << "numCycOO = " << mol.numCycoo() << std::endl; // JL250825.
 		mol.printStruttura();
 		mol.printDoppioO();
 		exit(0);
@@ -170,7 +179,6 @@ std::string ChemkinOut::molToName(Molecola mol)
 			int numMe = mePos.size();
 			int numEt = etPos.size();
 
-
 			name.append(alkaneStructurePrefix(&mol));
 
 			name.append("C");
@@ -197,6 +205,7 @@ std::string ChemkinOut::molToName(Molecola mol)
 			case oleOH_:
 			{
 				std::vector<int> posOle = mol.posOle(1);
+				//int posOle1 = mol.posOle();
 				int pos1 = map[posOle[0] - 1];
 				int pos2 = map[posOle[1] - 1];
 				int pos = 0;
@@ -215,10 +224,72 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append(std::to_string(map[mol.posCOH() - 1]));
 				name.append("-");
 				name.append(std::to_string(pos));
-				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
-				//	name.append("a");
+				// if both posOles are on the main chain, continue;
+				// else, if one is on the main chain and the other on a branch, add "B".
+				std::vector<int> Main = mol.mainChain();
+				//for (int i = 0; i < Main.size(); i++) {
+				//	std::cout << Main[i] << " ";
+				//}
+				//std::cout << "pos1: " << pos1 << std::endl;
+				//std::cout << "pos2: " << pos2 << std::endl;
+				if ((std::find(Main.begin(), Main.end(), posOle[0]) != Main.end())
+					&& (std::find(Main.begin(), Main.end(), posOle[1]) != Main.end()))
+				{
+					name.append("");
+				}
+				else
+				{
+					name.append("B");
+				}
+
+				//std::cout << "name: " << name << std::endl;
 				break;
 			}
+
+			case AlkynOH_:
+			{
+				std::vector<int> poskyns = mol.posKyn(1);
+				//int posOle1 = mol.posOle();
+				int pos1 = map[poskyns[0] - 1];
+				int pos2 = map[poskyns[1] - 1];
+				int pos = 0;
+				if (pos1 <= mainChain.size() && pos2 <= mainChain.size())
+					pos = std::min(pos1, pos2);
+				else if (pos1 <= mainChain.size() && pos2 > mainChain.size())
+					pos = pos2;
+				else if (pos1 > mainChain.size() && pos2 <= mainChain.size())
+					pos = pos1;
+				else if (pos1 > mainChain.size() && pos2 > mainChain.size())
+					pos = std::max(pos1, pos2);
+
+				name.append("H");
+				name.append(std::to_string(mol.numberOfH() - 1));
+				name.append("OH");
+				name.append(std::to_string(map[mol.posCOH() - 1]));
+				name.append("-");
+				name.append(std::to_string(pos));
+				// if both posOles are on the main chain, continue;
+				// else, if one is on the main chain and the other on a branch, add "B".
+				std::vector<int> Main = mol.mainChain();
+				//for (int i = 0; i < Main.size(); i++) {
+				//	std::cout << Main[i] << " ";
+				//}
+				//std::cout << "pos1: " << pos1 << std::endl;
+				//std::cout << "pos2: " << pos2 << std::endl;
+				if ((std::find(Main.begin(), Main.end(), poskyns[0]) != Main.end())
+					&& (std::find(Main.begin(), Main.end(), poskyns[1]) != Main.end()))
+				{
+					name.append("");
+				}
+				else
+				{
+					name.append("B");
+				}
+
+				//std::cout << "name: " << name << std::endl;
+				break;
+			}
+
 			case QOOH_:	// molecule is QOOH
 			{
 				int posCOOH = map[mol.posCOOH() - 1];
@@ -286,7 +357,7 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append(std::to_string(pos));
 				break;
 			}
-
+			
 			case CO_:	// molecule is CO
 			{
 				if (mol.isAldehyde())
@@ -381,12 +452,51 @@ std::string ChemkinOut::molToName(Molecola mol)
 				//std::cout << std::setw(20) << mol << std::setw(5) << pos[0] << std::setw(5) << pos[1] << "  ->  " << std::setw(5) << map[pos[0]-1] << std::setw(5) << map[pos[1]-1] << "    " << name << std::endl;
 				break;
 			}
+
+			case CycOO_:	// cycloperoxide.
+			{
+				name.append("H");
+				name.append(std::to_string(mol.numberOfH()));
+
+				int posr = map[mol.posCrad()] - 1;
+				name.append(std::to_string(posr));
+
+				if (mol.isInCycooRing(mol.posCrad())) name.append("Y");
+
+
+				name.append("OO");
+				std::vector<int> pos = mol.posCycoo();
+
+
+				int pos1 = std::min(map[pos[0] - 1], map[pos[1] - 1]);
+				int pos2 = std::max(map[pos[0] - 1], map[pos[1] - 1]);
+				name.append(std::to_string(pos1));
+				name.append("-");
+				name.append(std::to_string(pos2));
+
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH());
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+
+				//std::cout << std::setw(20) << mol << std::setw(5) << pos[0] << std::setw(5) << pos[1] << "  ->  " << std::setw(5) << map[pos[0]-1] << std::setw(5) << map[pos[1]-1] << "    " << name << std::endl;
+				break;
+			}
+
 			case OHcEth_:	// molecule is an ether
 			{
 				name.append("H");
 				name.append(std::to_string(mol.numberOfH()-1));
 				name.append("OH");
 				name.append(std::to_string(map[mol.posCOH() - 1]));
+
+				if (mol.isInEthRing(mol.posCOH())) name.append("Y");
+
 
 				name.append("O");
 				std::vector<int> pos = mol.posEthero();
@@ -396,6 +506,18 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append("-");
 				name.append(std::to_string(pos2));
 				//std::cout << std::setw(20) << mol << std::setw(5) << pos[0] << std::setw(5) << pos[1] << "  ->  " << std::setw(5) << map[pos[0]-1] << std::setw(5) << map[pos[1]-1] << "    " << name << std::endl;
+				
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 1);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+				
+				
 				break;
 			}
 
@@ -718,6 +840,17 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append("-");
 				name.append(std::to_string(posCOOH));
 				name.append("OOH");
+
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 1);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+
 				break;
 			}
 
@@ -1039,18 +1172,33 @@ std::string ChemkinOut::molToName(Molecola mol)
 			{
 				int posCOOH = map[mol.posCOOH() - 1];
 				int posCrad = map[mol.posCrad() - 1];
+				int posCOH  = map[mol.posCOH() - 1];
 
 				name.append("H");
 				name.append(std::to_string(mol.numberOfH() - 2));
 				name.append("OH");
-				name.append(std::to_string(map[mol.posCOH() - 1]));
-
+				name.append(std::to_string(posCOH));
 				name.append("Q");
 				name.append(std::to_string(posCOOH));
 				name.append("-");
 				name.append(std::to_string(posCrad));
+
+				if (posCrad == posCOH)
+					if (mol.posCGroup(11))
+						name.append("A");
 				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
 				//	name.append("a");
+
+				if (name.size() > 16) // JL250918.
+				{ 
+					std::string del_part = "H"+ std::to_string(mol.numberOfH() - 2);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+
 				break;
 			}
 			case O2QOHOOH_:
@@ -1070,6 +1218,17 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append("O2");
 				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
 				//	name.append("a");
+
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 2);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos)
+					{
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
 				break;
 			}
 
@@ -1098,6 +1257,17 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append(std::to_string(posKeto));
 				name.append("-");
 				name.append(std::to_string(posCOOH));
+
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 2);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos)
+					{
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
 
 				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
 				//	name.append("a");
@@ -1158,7 +1328,8 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append("H");
 				name.append(std::to_string(mol.numberOfH() - 3));
 				name.append("OH");
-				name.append(std::to_string(map[mol.posCOH() - 1]));
+				int posCOH = map[mol.posCOH() - 1];
+				name.append(std::to_string(posCOH));
 				name.append("Q");
 				name.append(std::to_string(std::min(posOOH1, posOOH2)));
 				name.append(std::to_string(std::max(posOOH1, posOOH2)));
@@ -1167,7 +1338,20 @@ std::string ChemkinOut::molToName(Molecola mol)
 				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
 				//	name.append("a");
 				
+				if (posC == posCOH)  // JL250909
+					if (mol.posCGroup(11))
+						name.append("A");
 				
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 3);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+
 				break;
 
 
@@ -1232,83 +1416,99 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append(std::to_string(std::max(posO1, posO2)));
 				name.append("Q");
 				name.append(std::to_string(posCOOH));
+
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 2);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+
 				break;
 			}
 
 			case OHoleOOH_:
 			{
 				std::vector<int> posOle = mol.posOle(1);
+				//int posOle1 = mol.posOle(); // JL250908
+				//int posOle1 = map[mol.posOle() - 1];
+
 				int pos1 = map[posOle[0] - 1];
 				int pos2 = map[posOle[1] - 1];
-				int posOH = mol.posCOH();
-				int posCOOH = mol.posCOOH();
-				float halfSize = (mainChain.size()+1) / 2.0;
-				int posOLE = 0;
-				if (pos1 > pos2)	// just to be sure thatn pos1 is smaller than pos2
-				{
-					int temp = pos1;
-					pos1 = pos2;
-					pos2 = temp;
-				}
-				// check if there is priority on olefins numbering
-				if ((pos1 < halfSize && pos2 < halfSize) || pos2 == halfSize)
-				{
-					// keep same numbering
-					posOLE = pos1;
-				}
-				else if ((pos1 > halfSize && pos2 > halfSize) || pos1 == halfSize)
-				{
-					//flip numbering
-					posOLE = mainChain.size() - pos2 + 1;
-					posOH = mainChain.size() - posOH + 1;
-					posCOOH = mainChain.size() - posCOOH + 1;
+				//int posOH = mol.posCOH();
+				//int posCOOH = mol.posCOOH();
+				int pos = 0;
+				if (pos1 <= mainChain.size() && pos2 <= mainChain.size())
+					pos = std::min(pos1, pos2);
+				else if (pos1 <= mainChain.size() && pos2 > mainChain.size())
+					pos = pos2;
+				else if (pos1 > mainChain.size() && pos2 <= mainChain.size())
+					pos = pos1;
+				else if (pos1 > mainChain.size() && pos2 > mainChain.size())
+					pos = std::max(pos1, pos2);
 
-				}
-				else if (pos1 < halfSize && pos2 > halfSize)
-				{
-					//give priority to OH
-					if (posOH > halfSize)
-					{
-						// FLIP
-						posOLE = mainChain.size() - pos2 + 1;
-						posOH = mainChain.size() - posOH + 1;
-						posCOOH = mainChain.size() - posCOOH + 1;
-					}
-					else if (posOH < halfSize)
-					{
-						// keep same numbering
-						posOLE = pos1;
-					}
-				}
 
-				// std::vector<int> posOle = mol.posOle(1);
-				// int pos1 = map[posOle[0] - 1];
-				// int pos2 = map[posOle[1] - 1];
-				// int pos = 0;
-				// if (pos1 <= mainChain.size() && pos2 <= mainChain.size())
-				// 	pos = std::min(pos1, pos2);
-				// else if (pos1 <= mainChain.size() && pos2 > mainChain.size())
-				// 	pos = pos2;
-				// else if (pos1 > mainChain.size() && pos2 <= mainChain.size())
-				// 	pos = pos1;
-				// else if (pos1 > mainChain.size() && pos2 > mainChain.size())
-				// 	pos = std::max(pos1, pos2);
-				// 
-				// int posCOOH = map[mol.posCOOH() - 1];
-				// int posCOO = map[mol.posCOOrad() - 1];
-				// //int posCrad = map[mol.posCrad() - 1];
-				// 
+
+				int posOH = map[mol.posCOH() - 1];
+				int posCOOH = map[mol.posCOOH() - 1];
+
+
+				//float halfSize = (mainChain.size() + 1) / 2.0;
+				//int posOLE = 0;
+				// 保证 pos1 < pos2
+				//if (pos1 > pos2) std::swap(pos1, pos2);
+				// 检查是否需要翻转
+				//bool flip = false;
+				// 情况 1：双键都在前半，或刚好在中点 → 不翻转
+				//if ((pos1 < halfSize && pos2 < halfSize) || pos2 == halfSize) {
+				//	flip = false;
+				//}
+				// 情况 2：双键都在后半，或 pos1 在中点 → 翻转
+				//else if ((pos1 > halfSize && pos2 > halfSize) || pos1 == halfSize) {
+				//	flip = true;
+				//}
+				//// 情况 3：双键跨越中点 → 取 OH 所在的半边优先
+				//else if (pos1 < halfSize && pos2 > halfSize) {
+				//	if (posOH > halfSize) flip = true;
+				//	else flip = false;
+				//}
+				
+				// 如果需要翻转 → 所有位置都翻转
+				//if (flip) {
+				//	int n = mainChain.size();
+				//	pos1 = n - pos1 + 1;
+				//	pos2 = n - pos2 + 1;
+				//	posOH = n - posOH + 1;
+				//	posCOOH = n - posCOOH + 1;
+				//	if (pos1 > pos2) std::swap(pos1, pos2);
+				//}
+				//
+				//// 选取双键的起始位置
+				//posOLE = pos1;
+
+				// 拼接名字
 				name.append("H");
 				name.append(std::to_string(mol.numberOfH() - 2));
-				//name.append("D");
-				name.append(std::to_string(posOLE));
+				name.append(std::to_string(pos));
+
+				std::vector<int> Main = mol.mainChain();
+				if ((std::find(Main.begin(), Main.end(), posOle[0]) != Main.end())
+					&& (std::find(Main.begin(), Main.end(), posOle[1]) != Main.end()))
+				{
+					name.append("");
+				}
+				else
+				{
+					name.append("B");
+				}
+
 				name.append("OH");
-				//name.append(std::to_string(map[mol.posCOH() - 1]));
 				name.append(std::to_string(posOH));
 				name.append("Q");
 				name.append(std::to_string(posCOOH));
-				// //if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
-				// //	name.append("a");
 				break;
 			}
 			
@@ -1538,8 +1738,35 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append(std::to_string(posCOO));
 				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
 				//	name.append("a");
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 1);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
+
 				break;
 			}
+
+			case OROOHs_:
+			{
+				int posCOOH = map[mol.posCOOH() - 1];
+				//int posCrad = map[mol.posCrad() - 1];
+				name.append("H");
+				name.append(std::to_string(mol.numberOfH() - 1));
+				name.append("OOH");
+				name.append(std::to_string(posCOOH));
+				name.append("-");
+				name.append(std::to_string(map[mol.posCOrad() - 1]));
+				name.append("O");
+				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
+				//	name.append("a");
+				break;
+			}
+
 			case olecEth_:
 			{
 				std::vector<int> posOle = mol.posOle(1);
@@ -1612,6 +1839,15 @@ std::string ChemkinOut::molToName(Molecola mol)
 				name.append("O2");
 				//if ((mol.posCOrad() == posOle[0] || mol.posCOrad() == posOle[1]))
 				//	name.append("a");
+				if (name.size() > 16) // JL250918.
+				{
+					std::string del_part = "H" + std::to_string(mol.numberOfH() - 1);
+					size_t pos = name.find(del_part);
+					while (pos != std::string::npos) {
+						name.erase(pos, del_part.length()); //
+						pos = name.find(del_part); // 
+					}
+				}
 
 				break;
 			}
@@ -2051,8 +2287,8 @@ std::string ChemkinOut::molToName(Molecola mol)
 	if (name == "I2244C9CONEOC5H11")
 		name = "I2244C9CONEOC5";
 	//addSpeciesToList(type, name);
-
-	if (name.size() > 16)
+	if (name.size() > 16) // Maximum species name length in Chemkin.
+	//if (name.size() > 19) // JL250903
 	{
 		bool found = false;
 		for (int i = 0; i < longNamedSpecies.size(); i++)
@@ -2384,15 +2620,17 @@ std::string ChemkinOut::checkIfNamed(Molecola* mol)
 {
 	std::string name = "not found";
 	//std::cout << *mol << std::endl;
+	//if (mol->numKYN() == 1)
+	//	std::cout << "here" << std::endl;
 
 	std::string molInchi = mol->inchiName();
 	//if (molInchi == "InChI=1S/C2H4/c1-2/h1-2H2")
 	//	std::cout << "here" << std::endl;
-	if (mol->numKYN() == 1)
-	{
-		molInchi = "InChI=1S/C2H2/c1-2/h1-2H"; // C2H2
-		if (mol->numCOH() == 1)	molInchi = "InChI=1S/C2H2O/c1-2-3/h1,3H"; //HCCOH
-	}
+	//if (mol->numKYN() == 1)
+	//{
+	//	molInchi = "InChI=1S/C2H2/c1-2/h1-2H"; // C2H2
+	//	if (mol->numCOH() == 1)	molInchi = "InChI=1S/C2H2O/c1-2-3/h1,3H"; //HCCOH
+	//}
 		
 
 	

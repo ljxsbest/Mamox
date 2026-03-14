@@ -1,22 +1,43 @@
 ! Configuration file for Mamox 2
 
-FUELS = 
-1_c5h10, 
-2_c5h10,
-1_c6h12,
-2_c6h12,
-3_c6h12,
-1_c7h14,
-2_c7h14,
-3_c7h14;
-!FUELS = 2-m-c8;
+!FUELS = 
+!c5h10_1, c5h10_2, 2m1b, 2m2b, 3m1b,
+!c6h12_1, c6h12_2, c6h12_3, 2m1p, 2m2p, 3m1p, 23d1b, tme, 33d1b,
+!c7h14_1, c7h14_2, c7H14_3, 2m1h, 2m2h, 3m1h,
+!c8h16_1, c8h16_2, c8h16_3, c8h16_4, dib_1, dib_2, 
+!c9h18_1, c9h18_2, c9h18_3, c9h18_4,
+!c10h20_1, c10h20_2, c10h20_3, c10h20_4, c10h20_5;
+!isoprene;
 
+!FUELS = 
+!c5h10_1, c5h10_2, 2m1b, 2m2b, 3m1b,
+!c6h12_1, c6h12_2, c6h12_3, 23d1b, tme, 33d1b,
+!c7h14_1, c7h14_2, c7H14_3,
+!c8h16_1, c8h16_2, 
+!dib_1, dib_2
+!,c9h18_1,
+!c10h20_1, c10h20_5
+!,c11h22_1, c12h24_1
+!;
+!isoprene;
+
+FUELS = 
+c5h10_1, c5h10_2, 2m1b, 2m2b, 3m1b,
+c6h12_1, c6h12_2, c6h12_3, 23d1b, tme, 33d1b
+,c7h14_1, c7h14_2, c7H14_3,
+c8h16_1, 
+dib_1, dib_2
+,c9h18_1,
+c10h20_1, c10h20_5
+,c11h22_1, c12h24_1
+;
+!isoprene;
 
 MOL_FOLDER = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\molecules";
 
-BASE_MECH =   "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_06\kinetic.kin";
-BASE_THERMO = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_06\thermo.ter";
-BASE_NAMES =  "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_06\glossary.txt";
+BASE_MECH =   "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_37\kinetic.kin";
+BASE_THERMO = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_37\thermo.ter";
+BASE_NAMES =  "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\Mech25_37\glossary.txt";
 
 THERMO_GROUP_FILE = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\thermo_group_values\groups_contribution.csv";
 THERMO_HBI_FILE = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\thermo_group_values\radicals_corrections.csv";
@@ -35,4 +56,3 @@ TAU = 2.0; ![s]
 OUT_FOLDER = "C:\Users\22230357\source\repos\Mamox-2\Mamox 2 input example\outputBatchLumping";
 SIM_TYPE = BATCH;
 LUMP_WITH_CORE_MECH = TRUE;
-

@@ -1,0 +1,119 @@
+# REACTION,reaction name,,dep1,dep2,dep3,dep4,A,n,E,,Reference
+,,,,,,,,,,,
+2,h abstraction,,attacking radical,type of attacked carbon,double bond position,,,,,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_O2_P_normal,per H,,O2,P,normal,,7.00E+12,0,52800,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_O2_S_normal,,,O2,S,normal,,7.00E+12,0,50160,,"S.M. Sarathy, C.K. Westbrook, M. Mehl, W.J. Pitz, C. Togbe, P. Dagaut, H. Wang, M.A. Oehlschlaeger, U. Niemann, K. Seshadri, P.S. Veloo, C. Ji, F.N. Egolfopoulos, T. Lu, Comprehensive chemical kinetic modeling of the oxidation of 2-methylalkanes from C7 to C20, Combust. Flame 158 (2011) 2338-2357"
+2_O2_T_normal,,,O2,T,normal,,7.00E+12,0,48000,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_OH_P_normal,,,OH,P,normal,,4.57E+06,1.813,868,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-200"
+2_OH_S_normal,,,OH,S,normal,,3.53E+09,0.935,505,,"S.M. Sarathy, C.K. Westbrook, M. Mehl, W.J. Pitz, C. Togbe, P. Dagaut, H. Wang, M.A. Oehlschlaeger, U. Niemann, K. Seshadri, P.S. Veloo, C. Ji, F.N. Egolfopoulos, T. Lu, Comprehensive chemical kinetic modeling of the oxidation of 2-methylalkanes from C7 to C20, Combust. Flame 158 (2011) 2338-2357"
+2_OH_T_normal,,,OH,T,normal,,4.84E+06,1.84,-1000,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_H_P_normal,,,H,P,normal,,5.80E+04,2.69,6450,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_H_S_normal,,,H,S,normal,,6.50E+05,2.4,4471,,"S.M. Sarathy, C.K. Westbrook, M. Mehl, W.J. Pitz, C. Togbe, P. Dagaut, H. Wang, M.A. Oehlschlaeger, U. Niemann, K. Seshadri, P.S. Veloo, C. Ji, F.N. Egolfopoulos, T. Lu, Comprehensive chemical kinetic modeling of the oxidation of 2-methylalkanes from C7 to C20, Combust. Flame 158 (2011) 2338-2357"
+2_H_T_normal,,,H,T,normal,,6.02E+05,2.4,2583,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_O_P_normal,,,O,P,normal,,3.50E+05,2.424,4766,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_O_S_normal,,,O,S,normal,,2.98E+05,2.439,2846,,"S.M. Sarathy, C.K. Westbrook, M. Mehl, W.J. Pitz, C. Togbe, P. Dagaut, H. Wang, M.A. Oehlschlaeger, U. Niemann, K. Seshadri, P.S. Veloo, C. Ji, F.N. Egolfopoulos, T. Lu, Comprehensive chemical kinetic modeling of the oxidation of 2-methylalkanes from C7 to C20, Combust. Flame 158 (2011) 2338-2357"
+2_O_T_normal,,,O,T,normal,,3.97E+05,2.401,1150,,"K. Zhang, C. Banyon, U. Burke, G. Kukkadapu, S.W. Wagnon, M. Mehl, H.J. Curran, C.K. Westbrook, W.J. Pitz, An experimental and kinetic modeling study of the oxidation of hexane isomers: Developing consistent reaction rate rules for alkanes, Combust. Flame 206 (2019) 123-137."
+2_HO2_P_normal,,,HO2,P,normal,,6.80E+00,3.59,17160,,"K. Zhang, C. Banyon, U. Burke, G. Kukkadapu, S.W. Wagnon, M. Mehl, H.J. Curran, C.K. Westbrook, W.J. Pitz, An experimental and kinetic modeling study of the oxidation of hexane isomers: Developing consistent reaction rate rules for alkanes, Combust. Flame 206 (2019) 123-137."
+2_HO2_S_normal,,,HO2,S,normal,,4.74E+01,3.37,13720,,"K. Zhang, C. Banyon, U. Burke, G. Kukkadapu, S.W. Wagnon, M. Mehl, H.J. Curran, C.K. Westbrook, W.J. Pitz, An experimental and kinetic modeling study of the oxidation of hexane isomers: Developing consistent reaction rate rules for alkanes, Combust. Flame 206 (2019) 123-137."
+2_HO2_T_normal,,,HO2,T,normal,,6.50E+02,3.01E+00,12090,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_CH3_P_normal,,,CH3,P,normal,,1.51E-01,3.65E+00,7154,,"C.K. Westbrook, W.J. Pitz, O. Herbinet, H.J. Curran, E.J. Silke, A comprehensive detailed chemical kinetic reaction mechanism for combustion of n-alkane hydrocarbons from n-octane to n-hexadecane, Combust. Flame 156 (2009) 181-199"
+2_CH3_S_normal,,,CH3,S,normal,,4.20E+04,2.13,7574,,"S.M. Sarathy, C.K. Westbrook, M. Mehl, W.J. Pitz, C. Togbe, P. Dagaut, H. Wang, M.A. Oehlschlaeger, U. Niemann, K. Seshadri, P.S. Veloo, C. Ji, F.N. Egolfopoulos, T. Lu, Comprehensive chemical kinetic modeling of the oxidation of 2-methylalkanes from C7 to C20, Combust. Flame 158 (2011) 2338-2357"
+2_CH3_T_normal,,,CH3,T,normal,,6.01E-10,6.36,893,,
+2_C2H5_P_normal,,,C2H5,P,normal,,3.10E+09,0,5850,,
+2_C2H5_S_normal,,,C2H5,S,normal,,3.10E+09,0,5850,,
+2_C2H5_T_normal,,,C2H5,T,normal,,3100000000,0,5850,,
+2_O2_P_all,,,O2,P,all,,7.00E+12,0,52800,,
+2_O2_S_all,,,O2,S,all,,7.00E+12,0,50160,,
+2_O2_T_all,,,O2,T,all,,7.00E+12,0,48000,,
+2_OH_P_all,,,OH,P,all,,4570000,1.813,868,,
+2_OH_S_all,,,OH,S,all,,3530000000,0.935,505,,
+2_OH_T_all,,,OH,T,all,,4840000,1.84,-1000,,
+2_H_P_all,,,H,P,all,,58000,2.69,6450,,
+2_H_S_all,,,H,S,all,,650000,2.4,4471,,
+2_H_T_all,,,H,T,all,,602000,2.4,2583,,
+2_O_P_all,,,O,P,all,,350000,2.424,4766,,
+2_O_S_all,,,O,S,all,,298000,2.439,2846,,
+2_O_T_all,,,O,T,all,,397000,2.401,1150,,
+2_HO2_P_all,,,HO2,P,all,,6.8,3.59,17160,,
+2_HO2_S_all,,,HO2,S,all,,47.4,3.37,13720,,
+2_HO2_T_all,,,HO2,T,all,,650,3.01,12090,,
+2_CH3_P_all,,,CH3,P,all,,0.151,3.65,7154,,
+2_CH3_S_all,,,CH3,S,all,,42000,2.13,7574,,
+2_CH3_T_all,,,CH3,T,all,,6.01E-10,6.36,893,,
+2_C2H5_P_all,,,C2H5,P,all,,3100000000,0,5850,,
+2_C2H5_S_all,,,C2H5,S,all,,3100000000,0,5850,,
+2_C2H5_T_all,,,C2H5,T,all,,3100000000,0,5850,,
+2_O2_P_vyn,,,O2,P,vyn,,7.00E+12,0,52800,,
+2_O2_S_vyn,,,O2,S,vyn,,7.00E+12,0,50160,,
+2_O2_T_vyn,,,O2,T,vyn,,7.00E+12,0,48000,,
+2_OH_P_vyn,,,OH,P,vyn,,4570000,1.813,868,,
+2_OH_S_vyn,,,OH,S,vyn,,3530000000,0.935,505,,
+2_OH_T_vyn,,,OH,T,vyn,,4840000,1.84,-1000,,
+2_H_P_vyn,,,H,P,vyn,,58000,2.69,6450,,
+2_H_S_vyn,,,H,S,vyn,,650000,2.4,4471,,
+2_H_T_vyn,,,H,T,vyn,,602000,2.4,2583,,
+2_O_P_vyn,,,O,P,vyn,,350000,2.424,4766,,
+2_O_S_vyn,,,O,S,vyn,,298000,2.439,2846,,
+2_O_T_vyn,,,O,T,vyn,,397000,2.401,1150,,
+2_HO2_P_vyn,,,HO2,P,vyn,,6.8,3.59,17160,,
+2_HO2_S_vyn,,,HO2,S,vyn,,47.4,3.37,13720,,
+2_HO2_T_vyn,,,HO2,T,vyn,,650,3.01,12090,,
+2_CH3_P_vyn,,,CH3,P,vyn,,0.151,3.65,7154,,
+2_CH3_S_vyn,,,CH3,S,vyn,,42000,2.13,7574,,
+2_CH3_T_vyn,,,CH3,T,vyn,,6.01E-10,6.36,893,,
+2_C2H5_P_vyn,,,C2H5,P,vyn,,3100000000,0,5850,,
+2_C2H5_S_vyn,,,C2H5,S,vyn,,3100000000,0,5850,,
+2_C2H5_T_vyn,,,C2H5,T,vyn,,3100000000,0,5850,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+2,H-atom abstraction,,attacking radical,type of attacked carbon,double bond position,correction,,,,,
+2_H_P,per H,,H,P,none,,51940,2.77,6214,,RR 2_H_P_none
+2_H_S,,,H,S,none,,1205000,2.24,4713,,RR 2_H_S_none
+2_H_SA,,,H,S,ally,,106000,2.59,2654,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_H_PA,,,H,P,ally,,1320,3.08,3203,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_H_SV,,,H,S,viny,,241000,2.55,9611,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_H_PV,,,H,P,viny,,272000,2.54,12819,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_OH_P1,,,OH,P,none,_1,3562000,1.82,849.3,,RR 2_OH_P__1
+2_OH_S01,,,OH,S,none,_01,2711000000,0.95,493.8,,RR 2_OH_S__01
+2_OH_S11,,,OH,S,none,_11,2323000,1.82,-1010,,RR 2_OH_S__11
+2_OH_SA,,,OH,S,ally,,620000,1.84,-790,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_PA,,,OH,P,ally,,2500,2.66,-665,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_SV,,,OH,S,viny,,1620,2.58,803,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_PV,,,OH,P,viny,,1230,3.01,1772,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_S1A,,,OH,S,none,_1A (connects to an allylic),7650,2.69,-1754,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_O_P,,,O,P,none,,3493000,2.15,5347,,RR 2_O_P_none
+2_O_S,,,O,S,none,,7500,2.92,1927,,RR 2_O_S_none
+2_O_SA,,,O,S,ally,,0.003235,4.54,-2469.8,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O_PA,,,O,P,ally,,0.003227,4.54,-2469.8,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O_SV,,,O,S,viny,,60300000000,0.7,7632,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O_PV,,,O,P,viny,,60000000000,0.7,8959.1,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O2_P,,,O2,P,none,,3.037E+13,-0.15,53130,,RR 2_O2_P_none
+2_O2_S,,,O2,S,none,,3.212E+12,0.15,49900,,RR 2_O2_S_none
+2_O2_SA,,,O2,S,ally,,15.15,3.45,34600,,"Zhou C W, et al., JPCA, 2017, 121(9): 1890-1899."
+2_O2_PA,,,O2,P,ally,,4.3,3.52,36200,,"Zhou C W, et al., JPCA, 2017, 121(9): 1890-1899."
+2_O2_SV,,,O2,S,viny,,1E+13,0,58770,,Analogy with C3H6+O2<=>C3H5-T+HO2 ESTIMATE C3 NUIG S. M. BURKE 
+2_O2_PV,,,O2,P,viny,,1E+13,0,62270,,Analogy with C3H6+O2<=>C3H5-T+HO2 ESTIMATE C3 NUIG S. M. BURKE 
+2_HO2_P,,,HO2,P,none,,68.23,3.37,17580,,RR 2_HO2_P_none
+2_HO2_S,,,HO2,S,none,,8.71,3.6,13470,,RR 2_HO2_S_none
+2_HO2_SA,,,HO2,S,ally,,0.000684,4.48,6720,,"Cao X M, et al., Comput. Theor. Chem., 2020, 1179: 112795. "
+2_HO2_PA,,,HO2,P,ally,,0.0000309,4.85,7680,,"Cao X M, et al., Comput. Theor. Chem., 2020, 1179: 112795. "
+2_HO2_SV,,,HO2,S,viny,,15600,2.82,24427.9,,Analogy with C3H6+HO2 from NUIG CALCULATION J.M.
+2_HO2_PV,,,HO2,P,viny,,478.5,3.06,20798.6,,Analogy with C3H6+HO2 from NUIG CALCULATION J.M.
+2_CH3_P,,,CH3,P,none,,0.6309,3.56,7358,,RR 2_CH3_P_none
+2_CH3_S,,,CH3,S,none,,52600,2.07,7635,,RR 2_CH3_S_none
+2_CH3_SA,,,CH3,S,ally,,121,3.08,5727,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB3"
+2_CH3_PA,,,CH3,P,ally,,26.3,3.24,7029,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB3"
+2_CH3_SV,,,CH3,S,viny,,326,2.93,11351,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB4"
+2_CH3_PV,,,CH3,P,viny,,246,2.93,13793,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB5"
+2_CH3O_P,,,CH3O,P,none,,50000000000,0,7000,,no RR
+2_CH3O_S,,,CH3O,S,none,,55000000000,0,5000,,no RR
+2_CH3O_SA,,,CH3O,S,ally,,20,2.9,8609,,Analogy with C6 instead of C5 for appropriate BR against PA. 
+2_CH3O_PA,,,CH3O,P,ally,,3,2.95,11990,,Analogy with C6 instead of C5 for appropriate BR against PA. 
+2_CH3O2_P,,,CH3O2,P,none,,0.784,4.06,18190,,RR
+2_CH3O2_S,,,CH3O2,S,none,,0.6475,3.88,15130,,RR
+2_CH3O2_SA,,,CH3O2,S,ally,,1675000000,1.02,20632,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_CH3O2_PA,,,CH3O2,P,ally,,285000,1.73,20000,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_CH3O2_SV,,,CH3O2,S,viny,,94000000,1.41,27700,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_CH3O2_PV,,,CH3O2,P,viny,,94000000,1.41,28200,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "

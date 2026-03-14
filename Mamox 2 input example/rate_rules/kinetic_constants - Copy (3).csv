@@ -1,0 +1,441 @@
+# REACTION,reaction name,,dep1,dep2,dep3,dep4,dep5,dep6,A,n,E,,Reference
+,,,,,,,,,,,,,
+1,initiation reaction,,type radical 1,type radical 2,radical type,,,,,,,,
+1_allyl_me,,,me,P,ally,,,,1.00E+16,0,71333,,"Tsang W. Int J Chem Kinet, 1978, 10(6): 599-617. "
+1_ally_et,,,et,P,ally,,,,1.00E+16,0,71333,,"Tsang W. Int J Chem Kinet, 1978, 10(6): 599-617. "
+1_allyl_P,,,P,P,ally,,,,1.00E+16,0,71333,,"Tsang W. Int J Chem Kinet, 1978, 10(6): 599-617. "
+1_P_me,, ,me,P,none,,,,1.00E+00,0,0,,"H. J. Curran, P. Gaffuri, W. J. Pitz, and C. K. Westbrook, A comprehensive modeling study of n-heptane oxidation, Combust. Flame 114 (1998) 149-177."
+1_P_et,,,P,et,none,,,,1.00E+00,0,0,,"H. J. Curran, P. Gaffuri, W. J. Pitz, and C. K. Westbrook, A comprehensive modeling study of n-heptane oxidation, Combust. Flame 114 (1998) 149-177."
+1_P_P,,,P,P,none,,,,1.00E+00,0,0,,"H. J. Curran, P. Gaffuri, W. J. Pitz, and C. K. Westbrook, A comprehensive modeling study of n-heptane oxidation, Combust. Flame 114 (1998) 149-177."
+,,,,,,,,,,,,,
+2,H-atom abstraction,,attacking radical,type of attacked carbon,double bond position,correction,,,,,,,
+2_H_P,per H,,H,P,none,,,,51940,2.77,6214,,RR 2_H_P_none
+2_H_S,,,H,S,none,,,,1205000,2.24,4713,,RR 2_H_S_none
+2_H_SA,,,H,S,ally,,,,106000,2.59,2654,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_H_PA,,,H,P,ally,,,,1320,3.08,3203,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_H_SV,,,H,S,viny,,,,241000,2.55,9611,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_H_PV,,,H,P,viny,,,,272000,2.54,12819,,"Power J, et al., JPCA, 2021, 125(23): 5124-5145."
+2_OH_P1,,,OH,P,none,_1,,,3562000,1.82,849.3,,RR 2_OH_P__1
+2_OH_S01,,,OH,S,none,_01,,,2711000000,0.95,493.8,,RR 2_OH_S__01
+2_OH_S11,,,OH,S,none,_11,,,2323000,1.82,-1010,,RR 2_OH_S__11
+2_OH_SA,,,OH,S,ally,,,,620000,1.84,-790,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_PA,,,OH,P,ally,,,,2500,2.66,-665,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_SV,,,OH,S,viny,,,,1620,2.58,803,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_PV,,,OH,P,viny,,,,1230,3.01,1772,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_OH_S1A,,,OH,S,none,_1A (connects to an allylic),,,7650,2.69,-1754,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302."
+2_O_P,,,O,P,none,,,,3493000,2.15,5347,,RR 2_O_P_none
+2_O_S,,,O,S,none,,,,7500,2.92,1927,,RR 2_O_S_none
+2_O_SA,,,O,S,ally,,,,0.003235,4.54,-2469.8,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O_PA,,,O,P,ally,,,,0.003227,4.54,-2469.8,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O_SV,,,O,S,viny,,,,60300000000,0.7,7632,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O_PV,,,O,P,viny,,,,60000000000,0.7,8959.1,,"Bedjanian Y, Morin J, JPCA, 2017, 121(8): 1553-1562."
+2_O2_P,,,O2,P,none,,,,3.04E+13,-0.15,53130,,RR 2_O2_P_none
+2_O2_S,,,O2,S,none,,,,3.21E+12,0.15,49900,,RR 2_O2_S_none
+2_O2_SA,,,O2,S,ally,,,,15.15,3.45,34600,,"Zhou C W, et al., JPCA, 2017, 121(9): 1890-1899."
+2_O2_PA,,,O2,P,ally,,,,4.3,3.52,36200,,"Zhou C W, et al., JPCA, 2017, 121(9): 1890-1899."
+2_O2_SV,,,O2,S,viny,,,,1.00E+13,0,58770,,Analogy with C3H6+O2<=>C3H5-T+HO2 ESTIMATE C3 NUIG S. M. BURKE 
+2_O2_PV,,,O2,P,viny,,,,1.00E+13,0,62270,,Analogy with C3H6+O2<=>C3H5-T+HO2 ESTIMATE C3 NUIG S. M. BURKE 
+2_HO2_P,,,HO2,P,none,,,,68.23,3.37,17580,,RR 2_HO2_P_none
+2_HO2_S,,,HO2,S,none,,,,8.71,3.6,13470,,RR 2_HO2_S_none
+2_HO2_SA,,,HO2,S,ally,,,,0.000684,4.48,6720,,"Cao X M, et al., Comput. Theor. Chem., 2020, 1179: 112795. "
+2_HO2_PA,,,HO2,P,ally,,,,0.0000309,4.85,7680,,"Cao X M, et al., Comput. Theor. Chem., 2020, 1179: 112795. "
+2_HO2_SV,,,HO2,S,viny,,,,15600,2.82,24427.9,,Analogy with C3H6+HO2 from NUIG CALCULATION J.M.
+2_HO2_PV,,,HO2,P,viny,,,,478.5,3.06,20798.6,,Analogy with C3H6+HO2 from NUIG CALCULATION J.M.
+2_CH3_P,,,CH3,P,none,,,,0.6309,3.56,7358,,RR 2_CH3_P_none
+2_CH3_S,,,CH3,S,none,,,,52600,2.07,7635,,RR 2_CH3_S_none
+2_CH3_SA,,,CH3,S,ally,,,,121,3.08,5727,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB3"
+2_CH3_PA,,,CH3,P,ally,,,,26.3,3.24,7029,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB3"
+2_CH3_SV,,,CH3,S,viny,,,,326,2.93,11351,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB4"
+2_CH3_PV,,,CH3,P,viny,,,,246,2.93,13793,,"Wang K, Combust Flame, 2015, 162(12): 4456-4470. CBS-QB5"
+2_CH3O_P,,,CH3O,P,none,,,,50000000000,0,7000,,no RR
+2_CH3O_S,,,CH3O,S,none,,,,55000000000,0,5000,,no RR
+2_CH3O_SA,,,CH3O,S,ally,,,,20,2.9,8609,,Analogy with C6 instead of C5 for appropriate BR against PA. 
+2_CH3O_PA,,,CH3O,P,ally,,,,3,2.95,11990,,Analogy with C6 instead of C5 for appropriate BR against PA. 
+2_CH3O_PV,,,CH3O,P,viny,,,,5000000000,0,7000,,RR
+2_CH3O_SV,,,CH3O,S,viny,,,,5500000000,0,5000,,RR
+2_CH3O2_P,,,CH3O2,P,none,,,,0.784,4.06,18190,,RR
+2_CH3O2_S,,,CH3O2,S,none,,,,0.6475,3.88,15130,,RR
+2_CH3O2_SA,,,CH3O2,S,ally,,,,1675000000,1.02,20632,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_CH3O2_PA,,,CH3O2,P,ally,,,,285000,1.73,20000,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_CH3O2_SV,,,CH3O2,S,viny,,,,94000000,1.41,27700,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_CH3O2_PV,,,CH3O2,P,viny,,,,94000000,1.41,28200,,"Xu S, et al., ACS omega, 2022, 7(10): 8675-8685. "
+2_C2H5_P,,,C2H5,P,none,,,,4.95E+09,0.12,5.57E+03,,RR
+2_C2H5_S,,,C2H5,S,none,,,,4.91E+08,0.42,5.11E+03,,RR
+2_C2H5_SA,,,C2H5,S,ally,,,,1.23E+09,0.42,5.11E+03,,RR*2.5
+2_C2H5_PA,,,C2H5,P,ally,,,,1.23E+09,0.42,5.11E+03,,RR*2.5
+2_C2H5_PV,,,C2H5,P,viny,,,,4.95E+08,0.42,5.11E+03,,RR*0.1
+2_C2H5_SV,,,C2H5,S,viny,,,,4.91E+07,0.42,5.11E+03,,RR*0.1
+,,,,,,,,,,,,,
+3,R_Isomerization,,Type of radical,type of hydrogen,type of ring,H=,,,,,,,
+3_P_P_5,alkane,,P,P,5,none,,,9.45E+11,0,20610,,3_P_P_5
+3_P_P_6,alkane,,P,P,6,none,,,1.50E+11,0,14500,,3_P_P_6
+3_P_P_7,alkane,,P,P,7,none,,,6.00E+10,0,19500,,3_P_P_7
+3_P_S_5,alkane,,P,S,5,none,,,5.60E+10,0.29,17810,,3_P_S_5
+3_P_S_6,alkane,,P,S,6,none,,,5.51E+10,0.1,11940,,3_P_S_6
+3_P_S_7,alkane,,P,S,7,none,,,6.00E+10,0,17200,,3_P_S_7
+3_S_P_5,alkane,,S,P,5,none,,,8.63E+11,0.07,21460,,3_S_P_5
+3_S_P_6,alkane,,S,P,6,none,,,9.89E+11,-0.28,15990,,3_S_P_6
+3_S_P_7,alkane,,S,P,7,none,,,6.00E+10,0,20510,,3_S_P_7
+3_S_S_5,alkane,,S,S,5,none,,,9.45E+11,0,19300,,3_S_S_5
+3_S_S_6,alkane,,S,S,6,none,,,1.50E+11,0,13200,,3_S_S_6
+3_S_S_7,alkane,,S,S,7,none,,,6.00E+10,0,18200,,3_S_S_7
+3_P_SA_5,3_P_S_5*X,,P,S,5,ally,,,1.40E+11,0.29,17810,,3_P_S_5*2.5 (X=HAA by H at SA/S)
+3_P_SA_6,3_P_S_6*X,,P,S,6,ally,,,1.38E+11,0.1,11940,,3_P_S_6*2.5
+3_P_SA_7,3_P_S_7*X,,P,S,7,ally,,,1.50E+11,0,17200,,3_P_S_7*2.5
+3_S_SA_5,3_S_S_5*X,,S,S,5,ally,,,2.36E+12,0,19300,,3_S_S_5*2.5
+3_S_SA_6,3_S_S_6*X,,S,S,6,ally,,,3.75E+11,0,13200,,3_S_S_6*2.5
+3_S_SA_7,3_S_S_7*X,,S,S,7,ally,,,1.50E+11,0,18200,,3_S_S_7*2.5
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+4,R beta decomposition,,type decomposing radical,type expelled radical,breaking bond type,,,,,,,,
+4_P_me,,,P,me,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_et,,,P,et,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_P,,,P,P,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_S,,,P,S,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_me,,,S,me,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_et,,,S,et,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_P,,,S,P,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_S,,,S,S,none,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_me_ally,,,P,me,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_et_ally,,,P,et,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_P_ally,,,P,P,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_P_S_ally,,,P,S,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_me_ally,,,S,me,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_et_ally,,,S,et,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_P_ally,,,S,P,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+4_S_S_ally,,,S,S,ally,,,,1.00E+00,0,0,,"H.J. Curran, Rate Constant Estimation for C1 to C4 Alkyl and Alkoxyl Radical Decomposition, Int. J. Chem. Kinet. 38 (2006) 250–275."
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+6,O2_ADD_RAEN,,Type of radical site,double bond position,,,,,,,,,
+6_PA,,,P,ally,,,,,1.83E+02,2.18,-2200,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. 5 times slower than as (ratio of s alkane / p alkane)"
+6_SA,,,S,ally,,,,,9.14E+02,2.18,-2200,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+6_P,,,P,none,,,,,1.63E+14,-0.62,-1,,RR 6_P
+6_S,,,S,none,,,,,6.69E+13,-0.3,-198.7,,RR 6_S
+,,,,,,,,,,,,,
+7,RAENO2_ISO,,C-OO type,C-H type,ring type,OO_=,H_=,,,,,,
+7_S_S_5,,,S,S,5,none,none,,1.72E-14,7.62,18130,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_S_S_6,,,S,S,6,none,none,,4.44E+10,0.15,19140,,7_S_S_6
+7_S_S_7,,,S,S,7,none,none,,2.11E+11,-0.21,19470,,7_S_S_7
+7_S_S_8,,,S,S,8,none,none,,1.25E+09,0.31,20120,,7_S_S_8
+7_S_P_5,,,S,P,5,none,none,,1.63E+06,1.65,31560,,7_S_P_5
+7_S_P_6,,,S,P,6,none,none,,2.16E+02,2.39,18100,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+7_S_P_7,,,S,P,7,none,none,,9.20E-03,3.496,13400,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+7_S_P_8,,,S,P,8,none,none,,8.63E+09,0.15,23640,,7_S_P_8
+7_P_S_5,,,P,S,5,none,none,,5.75E-15,7.69,17770,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_P_S_6,,,P,S,6,none,none,,3.74E+01,2.97,10580,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_P_S_7,,,P,S,7,none,none,,2.48E+01,2.91,15930,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_P_S_8,,,P,S,8,none,none,,3.80E+08,0.21,19280,,7_P_S_8
+7_P_P_8,,,P,P,8,none,none,,8.62E+05,1.17,20110,,7_P_P_8
+7_P_SA_5,,,P,S,5,none,ally,,4.66E-12,6.54,14120,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_P_SA_6,,,P,S,6,none,ally,,1.28E-06,5.04,9710,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_P_SA_7,,,P,S,7,none,ally,,1.58E-08,9.67,54600,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_P_SA_8,,,P,S,8,none,ally,,3.80E+08,0.21,19280,,7_P_S_8
+7_S_SA_5,,,S,S,5,none,ally,,4.63E-12,6.63,14630,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_S_SA_6,,,S,S,6,none,ally,,1.30E-05,4.83,9710,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+7_S_SA_7,,,S,S,7,none,ally,,2.11E+11,-0.21,19470,,7_S_S_7
+7_S_SA_8,,,S,S,8,none,ally,,1.25E+09,0.31,20120,,7_S_S_8
+7_SA_P_5,,,S,P,5,ally,none,,1.63E+06,1.65,31560,,7_S_P_5
+7_SA_P_6,,,S,P,6,ally,none,,5.99E+07,0.97,21480,,7_S_P_6
+7_SA_P_7,,,S,P,7,ally,none,,9.90E+01,2.26,18100,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+7_SA_P_8,,,S,P,8,ally,none,,8.63E+09,0.15,23640,,7_S_P_8
+7_SA_S_5,,,S,S,5,ally,none,,3.88E-05,4.57,22400,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+7_SA_S_6,,,S,S,6,ally,none,,5.80E+02,2.25,15500,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+7_SA_S_7,,,S,S,7,ally,none,,2.11E+11,-0.21,19470,,7_S_S_7
+7_SA_S_8,,,S,S,8,ally,none,,1.25E+09,0.31,20120,,7_S_S_8
+,,,,,,,,,,,,,
+8,O2_ADD_QAENOOH,,Type of radical site,correction,,,,,,,,,
+8_P,alkane,,P,none,none,,,,2.59E+18,-2.21,1003,,8_P
+8_S_C7,alkane,,S,none,7,,,,2.92E+13,-0.46,-615.8,,8_S_C7
+8_S_C6,alkane,,S,none,6,,,,3.02E+13,-0.46,-615.8,,8_S_C6
+8_S_C5,alkane,,S,none,5,,,,6.09E+13,-0.46,-615.8,,8_S_C5
+8_SA,as,,S,ally,none,,,,4.57E+02,2.18,-2200,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. *0.5 analogy from cis-heptene"
+8_PA,ap,,P,ally,none,,,,4.62E+16,-1.63,-20,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. *0.5 analogy from cis-heptene"
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+14,O2QAENOOH_ISO_POOH,,C—OO type,C—H type,ring type,OO_=,H_=,,,,,,
+14_P_P_8,,,P,P,8,none,none,,419100,1.35E+00,20260,,14_P_P_8
+14_P_S_5,,,P,S,5,none,none,,57880000,1.37E+00,29790,,14_P_S_5
+14_P_S_6,,,P,S,6,none,none,,2945000,1.34E+00,18100,,14_P_S_6
+14_P_S_7,,,P,S,7,none,none,,6174000,1.00E+00,16920,,14_P_S_7
+14_P_S_8,,,P,S,8,none,none,,1300000,1.00E+00,18200,,14_P_S_8
+14_S_P_5,,,S,P,5,none,none,,13720000,1.54E+00,32720,,14_S_P_5
+14_S_P_6,,,S,P,6,none,none,,10870000,1.29E+00,20980,,14_S_P_6
+14_S_P_7,,,S,P,7,none,none,,89770,1.62E+00,19680,,14_S_P_7
+14_S_P_8,,,S,P,8,none,none,,647600,9.40E-01,20250,,14_S_P_8
+14_S_S_5,,,S,S,5,none,none,,429000000,9.00E-01,29510,,14_S_S_5
+14_S_S_6,,,S,S,6,none,none,,41370000000,1.00E-01,18660,,14_S_S_6
+14_S_S_7,,,S,S,7,none,none,,13710000000,1.20E-01,20430,,14_S_S_7
+14_S_S_8,,,S,S,8,none,none,,1300000,1.00E+00,18200,,14_S_S_8
+14_P_SA_5,,,P,S,5,none,ally,,144700000,1.37E+00,29790,,14_P_S_5*2.5
+14_P_SA_6,,,P,S,6,none,ally,,7363000,1.34E+00,18100,,14_P_S_6*2.5
+14_P_SA_7,,,P,S,7,none,ally,,15440000,1.00E+00,16920,,14_P_S_7*2.5
+14_P_SA_8,,,P,S,8,none,ally,,3250000,1.00E+00,18200,,14_P_S_8*2.5
+14_SA_P_5,,,S,P,5,ally,none,,13720000,1.54E+00,32720,,14_S_P_5
+14_SA_P_6,,,S,P,6,ally,none,,10870000,1.29,20980,,14_S_P_6
+14_SA_P_7,,,S,P,7,ally,none,,89770,1.62,19680,,14_S_P_7
+14_SA_P_8,,,S,P,8,ally,none,,647600,0.94,20250,,14_S_P_8
+14_SA_S_5,,,S,S,5,ally,none,,429000000,0.9,29510,,14_S_S_5
+14_SA_S_6,,,S,S,6,ally,none,,41370000000,0.1,18660,,14_S_S_6
+14_SA_S_7,,,S,S,7,ally,none,,13710000000,0.12,20430,,14_S_S_7
+14_SA_S_8,,,S,S,8,ally,none,,1300000,1,18200,,14_S_S_8
+14_S_SA_5,,,S,S,5,none,ally,,1073000000,0.9,29510,,14_S_S_5*2.5
+14_S_SA_6,,,S,S,6,none,ally,,1.03E+11,0.1,18660,,14_S_S_6*2.5
+14_S_SA_7,,,S,S,7,none,ally,,34280000000,0.12,20430,,14_S_S_7*2.5
+14_S_SA_8,,,S,S,8,none,ally,,3250000,1,18200,,14_S_S_8*2.5
+,,,,,,,,,,,,,
+11,RAENO2_Elim,,C—OO type,C—H type,OO-double,H-double,,,,,,,
+11_SA_P,,,S,P,ally,none,,,2250000,1.84,28510,,11_S_P
+11_SA_S,,,S,S,ally,none,,,137000000,0.99,23400,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+11_P_S,,,P,S,none,none,,,475000,2.09,28330,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+11_P_SA,,,P,S,none,ally,,,354000,2.05,24640,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+11_S_P,,,S,P,none,none,,,2250000,1.84,28510,,11_S_P
+11_S_S,,,S,S,none,none,,,605000000,1,29400,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978."
+11_S_SA,,,S,S,none,ally,,,7500000,1.8,25340,,"Sun, et al., Phys Chem Chem Phys, 2019, 21(20): 10693-10705."
+,,,,,,,,,,,,,
+12,CYC_ETH_QAENOOH,,C—OOH type,radical type,ring ether,correlation,OOH-bond,radical bond,,,,,
+12_P_S_3_S,12_P_S_3_S,,P,S,3,none,none,none,80700000000,0.54,11000,,12_P_S_3_S
+12_P_S_4_S,12_P_S_4_S,,P,S,4,none,none,none,1.08E+12,0,15300,,12_P_S_4_S
+12_P_S_5_S,12_P_S_5_S,,P,S,5,none,none,none,8.92E+12,-0.46,11640,,12_P_S_5_S
+12_P_S_6_S,12_P_S_6_S,,P,S,6,none,none,none,162000000,0.39,9748,,12_P_S_6_S
+12_S_S_3_S,H1-4,,S,S,3,none,none,none,88400000000,0.36,11000,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_S_S_4_S,12_S_S_4_S,,S,S,4,none,none,none,3.46E+12,-0.06,16810,,12_S_S_4_S
+12_S_S_5_S,12_S_S_5_S,,S,S,5,none,none,none,295000000,0.7,9127,,12_S_S_5_S
+12_S_S_6_S,12_S_S_6_S,,S,S,6,none,none,none,2280000000,0,12200,,12_S_S_6_S
+12_S_P_3_S,12_S_P_3_S,,S,P,3,none,none,none,18400000000,0.59,10850,,12_S_P_3_S
+12_S_P_4_S,H1-5,,S,P,4,none,none,none,92900000000,0.38,18160,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_S_P_5_S,12_S_P_5_S,,S,P,5,none,none,none,7770000000,0.14,12250,,12_S_P_5_S
+12_S_P_6_S,12_S_P_6_S,,S,P,6,none,none,none,856000,1.24,8134,,12_S_P_6_S
+12_SA_P_3,H2C-1,,S,P,3,none,ally,none,2.01E+12,0.16,12200,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_SA_P_4,12_S_P_4_S,,S,P,4,none,ally,none,92900000000,0.38,18160,,12_S_P_4_S
+12_SA_P_5,H2-5,,S,P,5,none,ally,none,1.23E+16,-1.82,13000,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_SA_P_6,12_S_P_6_S,,S,P,6,none,ally,none,856000,1.24,8134,,12_S_P_6_S
+12_SA_S_3,H2-3,,S,S,3,none,ally,none,1.44E+16,-1.18,10500,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_SA_S_4,H2-4,,S,S,4,none,ally,none,1.56E+14,-0.93,16300,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_SA_S_5,12_S_S_5_S,,S,S,5,none,ally,none,295000000,0.7,9127,,12_S_S_5_S
+12_SA_S_6,12_S_S_6_S,,S,S,6,none,ally,none,2280000000,0,12200,,12_S_S_6_S
+12_P_SA_3,12_P_S_3_S,,P,S,3,none,none,ally,80700000000,0.54,11000,,12_P_S_3_S
+12_P_SA_4,12_P_S_4_S,,P,S,4,none,none,ally,193000000,1.16,15120,,12_P_S_4_S
+12_P_SA_5,12_P_S_5_S,,P,S,5,none,none,ally,8.92E+12,-0.46,11640,,12_P_S_5_S
+12_P_SA_6,12_P_S_6_S,,P,S,6,none,none,ally,162000000,0.39,9748,,12_P_S_6_S
+12_S_SA_3,12_S_S_3_S /H1-3 or H2-1,,S,S,3,none,none,ally,2.81E+11,0.29,10880,,12_S_S_3_S
+12_S_SA_4,H1-1,,S,S,4,none,none,ally,1.06E+11,0.02,21800,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+12_S_SA_5,12_S_S_5_S,,S,S,5,none,none,ally,295000000,0.7,9127,,12_S_S_5_S
+12_S_SA_6,12_S_S_6_S,,S,S,6,none,none,ally,2280000000,0,12200,,12_S_S_6_S
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+9,KHP_O2QAENOOH,,C—OO type,C—OOH type,ring type,,,,,,,,
+9_P_S_5,alkane,,P,S,5,,,,2.76E+08,1.2,25700,,9_P_S_5
+9_P_S_6,alkane,,P,S,6,,,,6.76E+03,2.33,16370,,9_P_S_6
+9_P_S_7,alkane,,P,S,7,,,,2.82E+03,2.25,13960,,9_P_S_7
+9_P_S_8,alkane,,P,S,8,,,,2.31E+01,2.63,12090,,9_P_S_8
+9_S_S_5,alkane,,S,S,5,,,,2.16E+12,0,25712,,9_S_S_5
+9_S_S_6,alkane,,S,S,6,,,,8.94E+09,0.47,18850,,9_S_S_6
+9_S_S_7,alkane,,S,S,7,,,,1.82E+08,0.86,17040,,9_S_S_7
+9_S_S_8,alkane,,S,S,8,,,,9.59E+04,1.46,13790,,9_S_S_8
+9_S_P_5,alkane,,S,P,5,,,,1.49E+02,2.88,25260,,9_S_P_5
+9_S_P_6,alkane,,S,P,6,,,,2.23E+03,2.42,17570,,9_S_P_6
+9_S_P_7,alkane,,S,P,7,,,,3.70E+03,2.12,16530,,9_S_P_7
+9_S_P_8,alkane,,S,P,8,,,,5.62E+04,1.79,15900,,9_S_P_8
+,,,,,,,,,,,,,
+15,O2QAENOOH_Elim,,C—OO type,C—H type,OO-double,H-double,,,,,,,
+15_P_S,15_P_S,,P,S,none,none,,,14500000,1.58,28500,,15_P_S
+15_S_P,15_S_P,,S,P,none,none,,,353000000,1.3,30280,,15_S_P
+15_S_S,15_S_S,,S,S,none,none,,,950000000,1.12,29250,,15_S_S
+15_SA_S,RO2-2=>P2-9+HO2,,S,S,ally,none,,,137000000,0.99,23400,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+15_S_SA,RO2-1=>P1-9+HO2,,S,S,none,ally,,,168000,2,25200,,"You et al., J Phys Chem A, 2016, 120(30): 5969-5978. (cis-2-heptene)."
+,,,,,,,,,,,,,
+100,OH_addition,,,,,,,,,,,,
+100_P_S,,,P,S,,,,,7.79E+04,2.25,-3384.3,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302. TRANS-C6H12-2"
+100_S_P,,,S,P,,,,,7.79E+04,2.25,-3384.3,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302. TRANS-C6H12-2"
+100_S_S,,,S,S,,,,,7.79E+04,2.25,-3384.3,,"Zhu X, Chen J T, Zhou C W., Combust Flame, 2022, 245: 112302. TRANS-C6H12-2"
+,,,,,,,,,,,,,
+101,O2_ADD_ROH,,type of radical site,,,,,,,,,,
+101_P,,,P,,,,,,1.63E+14,-0.62,-1,,RR 6_P
+101_S,,,S,,,,,,6.69E+13,-0.3,-198.7,,RR 6_S
+,,,,,,,,,,,,,
+102,beta-ROH isomerization,,Type of radical,type of hydrogen,type of ring,,,,,,,,
+102_P_P_5,alkane,,P,P,5,,,,9.45E+11,0,20610,,3_P_P_5
+102_P_P_6,alkane,,P,P,6,,,,1.50E+11,0,14500,,3_P_P_6
+102_P_P_7,alkane,,P,P,7,,,,6.00E+10,0,19500,,3_P_P_7
+102_P_S_5,alkane,,P,S,5,,,,5.60E+10,0.29,17810,,3_P_S_5
+102_P_S_6,alkane,,P,S,6,,,,5.51E+10,0.1,11940,,3_P_S_6
+102_P_S_7,alkane,,P,S,7,,,,6.00E+10,0,17200,,3_P_S_7
+102_S_P_5,alkane,,S,P,5,,,,8.63E+11,0.07,21460,,3_S_P_5
+102_S_P_6,alkane,,S,P,6,,,,9.89E+11,-0.28,15990,,3_S_P_6
+102_S_P_7,alkane,,S,P,7,,,,6.00E+10,0,20510,,3_S_P_7
+102_S_S_5,alkane,,S,S,5,,,,9.45E+11,0,19300,,3_S_S_5
+102_S_S_6,alkane,,S,S,6,,,,1.50E+11,0,13200,,3_S_S_6
+102_S_S_7,alkane,,S,S,7,,,,6.00E+10,0,18200,,3_S_S_7
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+103,ROHO2IsomReac,19,C—OO type,C—H type,ring type_size,,,,,,,,
+30_G1_S_P_5,,,S,P,G1_5,G1: OH not on the ring,1.35E-03,4.55,26985,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G1_S_P_6,,,S,P,G1_6,G2: OH on the ring,6.23E+03,2.35,18430,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G1_S_P_7,,,S,P,G1_7,,2.29E+02,2.53,17005,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G1_S_S_5,,,S,S,G1_5,,2.77E-01,3.77,23992,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G1_S_S_6,,,S,S,G1_6,,7.15E+05,1.67,16221,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G1_S_S_7,,,S,S,G1_7,,8.68E+02,2.31,13600,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_P_S_5,,,P,S,G2_5,,1.92E+05,2.03,20190,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_P_S_6,,,P,S,G2_6,,5.76E+06,1.54,17944,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_P_S_7,,,P,S,G2_7,,8.36E+06,1.26,16333,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_S_S_5,,,S,S,G2_5,,2.85E+05,2,19560,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_S_S_6,,,S,S,G2_6,,2.34E+07,1.41,17829,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_S_S_7,,,S,S,G2_7,,2.64E+07,1.16,16609,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_S_P_5,,,S,P,G2_5,,1.76E+03,2.69,21498,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_S_P_6,,,S,P,G2_6,,4.12E+04,2.2,19784,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_G2_S_P_7,,,S,P,G2_7,,7.43E+06,1.34,20054,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+30_S_S_8,,,S,S,8,,1.25E+09,0.31,20120,,7_S_S_8,,
+30_S_P_8,,,S,P,8,,8.63E+09,0.15,23640,,7_S_P_8,,
+30_P_S_8,,,P,S,8,,3.80E+08,0.21,19280,,7_P_S_8,,
+30_P_P_8,,,P,P,8,,8.62E+05,1.17,20110,,7_P_P_8,,
+,,,,,,,,,,,,,
+104,HAddOle,3,,,,,,,,,,,
+5_TE,,,P,S,,,7.71E+08,1.52,981.9,,"Power J, et al., J Phys Chem A, 2019, 123(40): 8506-8526. C5H10-1+H<=>C5H11-1",,
+5_IN_S_P,,,S,P,,,1.66E+08,1.66,2128,,"Power J, et al., J Phys Chem A, 2019, 123(40): 8506-8526. C5H10-1+H<=>C5H11-1",,
+5_IN_S_S,,,S,S,,,6.74E+08,1.51,1562,,"Power J, et al., J Phys Chem A, 2019, 123(40): 8506-8526. C5H10-1+H<=>C5H11-1",,
+,,,,,,,,,,,,,
+105,HO2AddAllyR_rec,2,,,,,,,,,,,
+9_PA,,,HO2,PA,,,7.20E+31,-6.01,6053.6,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+9_SA,,,HO2,SA,,,1.44E+32,-6.01,6053.6,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+,,,,,,,,,,,,,
+106,HO2AddAllyR_dec,2,,,,,,,,,,,
+10_PA,,,HO2,PA,,,8.20E+03,2.74,1144.4,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+10_SA,,,HO2,SA,,,1.64E+04,2.74,1144.4,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+,,,,,,,,,,,,,
+107,ch3AddAllyR,1,,,,,,,,,,,
+13,,,,,,,5.00E+13,-0.32,-262.3,,"Zhang et al. Combust Flame, 2012, 159(3): 905-917. C3H5-A+CH3(+M)<=>C4H8-1(+M)",,
+,,,,,,,,,,,,,
+108,ho2AddOle,3,,,,,,,,,,,
+18_PS,,,P,S,,,7.69E+11,0,13300,,"Villano S M, et al., J Phys Chem A, 2013, 117(30): 6458-6473. ",,
+18_SP,,,S,P,,,5.92E+11,0,13300,,"Villano S M, et al., J Phys Chem A, 2013, 117(30): 6458-6473. ",,
+18_SS,,,S,S,,,8.47E+11,0,11200,,"Villano S M, et al., J Phys Chem A, 2013, 117(30): 6458-6473. ",,
+,,,,,,,,,,,,,
+109,OatomAddOle,4,,,,,,,,,,,
+6_IN_beta_H,,,Internal,H,,,1.17E-03,4.94,-2422.8,,"Bedjanian, Morin, J. Phys. Chem. A 2017, 121(8): 1553-1562. ",,
+6_IN_beta_radical,,,Internal,Other,,,9.24E+08,1.2,-238.3,,"Bedjanian, Morin, J. Phys. Chem. A 2017, 121(8): 1553-1562. ",,
+6_TE_beta_radical,,,Terminal,Other,,,9.24E+08,1.2,-238.3,,"Bedjanian, Morin, J. Phys. Chem. A 2017, 121(8): 1553-1562. ",,
+,,,,,,,,,,,,,
+110,rooh_to_ro,1,,,,,,,,,,,
+11,,,OH,,,,1.28E+27,-3.61,46333,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+,,,,,,,,,,,,,
+111,ro_betadecom,2,,,,,,,,,,,
+12_SV,,,SV,,,,3.92E+28,-4.66,27643,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+12_PS,,,other,,,,3.92E+27,-4.66,15643,,"Goldsmith, et al., Proc Combust Inst, 2011, 33(1): 273-282.",,
+,,,,,,,,,,,,,
+112,o2addvinyR,3,O2 add site,,,,,,,,,,
+7_IN,,,SV,,,,9.27E+21,-2.74,9364,,"Chen&Goldsmith, J. Phys. Chem. A, 2017, 121(48),9173-9184",,
+7_TE_H,,,PV,,,,3.08E+21,-2.49,8439,,"Chen&Goldsmith, J. Phys. Chem. A, 2017, 121(48),9173-9184",,
+7_TE_HCO,,,PV,,,,1.32E+21,-2.49,8439,,"Chen&Goldsmith, J. Phys. Chem. A, 2017, 121(48),9173-9184",,
+,,,,,,,,,,,,,
+113,o2habsallyR,2,type of attacked carbon,,,,,,,,,,
+25_P,,,P,,,,5.04E-03,4.77,11917.2,,"Li Y, et al., Energies, 2021, 14(10): 2916. AW C5H91-3+O2<=>C5H8+HO2. Gaussian solver with Method 2.",,
+25_S,,,S,,,,1.49E-01,3.64,10772.6,,"Li Y, et al., Energies, 2021, 14(10): 2916. AW C5H91-3+O2<=>C5H8+HO2. Gaussian solver with Method 2.",,
+,,,,,,,,,,,,,
+114,rohoo_wad,3,type of C—OO,type of C—OH,,,,,,,,,
+29_SP,,,S,P,beta-ROHOO,,2.61E+10,0.29,20378,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+29_PS,,,P,S,beta-ROHOO,,1.18E+10,0.39,20322,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+29_SS,,,S,S,beta-ROHOO,,1.80E+11,0.1,20300,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+,,,,,,,,,,,,,
+115,wad_decom,3,type of C—OOH,type of C—O,,,,,,,,,
+29_1_SP,,,S,P,,,1.99E+19,-1.5,10820,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+29_1_PS,,,P,S,,,8.69E+21,-2.37,12629,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+29_1_SS,,,S,S,,,4.72E+20,-2.06,9465,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+,,,,,,,,,,,,,
+116,rohoo_elim,6,C—OO type,C—H type,—OH on extracted C—H?,C—OO to C—OH,,,,,,,
+33_1_G1_SP,Group1 tp,,S,P,no,beta,1.29E+07,1.48,29631,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_1_G1_SS,Group1 ts,,S,S,no,beta,1.58E+07,1.58,28744,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_1_G2_PS,Group2 st,,P,S,yes,beta,3.65E+13,-0.15,34790,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_1_G2_SP,Group2 ts,,S,P,yes,beta,1.04E+13,0,32999,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_1_G2_SS,Group2 tt,,S,S,yes,beta,6.12E+14,-0.47,34516,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_1_P_S,11_P_S,,P,S,none,other,7.46E+08,1.4,29120,,11_P_S,,
+33_1_S_P,11_S_P,,S,P,none,other,2.25E+06,1.84,28510,,11_S_P,,
+33_1_S_S,11_S_S,,S,S,none,other,4.68E+08,1.18,28960,,11_S_S,,
+,,,,,,,,,,,,,
+117,bqohooh_decom,6,C—OOH type,radical site,—OH on radical?,C—OOH to C—OH,,,,,,,
+33_2_G1_SP,Group1 tp,,S,P,no,beta,8.17E+09,0.8,14231,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_2_G1_SS,Group1 ts,,S,S,no,beta,1.97E+10,0.74,14280,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_2_G2_PS,Group2 st,,P,S,yes,beta,5.46E+10,0.92,14881,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_2_G2_SP,Group2 ts,,S,P,yes,beta,5.22E+14,-0.24,16658,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_2_G2_SS,Group2 tt,,S,S,yes,beta,1.22E+13,0.24,15271,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+ -33_PS,alkane rev,,P,S,none,other,7.69E+11,0,13300,,"Villano S M, et al., J Phys Chem A, 2013, 117(30): 6458-6473. ",,
+ -33_SP,alkane rev,,S,P,none,other,5.92E+11,0,13300,,"Villano S M, et al., J Phys Chem A, 2013, 117(30): 6458-6473. ",,
+ -33_SS,alkane rev,,S,S,none,other,8.47E+11,0,11200,,"Villano S M, et al., J Phys Chem A, 2013, 117(30): 6458-6473. ",,
+,,,,,,,,,,,,,
+118,qohoohtocEther,24,C—OOH type,radical site,—OH on the ring,,,,,,,,
+33_3_b_G1_SP,Group1 tp,,S,P,no,beta,2.26E+10,0.56,10498,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_b_G1_SS,Group1 ts,,S,S,no,beta,2.76E+09,1.01,8031,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_b_G2_PS,Group2 st,,P,S,yes,beta,8.62E+10,0.56,9184,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_b_G2_SP,Group2 ts,,S,P,yes,beta,3.90E+12,0.02,9532,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_b_G2_SS,Group2 tt,,S,S,yes,beta,7.44E+10,0.58,7568,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_g_G1_SP,Group1 tp,,S,P,no,gamma,1.67E+11,-0.09,16142,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_g_G1_SS,Group1 ts,,S,S,no,gamma,2.44E+11,-0.08,12763,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_g_G2_PS,Group2 ss,,P,S,yes,gamma,6.83E+13,-0.59,18410,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_g_G2_SP,Group2 tp,,S,P,yes,gamma,1.00E+16,-1.33,19882,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_g_G2_SS,Group2 ts,,S,S,yes,gamma,6.83E+13,-0.59,18410,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_de_G1_SP,Group1 tp,,S,P,no,delta/epsilon,5.02E+12,-0.77,10632,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_de_G1_SS,Group1 ts,,S,S,no,delta/epsilon,7.59E+13,-1.08,9093,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_de_G2_PS,Group2 ss,,P,S,yes,delta/epsilon,1.90E+10,0.05,10767,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_de_G2_SP,Group2 tp,,S,P,yes,delta/epsilon,7.31E+11,-0.31,12455,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+33_3_de_G2_SS,Group2 ts,,S,S,yes,delta/epsilon,3.89E+11,-0.29,10716,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+,,,,,,,,,,,,,
+119,qohooh_decom,2,,,,,,,,,,,
+44_gamma,,,gamma,,,,7.40E+14,-0.32,0,,RR 13_gamma,,
+44_delta,,,delta,,,,2.14E+15,-0.34,0,,RR 13_delta,,
+,,,,,,,,,,,,,
+120,o2addqohooh,4,radical type,correction1,correction2,,,,,,,,
+31_P,,,P,,OH not on radical site,,2.59E+18,-2.21,1003,,8_P,,
+31_S_C7,,,S,C7 size,OH not on radical site,,2.92E+13,-0.46,-615.8,,8_S_C7,,
+31_S_C6,,,S,C6 size,OH not on radical site,,3.02E+13,-0.46,-615.8,,8_S_C6,,
+31_S_C5,,,S,C5 size,OH not on radical site,,6.09E+13,-0.46,-615.8,,8_S_C5,,
+,,,,,,,,,,,,,
+121,o2qohoohelim,6,C—OO type,C—H type,correction,,,,,,,,
+42_P_S,15_P_S,,P,S,OH not on C—H,,1.45E+07,1.58,28500,,15_P_S,,
+42_S_P,15_S_P,,S,P,OH not on C—H,,3.53E+08,1.3,30280,,15_S_P,,
+42_S_S,15_S_S,,S,S,OH not on C—H,,9.50E+08,1.12,29250,,15_S_S,,
+42_S_SOH,group2 tt,,S,S,OH—C—H,,6.12E+14,-0.47,34520,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+42_P_SOH,group2 st,,P,S,OH—C—H,,3.65E+13,-0.15,34790,,"Lizardo-Huerta J C et al., Phys Chem Chem Phys, 2016, 18(17): 12231-12251.",,
+,,,,,,,,,,,,,
+122,o2qohoohTokhp,12,C—OO type,C—OOH type,ring type,,,,,,,,
+32_P_S_5,,,P,S,5,,2.76E+08,1.2,25700,,9_P_S_5,,
+32_P_S_6,,,P,S,6,,6.76E+03,2.33,16370,,9_P_S_6,,
+32_P_S_7,,,P,S,7,,2.82E+03,2.25,13960,,9_P_S_7,,
+32_P_S_8,,,P,S,8,,2.31E+01,2.63,12090,,9_P_S_8,,
+32_S_S_5,,,S,S,5,,2.16E+12,0,25710,,9_S_S_5,,
+32_S_S_6,,,S,S,6,,8.94E+09,0.47,18850,,9_S_S_6,,
+32_S_S_7,,,S,S,7,,1.82E+08,0.86,17040,,9_S_S_7,,
+32_S_S_8,,,S,S,8,,9.59E+04,1.46,13790,,9_S_S_8,,
+32_S_P_5,,,S,P,5,,1.49E+02,2.88,25260,,9_S_P_5,,
+32_S_P_6,,,S,P,6,,2.23E+03,2.42,17570,,9_S_P_6,,
+32_S_P_7,,,S,P,7,,3.70E+03,2.12,16530,,9_S_P_7,,
+32_S_P_8,,,S,P,8,,5.62E+04,1.79,15900,,9_S_P_8,,
+,,,,,,,,,,,,,
+123,ohkhpdecom,6,C—OOH type,C=O type,,,,,,,,,
+33_P_beta,,,P,beta,,,1.12E+16,-0.04,42110,,10_P_beta,,
+33_P_gamma,,,P,gamma,,,6.98E+16,-0.24,42980,,10_P_gamma,,
+33_P_other,,,P,other,,,6.91E+15,0.1,42720,,10_P_other,,
+33_S_beta,,,S,beta,,,4.20E+16,-0.2,41850,,10_S_beta,,
+33_S_gamma,,,S,gamma,,,1.32E+16,-0.11,42270,,10_S_gamma,,
+33_S_other,,,S,other,,,1.57E+16,-0.09,43120,,10_S_other,,
+,,,,,,,,,,,,,
+124,o2qohoohIsom,13,C—OO type,C—H type,ring type,,,,,,,,
+46_P_P_8,alkane,,P,P,8,,4.19E+05,1.35,20260,,14_P_P_8,,
+46_P_S_5,alkane,,P,S,5,,5.79E+07,1.37,29790,,14_P_S_5,,
+46_P_S_6,alkane,,P,S,6,,2.95E+06,1.34,18100,,14_P_S_6,,
+46_P_S_7,alkane,,P,S,7,,6.17E+06,1,16920,,14_P_S_7,,
+46_P_S_8,alkane,,P,S,8,,1.30E+06,1,18200,,14_P_S_8,,
+46_S_P_5,alkane,,S,P,5,,1.37E+07,1.54,32720,,14_S_P_5,,
+46_S_P_6,alkane,,S,P,6,,1.09E+07,1.29,20980,,14_S_P_6,,
+46_S_P_7,alkane,,S,P,7,,8.98E+04,1.62,19680,,14_S_P_7,,
+46_S_P_8,alkane,,S,P,8,,6.48E+05,0.94,20250,,14_S_P_8,,
+46_S_S_5,alkane,,S,S,5,,4.29E+08,0.9,29510,,14_S_S_5,,
+46_S_S_6,alkane,,S,S,6,,4.14E+10,0.1,18660,,14_S_S_6,,
+46_S_S_7,alkane,,S,S,7,,1.37E+10,0.12,20430,,14_S_S_7,,
+46_S_S_8,alkane,,S,S,8,,1.30E+06,1,18200,,14_S_S_8,,
+,,,,,,,,,,,,,
+125,ohpoohdecom,9,,,,,,,,,,,
+51_P,18_P,,P,,,,1.86E+16,0.05,40740,,18_P,,
+51_S,18_S,,S,,,,1.05E+16,0,41810,,18_S,,
+,,,,,,,,,,,,,
+126,ohpoohtoEther,12,,,,,,,,,,,
+50_P,19_P,,P,,,,1.50E+16,0,40800,,19_P,,
+50_S,19_S,,S,,,,2.23E+16,-0.02,41780,,19_S,,

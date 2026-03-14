@@ -1,0 +1,559 @@
+! IC8D3 COMBUSTION MECHANISM
+! C-C(=C-C(-C)(-C)-C)-C
+
+ELEMENTS
+
+C
+H
+O
+N
+AR
+HE
+
+END
+
+
+SPECIES
+
+
+! Generic species
+O2                 H2                 H2O2               H2O
+N2                 AR                 HE                 CO
+CO2                HO2                OH                 H
+CH3                C2H5               CH3O               CH3OH
+CH3O2              CH3O2H
+
+!++++++++++++++++++ IC8D3 SUBMECHANISM ++++++++++++++++++
+
+! Fuel
+IC8D3
+
+! oleR Alkenyl radicals
+IC8D3-5R           IC8D3-3R           IC8D3-1R           
+
+! oleROO alkenyl peroxy radicals
+IC8D3-5O2          IC8D3-1O2R         
+
+! oleQOOH hydroperoxyalkenyl radicals
+I224C8H143OOH5-1   IC8D4Q5-3R         IC8D4OOH1-3R       IC8D3OOH1-1AR      
+
+! oleO2QOOH Hydroperoxyalkenylperoxy radicals
+I224C83OOH5-1O2    IC8D3Q5-5O2R       I224C83OOH1-5O2    IC8D3OOH1-1AO2R    
+
+! oleP(OOH)2 dihydroperoxy alkenyl radicals
+I224C8H133Q15-1    I224C8H133Q15-5    I224C8H133Q11-1    
+
+! oleKHPs
+IC8D3Q5Y5          IC8D3KET1-1A       
+
+! olecycEths/olecycEthOOHs from oleQOOH/olePOOH elimination
+I224C8H143O5-5     IC8D3O1-1A         I224C83O11-5OOH    I224C83O55-1OOH    
+I224C83O11-1OOH    
+
+! ROHs alcoholic (hydroxyl) alkyl radicals
+IC8OH4-3R          IC8OH3-4R          I224C8H16OH-3J1    
+
+! ROHOO alcoholic peroxy radicals
+IC8OH4-3O2R        IC8OH3-4O2R        I224C8OH-3O2-1     
+
+! QOHOOHs alcoholic hydroperoxylalkyl radicals
+IC8Q3OH4-5R        IC8Q3OH4-1R        I224C8H15OH3Q4-5   IC8OH4Q-3J         
+I224C8H15OH3Q4-1   I224C8OH3Q1-3A     I224C8H15OH3Q1-1   I224C8H15OH3Q1-4   
+I224C8H15OH3Q1-5   
+
+! O2QOHOOHs alcoholic hydroperoxyl-alkylperoxy radicals
+IC8Q3OH4-5O2       IC8Q3OH4-1O2       I224C8OH3Q4-5O2    I224C8OH3Q4-1O2    
+I224C8OH3Q1-1O2    I224C8OH3Q1-4O2    I224C8OH3Q1-5O2    
+
+! POHOOHs alcoholic dihydroperoxylalkyl radicals
+I224C8OH4Q35-5     I224C8OH4Q35-1     I224C8OH4Q13-1     I224C8OH4Q13-5     
+I224C8OH3Q45-3A    I224C8OH3Q45-5     I224C8OH3Q45-1     I224C8OH3Q14-3A    
+I224C8OH3Q14-1     I224C8OH3Q14-5     I224C8OH3Q11-3A    I224C8OH3Q11-1     
+I224C8OH3Q11-4     I224C8OH3Q11-5     I224C8OH3Q15-4     I224C8OH3Q15-3A    
+I224C8OH3Q15-5     I224C8OH3Q15-1     
+
+! OHKHPs
+IC8OH4KET35        IC8OH4KET31        I224C8OH3KET1-1    I224C8OH3KET1-4    
+I224C8OH3KET1-5    
+
+! RAOOH allylic ROOH and subsequents
+IC8D3-5OOH         IC8D3-5OR          
+
+! RACH3 Higher oles
+ME3-IC8D4          
+
+! Waddington mechanism
+IC8Q3-4OJ          IC8Q4-3OJ          
+
+! oleOHs/oleOHOOHs from ROHOO/O2QOHOOH elimination
+IC8D4-3OH          IC8D3-3OH          IC8D4-3OH          IC8D3-3OH          
+I224C8H144OH3Q1    I224C8H143OH3Q1    
+
+! OHcycEths/OHcycEthOOHs from QOHOOH/POHOOH elimination
+IC8OH4-CYO35       IC8OH4-CYO13       I224C8H15OH3O4-5   IC8OH3-CYCO34      
+I224C8OH3YO1-4     I224C8OH3YO1-3     I224C8H15OH3O1-1   I224C8OH3YO1-5     
+I224C8OH4O55Q3     I224C8OH4O35Q5     I224C8OH4O15Q3     I224C8OH4O13Q5     
+I224C8OH4O13Q1     I224C8OH4O11Q3     I224C8OH4O35Q1     I224C8OH3O55Q4     
+I224C8OH3O45Q5     I224C8OH3O15Q4     I224C8OH3O14Q5     I224C8OH3O14Q1     
+I224C8OH3O11Q4     I224C8OH3O45Q1     I224C8OH3O11Q1     I224C8OH3O15Q1     
+I224C8OH3O55Q1     I224C8OH3O15Q5     I224C8OH3O11Q5     
+
+! Dienes
+I224799C16H30D37   
+
+! DieneOOHs
+I24C7D13Q5         I24C7D13Q1         
+
+! CycOOs
+I224C8H151OO4-5    I224C8H152YOO3-5   I224C8H151YOO1-4   I224C8H152OO1-3    
+
+
+!++++++++++++++++++ DECOMPOSITION PRODUCTS ++++++++++++++++++
+! R
+TC4H9              IC3H7              
+
+! QOOH
+IC4H8O2H-T         
+
+! OLE
+IC4H8              ME3-IC8D4          C2H4               C3H6               
+
+! CO aldehydes/ketones
+CH2O               CH3COCH3           TC4H9CHO           
+
+! RO
+TC4H9CO            HCO                TC3H6CHO           CH3COCH2           
+NEC7Y4-3R          
+
+! KHP
+NEOC5KET           
+
+! POOH2
+IIC4H7Q2-T         
+
+! OLE-OOH
+IC4H7OOH           
+
+! OLE-R
+NEC7D3-4R          IC4H7-I1           I24C7D2-4R         C3H5-T             
+C2H3               
+
+! OLE-CO
+IC3H6CO            CH2CO              
+
+! cEth-R
+CCYCCO-T1          
+
+! AlkRO
+NEC7Y4-3R          TC3H6CHO           
+
+! smaller dienes
+NEC7H12D34         I24C7D13           I224799C16H30D37   C3H4-A             
+I224C9H16D35       
+
+! oleOH
+IC3H5OH            XC7H13OH3-2        XC7H13OH3-1        SC4H7OH-I          
+SC3H5OH            NEC7H13OH4-3       XC7H13OH4-2        
+
+! oleketo_radical
+XC7H112KET1R4      
+
+! OHoleOOH
+NEC7H124OH4Q3      CH2COHCH2OOH       XC7H121OH4Q3       XC7H121OH3Q4       
+XC7H121BOH3Q1      SC4H7OOH-I         NEC7H124OH3Q1      XC7H121OH3Q5       
+
+! OHoleKeto
+CH3COHCO           I2C4H51OH1KET3     
+
+! oleROH
+XC7H122OH3-4       SC2H2OH            I2C6H103OH4-2      SC4H7OH-IP         
+SC4H7OH-IP         PC3H4OH-2          
+
+! dienesOH
+NEC7H11D34OH3      C3H3D12OH3         
+
+! ROH
+TC3H6OH            NEC5H10OH-1J1      
+
+! dienesR
+IC6D13-4R          IC6D34-2R          C3H3               
+
+! OHRO
+C3Y1-2OH-2J        CH3COCHOH          
+
+! QOHOOH
+TQC4H7OHI          
+
+! OHketo
+IC3H6OHCHO         
+
+! OHKHP
+CHOC(CH3)OHCH2Q    
+
+
+END
+
+
+REACTIONS
+
+! Class01: Unimolecular decompositions:
+IC8D3<=>CH3+NEC7D3-4R                                 4.300e+64  -13.400   135000  !RR 1_viny M 2
+IC8D3<=>IC4H7-I1+TC4H9                                2.150e+64  -13.400   135000  !RR 1_viny M 1
+IC8D3<=>I24C7D2-4R+CH3                                3.000e+16    0.000    71333  !RR 1_allyl M 3
+IC8D3<=>IC8D3-5R+H                                    2.415e+57  -11.500   122000  !RR 1_ally_H M 3
+
+! Class02: H abstraction:
+IC8D3+H<=>IC8D3-5R+H2                                 7.920e+03    3.080     3203  !RR 2_H_PA M 6
+IC8D3+H<=>IC8D3-3R+H2                                 2.410e+05    2.550     9611  !RR 2_H_SV M 1
+IC8D3+H<=>IC8D3-1R+H2                                 2.349e+06    2.470     6796  !RR 2_H_P M 9
+IC8D3+OH<=>IC8D3-5R+H2O                               4.200e+07    1.770      271  !RR 2_OH_PA M 6
+IC8D3+OH<=>IC8D3-3R+H2O                               3.000e+06    1.970     2848  !RR 2_OH_SV M 1
+IC8D3+OH<=>IC8D3-1R+H2O                               1.224e+09    1.370     1654  !RR 2_OH_P1 M 9
+IC8D3+O<=>IC8D3-5R+OH                                 1.938e-02    4.540    -2470  !RR 2_O_PA M 6
+IC8D3+O<=>IC8D3-3R+OH                                 6.030e+10    0.700     7632  !RR 2_O_SV M 1
+IC8D3+O<=>IC8D3-1R+OH                                 1.980e+07    2.190     5336  !RR 2_O_P M 9
+IC8D3+O2<=>IC8D3-5R+HO2                               7.740e+01    3.520    36200  !RR 2_O2_PA M 6
+IC8D3+O2<=>IC8D3-3R+HO2                               1.000e+13    0.000    58770  !RR 2_O2_SV M 1
+IC8D3+O2<=>IC8D3-1R+HO2                               2.106e+14   -0.140    53470  !RR 2_O2_P M 9
+IC8D3+HO2<=>IC8D3-5R+H2O2                             1.854e-04    4.850     7680  !RR 2_HO2_PA M 6
+IC8D3+HO2<=>IC8D3-3R+H2O2                             1.560e+04    2.820    24428  !RR 2_HO2_SV M 1
+IC8D3+HO2<=>IC8D3-1R+H2O2                             1.953e+02    3.580    17350  !RR 2_HO2_P M 9
+IC8D3+CH3<=>IC8D3-5R+CH4                              1.578e+02    3.240     7029  !RR 2_CH3_PA M 6
+IC8D3+CH3<=>IC8D3-3R+CH4                              3.260e+02    2.930    11351  !RR 2_CH3_SV M 1
+IC8D3+CH3<=>IC8D3-1R+CH4                              6.804e-01    3.750     6941  !RR 2_CH3_P M 9
+IC8D3+CH3O<=>IC8D3-5R+CH3OH                           1.374e+01    3.800     3075  !RR 2_CH3O_PA M 6
+IC8D3+CH3O<=>IC8D3-3R+CH3OH                           3.440e+04    2.430     8924  !RR 2_CH3O_SV M 1
+IC8D3+CH3O<=>IC8D3-1R+CH3OH                           4.500e+11    0.000     7000  !RR 2_CH3O_P M 9
+IC8D3+CH3O2<=>IC8D3-5R+CH3O2H                         1.710e+06    1.730    20000  !RR 2_CH3O2_PA M 6
+IC8D3+CH3O2<=>IC8D3-3R+CH3O2H                         9.400e+07    1.410    27700  !RR 2_CH3O2_SV M 1
+IC8D3+CH3O2<=>IC8D3-1R+CH3O2H                         1.674e-02    4.920    18000  !RR 2_CH3O2_P M 9
+IC8D3+C2H5<=>IC8D3-5R+C2H6                            3.024e+11   -0.080     5700  !RR 2_C2H5_PA M 6
+IC8D3+C2H5<=>IC8D3-3R+C2H6                            1.610e+09    0.020     5900  !RR 2_C2H5_SV M 1
+IC8D3+C2H5<=>IC8D3-1R+C2H6                            1.818e+11   -0.080     5700  !RR 2_C2H5_P M 9
+
+! Class03: Alkenyl radical isomerization:
+
+! Class04: Alkenyl radical beta scissions:
+IC8D3-5R<=>CH3+NEC7H12D34                             2.630e+11    0.770    38475  !RR 4_viny M 1
+IC8D3-1R<=>IC4H7-I1+IC4H8                             2.630e+11    0.770    38475  !RR 4_viny M 1
+IC8D3-1R<=>CH3+I24C7D13                               9.640e+09    1.160    22476  !RR 4_ally M 2
+
+! Class05: H addition to olefins
+IC8D3+H<=>IC8-3R                                      5.090e+07    1.650     2401  !RR 5_IN_T_S M 1
+IC8D3+H<=>IC8-4R                                      5.450e+08    1.470     1070  !RR 5_IN_S_T M 1
+
+! Class06: O addition to olefins
+IC8D3+O<=>IC8Y3-4R+H                                  1.170e-03    4.940    -2423  !RR 6_IN_beta_H M 1
+IC8D3+O<=>NEC7Y4-3R+CH3                               1.848e+09    1.200     -238  !RR 6_IN_T M 2
+IC8D3+O<=>TC3H6CHO+TC4H9                              9.240e+08    1.200     -238  !RR 6_IN_beta_radical M 1
+
+! Class07: O2 addition to vinylic radicals
+IC8D3-3R+O2<=>CH3COCH3+TC4H9CO                        9.270e+21   -2.740     9364  !RR 7_IN M 1
+
+! Class08: HO2 addition to allyRs (RA+HO2=RAOOH)
+IC8D3-5R+HO2<=>IC8D3-5OOH                             7.200e+31   -6.010     6054  !RR 8_PA M 1
+
+! Class09: HO2 addition to allyRs (RA+HO2=alkROs+OH)
+IC8D3-5R+HO2<=>IC8D3-5OR+OH                           8.200e+03    2.740     1144  !RR 9_PA M 1
+
+! Class10: RAOOH=RAO+OH
+IC8D3-5OOH<=>IC8D3-5OR+OH                             1.280e+27   -3.610    46333  !RR 10 M 1
+
+! Class11: RAO decomposition
+IC8D3-5OR<=>CH2O+NEC7D3-4R                            3.920e+28   -4.660    27643  !RR 11_SV M 1
+
+! Class12: CH3 addition to allyRs (RACH3)
+IC8D3-5R+CH3<=>ME3-IC8D4                              5.000e+13   -0.320     -262  !RR 12 M 1
+
+! Class13: HO2 addition to olefins
+IC8D3+HO2<=>IC8OOH4-3R                                2.890e+11    0.000     9700  !RR 13_TS M 1
+IC8D3+HO2<=>IC8OOH3-4R                                9.940e+11    0.000     9400  !RR 13_ST M 1
+
+! Class14: allyRs HAA by O2 reactions
+
+! Class15: OH addition to olefins
+IC8D3+OH<=>IC8OH4-3R                                  1.860e+18   -2.030        0  !RR 15_ADD_TS M 1
+IC8D3+OH<=>IC8OH3-4R                                  1.860e+18   -2.030        0  !RR 15_ADD_ST M 1
+
+! Class16: betaROH isomerization
+IC8OH3-4R<=>I224C8H16OH-3J1                           1.269e+11    0.000    22590  !RR 16_T_P_5 M 9
+
+! Class17: O2 addition to ROHs
+IC8OH4-3R+O2<=>IC8OH4-3O2R                            6.690e+13   -0.300     -199  !RR 17_S M 1
+IC8OH3-4R+O2<=>IC8OH3-4O2R                            1.370e+12    0.330     -417  !RR 17_T M 1
+I224C8H16OH-3J1+O2<=>I224C8OH-3O2-1                   1.630e+14   -0.620       -1  !RR 17_P M 1
+
+! Class18: betaROHO2 Waddington mechanism
+IC8OH4-3O2R<=>IC8Q3-4OJ                               1.330e+11    0.050    20310  !RR 18_ST_ole M 1
+IC8OH3-4O2R<=>IC8Q4-3OJ                               3.420e+12   -0.220    20842  !RR 18_TS_ole M 1
+
+! Class19: Waddington product OROOH decompositions
+IC8Q3-4OJ<=>CH3COCH3+TC4H9CHO+OH                      3.430e+22   -2.550    10499  !RR 19_ST_ole M 1
+IC8Q4-3OJ<=>TC4H9CHO+CH3COCH3+OH                      1.690e+23   -2.870     7744  !RR 19_TS_ole M 1
+
+! Class20: ROHO2 elimination reactions added
+IC8OH3-4O2R<=>IC8D4-3OH+HO2                           1.446e+11    0.760    29800  !RR 20_T_P_G1 M 6
+IC8OH3-4O2R<=>IC8D3-3OH+HO2                           1.550e+09    0.920    27840  !RR 20_T_S_G2 M 1
+
+! Class21: ROHOO isomerization
+IC8OH4-3O2R<=>IC8Q3OH4-5R                             8.220e+04    2.200    19784  !RR 21_G2_S_P_6 M 6
+IC8OH4-3O2R<=>IC8Q3OH4-1R                             1.872e+04    2.350    18430  !RR 21_G1_S_P_6 M 9
+IC8OH3-4O2R<=>I224C8H15OH3Q4-5                        8.880e+10    0.600    33440  !RR 7_T_P_5 M 6
+IC8OH3-4O2R<=>IC8OH4Q-3J                              1.290e+11    0.350    29470  !RR 7_T_S_5 M 1
+IC8OH3-4O2R<=>I224C8H15OH3Q4-1                        6.057e+11    0.000    22690  !RR 7_T_P_7 M 9
+I224C8OH-3O2-1<=>I224C8OH3Q1-3A                       2.880e+06    1.540    17944  !RR 21_G2_P_S_6 M 1
+I224C8OH-3O2-1<=>I224C8H15OH3Q1-1                     1.068e+07    1.460    21000  !RR 7_P_P_6 M 6
+I224C8OH-3O2-1<=>I224C8H15OH3Q1-4                     6.880e+05    1.280    13610  !RR 7_P_T_7 M 1
+I224C8OH-3O2-1<=>I224C8H15OH3Q1-5                     5.736e+06    1.160    19910  !RR 7_P_P_8 M 6
+
+! Class22: beta-QOHOOH scissions
+I224C8H15OH3Q4-5<=>IC8D4-3OH+HO2                      5.060e+10    0.540    13832  !RR 22_G1_TP M 1
+IC8OH4Q-3J<=>IC8D3-3OH+HO2                            2.230e+14   -0.180    16442  !RR 22_G2_TS M 1
+
+! Class22_combine: QOHOOH decomposition reactions
+IC8Q3OH4-5R<=>TC4H9CHO+IC3H5OH+OH                     7.880e-01    0.080      -21  !RR 13_gamma M 1
+IC8Q3OH4-1R<=>IC4H8+OH+HCO+TC3H6OH                    7.880e-01    0.080      -21  !RR 13_gamma M 1
+I224C8H15OH3Q4-1<=>IC4H8+TQC4H7OHI                    1.170e-01    0.190     -667  !RR 13_delta M 1
+I224C8OH3Q1-3A<=>CH2O+XC7H13OH3-2+OH                  7.880e-01    0.080      -21  !RR 13_gamma M 1
+I224C8H15OH3Q1-1<=>CH2O+XC7H13OH3-1+OH                7.880e-01    0.080      -21  !RR 13_gamma M 1
+I224C8H15OH3Q1-4<=>SC4H7OH-I+IC4H8O2H-T               1.170e-01    0.190     -667  !RR 13_delta M 1
+
+! Class23: QOHOOH to cyclic ethers reactions
+IC8Q3OH4-5R<=>IC8OH4-CYO35+OH                         1.000e+16   -1.330    19882  !RR 23_g_G2_SP M 1
+IC8Q3OH4-1R<=>IC8OH4-CYO13+OH                         1.670e+11   -0.090    16142  !RR 23_g_G1_SP M 1
+I224C8H15OH3Q4-5<=>I224C8H15OH3O4-5+OH                4.310e+11    0.100     9747  !RR 23_b_G1_TP M 1
+IC8OH4Q-3J<=>IC8OH3-CYCO34+OH                         5.560e+13   -0.320     7804  !RR 23_b_G2_TS M 1
+I224C8H15OH3Q4-1<=>I224C8OH3YO1-4+OH                  1.020e+15   -1.250    14452  !RR 23_de_G2_TP M 1
+I224C8OH3Q1-3A<=>I224C8OH3YO1-3+OH                    6.830e+13   -0.590    18410  !RR 23_g_G2_PS M 1
+I224C8H15OH3Q1-1<=>I224C8H15OH3O1-1+OH                1.450e+11    0.240    16200  !RR 12_P_P_4_Q M 1
+I224C8H15OH3Q1-4<=>I224C8OH3YO1-4+OH                  3.170e+10    0.030     9292  !RR 23_de_G2_PT M 1
+I224C8H15OH3Q1-5<=>I224C8OH3YO1-5+OH                  3.130e+10   -0.190    12030  !RR 12_P_P_6_S M 1
+
+! Class24: O2 addition to QOHOOH reactions
+IC8Q3OH4-5R+O2<=>IC8Q3OH4-5O2                         8.000e+18   -2.370     1115  !RR 8_P M 1
+IC8Q3OH4-1R+O2<=>IC8Q3OH4-1O2                         8.000e+18   -2.370     1115  !RR 8_P M 1
+I224C8H15OH3Q4-5+O2<=>I224C8OH3Q4-5O2                 8.000e+18   -2.370     1115  !RR 8_P M 1
+I224C8H15OH3Q4-1+O2<=>I224C8OH3Q4-1O2                 8.000e+18   -2.370     1115  !RR 8_P M 1
+I224C8H15OH3Q1-1+O2<=>I224C8OH3Q1-1O2                 8.000e+18   -2.370     1115  !RR 8_P M 1
+I224C8H15OH3Q1-4+O2<=>I224C8OH3Q1-4O2                 2.530e+11    0.330     -417  !RR 8_T M 1
+I224C8H15OH3Q1-5+O2<=>I224C8OH3Q1-5O2                 8.000e+18   -2.370     1115  !RR 8_P M 1
+
+! Class25: O2QOHOOH HO2 elimination reactions
+I224C8OH3Q1-4O2<=>I224C8H144OH3Q1+HO2                 1.770e+10    0.890    29510  !RR 15_T_P M 6
+I224C8OH3Q1-4O2<=>I224C8H143OH3Q1+HO2                 9.730e+10    0.580    29610  !RR 15_T_S M 1
+I224C8OH3Q1-5O2<=>I224C8H144OH3Q1+HO2                 1.030e+08    1.320    28890  !RR 15_P_T M 1
+
+! Class26: OH-KHP formation from O2QOHOOH reactions
+IC8Q3OH4-5O2<=>IC8OH4KET35+OH                         3.120e+05    1.710    15670  !RR 9_P_S_6 M 1
+IC8Q3OH4-1O2<=>IC8OH4KET31+OH                         3.120e+05    1.710    15670  !RR 9_P_S_6 M 1
+I224C8OH3Q1-1O2<=>I224C8OH3KET1-1+OH                  6.160e+02    2.550    18280  !RR 9_P_P_6 M 2
+I224C8OH3Q1-4O2<=>I224C8OH3KET1-4+OH                  2.180e+07    1.310    16470  !RR 9_T_P_7 M 2
+I224C8OH3Q1-5O2<=>I224C8OH3KET1-5+OH                  4.660e+05    0.980    15460  !RR 9_P_P_8 M 2
+
+! Class27: OH-KHP decomposition reactions reactions
+IC8OH4KET35<=>CH2O+CH3COHCO+TC4H9+OH                  2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+IC8OH4KET31<=>CH2O+IC3H6CO+TC3H6OH+OH                 2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+I224C8OH3KET1-1<=>CH2O+I2C4H51OH1KET3+IC3H7+OH        2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+I224C8OH3KET1-4<=>CH3COCH3+I2C4H51OH1KET3+CH3+OH      5.520e+15    0.000    43000  !RR 10_T_other M 1
+I224C8OH3KET1-5<=>CH2O+SC3H5OH+TC3H6CHO+OH            4.170e+18   -0.750    43910  !RR 10_P_other M 1
+
+! Class28: O2QOHOOH isomerization reactions
+IC8Q3OH4-5O2<=>I224C8OH4Q35-5                         6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+IC8Q3OH4-5O2<=>I224C8OH4Q35-1                         7.101e+04    1.800    19760  !RR 14_P_P_8 M 9
+IC8Q3OH4-1O2<=>I224C8OH4Q13-1                         1.212e+10    0.620    22000  !RR 14_P_P_6 M 6
+IC8Q3OH4-1O2<=>I224C8OH4Q13-5                         4.734e+04    1.800    19760  !RR 14_P_P_8 M 6
+I224C8OH3Q4-5O2<=>I224C8OH3Q45-3A                     6.050e+04    1.950    17870  !RR 14_P_S_6 M 1
+I224C8OH3Q4-5O2<=>I224C8OH3Q45-5                      6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+I224C8OH3Q4-5O2<=>I224C8OH3Q45-1                      7.101e+04    1.800    19760  !RR 14_P_P_8 M 9
+I224C8OH3Q4-1O2<=>I224C8OH3Q14-3A                     6.050e+04    1.950    17870  !RR 14_P_S_6 M 1
+I224C8OH3Q4-1O2<=>I224C8OH3Q14-1                      1.212e+10    0.620    22000  !RR 14_P_P_6 M 6
+I224C8OH3Q4-1O2<=>I224C8OH3Q14-5                      4.734e+04    1.800    19760  !RR 14_P_P_8 M 6
+I224C8OH3Q1-1O2<=>I224C8OH3Q11-3A                     6.050e+04    1.950    17870  !RR 14_P_S_6 M 1
+I224C8OH3Q1-1O2<=>I224C8OH3Q11-1                      6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+I224C8OH3Q1-1O2<=>I224C8OH3Q11-4                      2.410e+06    1.200    13800  !RR 14_P_T_7 M 1
+I224C8OH3Q1-1O2<=>I224C8OH3Q11-5                      4.734e+04    1.800    19760  !RR 14_P_P_8 M 6
+I224C8OH3Q1-4O2<=>I224C8OH3Q14-5                      2.244e+09    1.200    33500  !RR 14_T_P_5 M 6
+I224C8OH3Q1-4O2<=>I224C8OH3Q14-3A                     5.650e+09    0.700    30100  !RR 14_T_S_5 M 1
+I224C8OH3Q1-4O2<=>I224C8OH3Q14-1                      2.460e+06    1.500    20010  !RR 14_T_P_7 M 6
+I224C8OH3Q1-5O2<=>I224C8OH3Q15-4                      6.350e+08    0.800    27100  !RR 14_P_T_5 M 1
+I224C8OH3Q1-5O2<=>I224C8OH3Q15-3A                     6.050e+04    1.950    17870  !RR 14_P_S_6 M 1
+I224C8OH3Q1-5O2<=>I224C8OH3Q15-5                      6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+I224C8OH3Q1-5O2<=>I224C8OH3Q15-1                      4.734e+04    1.800    19760  !RR 14_P_P_8 M 6
+
+! Class29: POHOOH decomposition reactions
+I224C8OH4Q35-5<=>CH2O+NEC7H124OH4Q3+OH                3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+I224C8OH4Q35-5<=>TC4H9CHO+CH2COHCH2OOH+OH             2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I224C8OH4Q35-1<=>CHOC(CH3)OHCH2Q+IC4H8+OH             2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I224C8OH4Q13-1<=>IC4H7OOH+OH+HCO+TC3H6OH              2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I224C8OH4Q13-1<=>CH2O+XC7H121OH4Q3+OH                 3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+I224C8OH4Q13-5<=>NEOC5KET+IC3H5OH+OH                  2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I224C8OH3Q45-5<=>I224C8H144BOH3Q5+HO2                 3.890e+13   -0.150    15500  !RR 17_beta_T_P M 1
+I224C8OH3Q45-1<=>IC4H8+I2C4H6OH1Q23-1A                1.390e+14    0.000    29590  !RR 17_delta_T_P M 1
+I224C8OH3Q14-1<=>IC4H7OOH+TQC4H7OHI                   1.390e+14    0.000    29590  !RR 17_delta_T_P M 1
+I224C8OH3Q14-1<=>CH2O+XC7H121OH3Q4+OH                 3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+I224C8OH3Q14-5<=>I224C8H144OH3Q1+HO2                  3.890e+13   -0.150    15500  !RR 17_beta_T_P M 1
+I224C8OH3Q11-1<=>CH2O+XC7H121BOH3Q1+OH                6.160e+13    0.000    13400  !RR 17_gamma_P_P M 2
+I224C8OH3Q11-4<=>SC4H7OH-I+IIC4H7Q2-T                 1.390e+14    0.000    28040  !RR 17_delta_P_T M 1
+I224C8OH3Q15-4<=>I224C8H144OH3Q1+HO2                  8.380e+09    0.920    14500  !RR 17_beta_P_T M 1
+I224C8OH3Q15-4<=>SC4H7OOH-I+IC4H8O2H-T                1.390e+14    0.000    28040  !RR 17_delta_P_T M 1
+I224C8OH3Q15-5<=>CH2O+NEC7H124OH3Q1+OH                3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+I224C8OH3Q15-1<=>CH2O+XC7H121OH3Q5+OH                 3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+
+! Class30: POHOOH to ether-OHOOHs reactions
+I224C8OH4Q35-5<=>I224C8OH4O55Q3+OH                    6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8OH4Q35-5<=>I224C8OH4O35Q5+OH                    1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I224C8OH4Q35-1<=>I224C8OH4O15Q3+OH                    2.350e+10   -0.070    12430  !RR 16_P_P_6_S M 1
+I224C8OH4Q35-1<=>I224C8OH4O13Q5+OH                    1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I224C8OH4Q13-1<=>I224C8OH4O13Q1+OH                    1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I224C8OH4Q13-1<=>I224C8OH4O11Q3+OH                    6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8OH4Q13-5<=>I224C8OH4O35Q1+OH                    1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I224C8OH4Q13-5<=>I224C8OH4O15Q3+OH                    2.350e+10   -0.070    12430  !RR 16_P_P_6_S M 1
+I224C8OH3Q45-5<=>I224C8OH3O55Q4+OH                    6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8OH3Q45-5<=>I224C8OH3O45Q5+OH                    9.520e+12    0.000    11460  !RR 16_T_P_3_S M 1
+I224C8OH3Q45-1<=>I224C8OH3O15Q4+OH                    2.350e+10   -0.070    12430  !RR 16_P_P_6_S M 1
+I224C8OH3Q45-1<=>I224C8OH3O14Q5+OH                    5.400e+10    0.010    12270  !RR 16_T_P_5_S M 1
+I224C8OH3Q14-1<=>I224C8OH3O14Q1+OH                    5.400e+10    0.010    12270  !RR 16_T_P_5_S M 1
+I224C8OH3Q14-1<=>I224C8OH3O11Q4+OH                    6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8OH3Q14-5<=>I224C8OH3O45Q1+OH                    9.520e+12    0.000    11460  !RR 16_T_P_3_S M 1
+I224C8OH3Q14-5<=>I224C8OH3O15Q4+OH                    2.350e+10   -0.070    12430  !RR 16_P_P_6_S M 1
+I224C8OH3Q11-1<=>I224C8OH3O11Q1+OH                    1.398e+12    0.000    20150  !RR 16_P_P_4_S M 2
+I224C8OH3Q11-4<=>I224C8OH3O14Q1+OH                    1.448e+10    0.000     9096  !RR 16_P_T_5_S M 2
+I224C8OH3Q11-5<=>I224C8OH3O15Q1+OH                    4.700e+10   -0.070    12430  !RR 16_P_P_6_S M 2
+I224C8OH3Q15-4<=>I224C8OH3O45Q1+OH                    5.680e+12    0.010    12850  !RR 16_P_T_3_S M 1
+I224C8OH3Q15-4<=>I224C8OH3O14Q5+OH                    7.240e+09    0.000     9096  !RR 16_P_T_5_S M 1
+I224C8OH3Q15-5<=>I224C8OH3O55Q1+OH                    6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8OH3Q15-5<=>I224C8OH3O15Q5+OH                    2.350e+10   -0.070    12430  !RR 16_P_P_6_S M 1
+I224C8OH3Q15-1<=>I224C8OH3O15Q1+OH                    2.350e+10   -0.070    12430  !RR 16_P_P_6_S M 1
+I224C8OH3Q15-1<=>I224C8OH3O11Q5+OH                    6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+
+! Class31: O2 addition to oleR:
+IC8D3-5R+O2<=>IC8D3-5O2                               1.830e+02    2.180    -2200  !RR 31_PA M 1
+IC8D3-1R+O2<=>IC8D3-1O2R                              1.630e+14   -0.620       -1  !RR 6_P M 1
+
+! Class32: oleROO HO2 elimination:
+
+! Class33: oleROO isomerization:
+IC8D3-5O2<=>IC8D4Q5-3R                                3.840e-06    5.040     9710  !RR 33_PA_PA_6 M 3
+IC8D3-1O2R<=>IC8D3OOH1-1AR                            1.068e+07    1.460    21000  !RR 7_P_P_6 M 6
+
+! Class34: oleQOOH decomposition:
+IC8D3OOH1-1AR<=>CH2O+I24C7D13+OH                      7.880e-01    0.080      -21  !RR 13_gamma M 1
+
+! Class35: oleQOOH to cyclic ethers:
+IC8D4Q5-3R<=>I224C8H143O5-5+OH                        1.450e+11    0.240    16200  !RR 33_PA_PA_4 M 1
+IC8D3OOH1-1AR<=>IC8D3O1-1A+OH                         1.450e+11    0.240    16200  !RR 12_P_P_4_Q M 1
+
+! Class36: OleOHs (roho2 elim) consumption:
+IC8D4-3OH+OH<=>CH3+NEC7H11D34OH3+H2O                  1.010e+06    2.200     -437  !RR 36 M 1
+IC8D4-3OH+OH<=>CH3+C3H5-T+C3H3OH1-1+CH3+H2O           3.030e+06    2.200     -437  !RR 36 M 3
+IC8D4-3OH+OH<=>NEC5H10OH-1J1+C3H4-A+H2O               1.010e+06    2.200     -437  !RR 36 M 1
+IC8D3-3OH+OH<=>CH3+NEC7H11D34OH3+H2O                  1.010e+06    2.200     -437  !RR 36 M 1
+
+! Class37: O2 addition to oleQOOH:
+I224C8H143OOH5-1+O2<=>I224C83OOH5-1O2                 8.000e+18   -2.370     1115  !RR 8_P M 1
+IC8D4Q5-3R+O2<=>IC8D3Q5-5O2R                          4.620e+16   -1.630      -20  !RR 37_PA M 1
+IC8D4OOH1-3R+O2<=>I224C83OOH1-5O2                     4.620e+16   -1.630      -20  !RR 37_PA M 1
+IC8D3OOH1-1AR+O2<=>IC8D3OOH1-1AO2R                    8.000e+18   -2.370     1115  !RR 8_P M 1
+
+! Class38: oleKHP formation:
+IC8D3Q5-5O2R<=>IC8D3Q5Y5+OH                           3.080e+03    2.550    18280  !RR 38_PA_PA_6 M 2
+IC8D3OOH1-1AO2R<=>IC8D3KET1-1A+OH                     6.160e+02    2.550    18280  !RR 9_P_P_6 M 2
+
+! Class39: oleKHP decomposition:
+IC8D3Q5Y5<=>CH2O+C2HCHO+TC4H9+OH                      2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+IC8D3KET1-1A<=>CH2O+XC7H112KET1R4+OH                  2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+
+! Class40: OHOleOOHs (o2qohooh elim) consumption:
+I224C8H144OH3Q1<=>CH2O+OH+SC4H7OH-I+C3H5-T            3.330e+16   -0.010    41660  !RR 18_P M 1
+I224C8H143OH3Q1<=>CH2O+OH+XC7H122OH3-4                3.330e+16   -0.010    41660  !RR 18_P M 1
+
+! Class41: oleO2QOOH isomerization:
+I224C83OOH5-1O2<=>I224C8H133Q15-1                     1.212e+10    0.620    21960  !RR 14_P_P_6 M 6
+I224C83OOH1-5O2<=>I224C8H133Q15-5                     6.060e+09    0.620    21960  !RR 41_P_PA_6 M 3
+IC8D3OOH1-1AO2R<=>I224C8H133Q11-1                     6.060e+09    0.620    21960  !RR 14_P_P_6 M 3
+
+! Class42: oleP(OOH)2 decomposition:
+I224C8H133Q15-1<=>CH2O+I24C7D13Q5+OH                  6.570e+15   -0.490    26180  !RR 17_delta_P_P M 1
+I224C8H133Q11-1<=>CH2O+I24C7D13Q1+OH                  1.314e+16   -0.490    26180  !RR 17_delta_P_P M 2
+
+! Class43: P(OOH)2 to cyclic ethers-OOH:
+I224C8H133Q15-1<=>I224C83O11-5OOH+OH                  6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8H133Q15-5<=>I224C83O55-1OOH+OH                  6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I224C8H133Q11-1<=>I224C83O11-1OOH+OH                  1.398e+12    0.000    20150  !RR 16_P_P_4_S M 2
+
+! Class44: oleO2QOOH elimination to dienes-OOH:
+
+! Class45: olecEthOOHs (from oleP(OOH)2) consumption:
+I224C83O11-5OOH<=>C3H4-P+CH2O+CH2O+C3H5-T+OH          1.500e+16    0.000    40800  !RR 19_P M 1
+I224C83O55-1OOH<=>CH2O+IC6D34-2R+CH2O+OH              1.500e+16    0.000    40800  !RR 19_P M 1
+I224C83O11-1OOH<=>CH2O+IC6D34-2R+CH2O+OH              1.500e+16    0.000    40800  !RR 19_P M 1
+
+! Class46: olecEths (from oleQOOH) consumption:
+I224C8H143O5-5+OH<=>HCO+H2O+C3H3+TC4H9                8.680e+12   -0.050       80  !RR 46 M 2
+IC8D3O1-1A+OH<=>HCO+I24C7D13+H2O                      8.680e+12   -0.050       80  !RR 46 M 2
+
+! Class47: OHcEthOOHs (from POHOOH2) consumption:
+I224C8OH4O55Q3<=>CH2O+SC2H2OH+TC4H9CHO+OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I224C8OH4O35Q5<=>TC4H9CHO+SC2H2OH+CH2O+OH             1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH4O15Q3<=>IC3H5OH+CH2O+TC3H6CHO+OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I224C8OH4O15Q3<=>IC4H8+CH2O+C3Y1-2OH-2J+OH            2.120e+16   -0.100    41730  !RR 19_S M 1
+I224C8OH4O13Q5<=>CH2O+CH2O+OH+I2C6H103OH4-2           1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH4O13Q1<=>IC3H6OHCHO+C3H5-T+CH2O+OH            1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH4O11Q3<=>CH2O+C3H5-T+IC3H6OHCHO+OH            2.120e+16   -0.100    41730  !RR 19_S M 1
+I224C8OH4O35Q1<=>CH2O+CH2O+OH+I2C6H103OH4-2           1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O55Q4<=>CH2O+OH+CH2CO+NEC5H10OH-1J1          2.280e+16    0.000    41310  !RR 19_T M 2
+I224C8OH3O45Q5<=>CH2O+OH+CH2CO+NEC5H10OH-1J1          1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O15Q4<=>CH2O+OH+IC4H8+CH3COCHOH              1.140e+16    0.000    41310  !RR 19_T M 1
+I224C8OH3O15Q4<=>SC4H7OH-I+OH+CH2O+CH3COCH2           1.140e+16    0.000    41310  !RR 19_T M 1
+I224C8OH3O14Q5<=>CH2O+OH+IC4H8+CH3COCHOH              1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O14Q1<=>CH3COCH3+SC4H7OH-IP+CH2O+OH          1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O11Q4<=>SC4H7OH-IP+CH2O+CH3COCH3+OH          1.140e+16    0.000    41310  !RR 19_T M 1
+I224C8OH3O45Q1<=>SC4H7OH-I+CH3COCH2+CH2O+OH           1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O11Q1<=>CH2O+CH2O+OH+C3H3D12OH3+IC3H7        1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O15Q1<=>CH2O+CH2O+OH+SC3H5OH+C3H5-T          1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O55Q1<=>SC4H7OH-I+CH2O+OH+CH2O+C2H3          1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O15Q5<=>CH2O+CH2O+OH+SC4H7OH-I+C2H3          1.500e+16    0.000    40800  !RR 19_P M 1
+I224C8OH3O11Q5<=>SC3H5OH+CH2O+OH+CH2O+C3H5-T          1.500e+16    0.000    40800  !RR 19_P M 1
+
+! Class48: OHcEthDec (from QOHOOH) consumption:
+IC8OH4-CYO35+OH<=>IC3H5OH+TC4H9CO+H2O                 4.340e+12   -0.050       80  !RR 48 M 1
+IC8OH4-CYO35+OH<=>HCO+NEC7H13OH4-3+H2O                4.340e+12   -0.050       80  !RR 48 M 1
+IC8OH4-CYO13+OH<=>HCO+XC7H13OH4-2+H2O                 4.340e+12   -0.050       80  !RR 48 M 1
+IC8OH4-CYO13+OH<=>IC4H8+CH3+HOCCO+CH3+H2O             4.340e+12   -0.050       80  !RR 48 M 1
+I224C8H15OH3O4-5+OH<=>TC4H9+HCO+PC3H4OH-2+H2O         4.340e+12   -0.050       80  !RR 48 M 1
+I224C8OH3YO1-4+OH<=>SC4H7OH-I+TC3H6CHO+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I224C8OH3YO1-3+OH<=>HCO+XC7H13OH3-2+H2O               4.340e+12   -0.050       80  !RR 48 M 1
+I224C8H15OH3O1-1+OH<=>HCO+XC7H13OH3-1+H2O             8.680e+12   -0.050       80  !RR 48 M 2
+I224C8OH3YO1-5+OH<=>C3H6+SC4H7OH-I+HCO+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I224C8OH3YO1-5+OH<=>IC4H8+SC3H5OH+HCO+H2O             4.340e+12   -0.050       80  !RR 48 M 1
+
+! Class49: dieneOOHdecom (oleO2QOOH elim) consumption:
+I24C7D13Q5<=>CH2O+IC6D13-4R+OH                        3.330e+16   -0.010    41660  !RR 18_P M 1
+I24C7D13Q1<=>CH2O+IC6D34-2R+OH                        3.330e+16   -0.010    41660  !RR 18_P M 1
+
+! Class50: alpha-QOHOOH To KHPs:
+IC8OH4Q-3J+O2<=>IC8KET3-4+HO2                         3.370e+10    0.760    -1636  !RR 50_S M 1
+I224C8OH3Q1-3A+O2<=>IC8KET3-1+HO2                     3.370e+10    0.760    -1636  !RR 50_S M 1
+
+! Class51: Cycloaddition reactions:
+IC8D3-5O2<=>I224C8H151OO4-5                           1.470e-04    4.680    18880  !RR 51_1_5_exo M 1
+IC8D3-5O2<=>I224C8H152YOO3-5                          7.230e-16    7.930    15980  !RR 51_1_5_endo M 1
+IC8D3-1O2R<=>I224C8H151YOO1-4                         3.550e+00    3.050     9170  !RR 51_1_6_endo M 1
+IC8D3-1O2R<=>I224C8H152OO1-3                          1.350e-03    4.200     8010  !RR 51_1_6_exo M 1
+
+! Class52: Cycloperoxide decompositions:
+I224C8H151OO4-5<=>CH2O+NEC7Y4-3R                      8.210e+10    0.440    12900  !RR 52_exo M 1
+I224C8H152YOO3-5<=>TC4H9CHO+CCYCCO-T1                 1.010e+10    0.960    20700  !RR 52_endo M 1
+I224C8H151YOO1-4<=>CH2O+CH3COCH3+IC4H7-I1             1.010e+10    0.960    20700  !RR 52_endo M 1
+I224C8H152OO1-3<=>CH2O+CH3COCH3+IC4H7-I1              8.210e+10    0.440    12900  !RR 52_exo M 1
+
+! Class54: allyR-allyR recombination (RA-RA)
+IC8D3-5R+IC8D3-5R<=>I224799C16H30D37                  4.110e+16   -1.260     1560  !RR 54 M 1
+
+! Class55: dienes consumption
+I224799C16H30D37+OH<=>I224C9H16D35+NEC7D3-4R+H2O      7.770e+05    2.200     -437  !RR 55_OH M 1
+I224799C16H30D37+HO2<=>I224C9H16D35+NEC7D3-4R+H2O2     7.820e-01    3.970    11700  !RR 55_HO2 M 1
+I224799C16H30D37+OH<=>NEC7H12D34+C2H4+NEC7D3-4R+H2O     1.554e+06    2.200     -437  !RR 55_OH M 1
+I224799C16H30D37+HO2<=>NEC7H12D34+C2H4+NEC7D3-4R+H2O2     1.564e+00    3.970    11700  !RR 55_HO2 M 1
+
+END

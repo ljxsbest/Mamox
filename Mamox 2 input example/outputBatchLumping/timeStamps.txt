@@ -1,0 +1,12 @@
+Detailed generation for C5H10-1 ended at 1 s
+Detailed generation for C5H10-2 ended at 1 s
+Detailed generation for AC5H10 ended at 2 s
+Detailed generation for BC5H10 ended at 3 s
+Detailed generation for CC5H10 ended at 3 s
+Detailed generation for C6H12-1 ended at 6 s
+Detailed generation for C6H12-2 ended at 8 s
+Detailed generation for C6H12-3 ended at 8 s
+Detailed generation for XC6D1 ended at 10 s
+Detailed generation for XC6D2 ended at 10 s
+Detailed generation for NEC6D3 ended at 11 s
+Detailed generation for C7H14-1 ended at 15 s

@@ -1,0 +1,101 @@
+! C5H10-1 COMBUSTION MECHANISM
+! C=C-C-C-C
+
+ELEMENTS
+
+C
+H
+O
+N
+AR
+HE
+
+END
+
+
+SPECIES
+
+
+! Generic species
+O2                 H2                 H2O2               H2O
+N2                 AR                 HE                 CO
+CO2                HO2                OH                 H
+CH3                C2H5               CH3O               CH3OH
+CH3O2              CH3O2H
+
+!++++++++++++++++++ C5H10-1 SUBMECHANISM ++++++++++++++++++
+
+! Fuel
+C5H10-1
+
+! R alkyl radicals
+C5H91-1            NC5D1-2a           C5H91-3            C5H91-4            
+C5H91-5            
+
+
+!++++++++++++++++++ DECOMPOSITION PRODUCTS ++++++++++++++++++
+! OLE
+C5H10-1            
+
+! OLE-R
+C5H91-1            NC5D1-2a           C5H91-3            C5H91-4            
+C5H91-5            
+
+
+END
+
+
+REACTIONS
+
+! Initiation reactions:
+
+! Class 2: H abstraction:
+C5H10-1 + H             => C5H91-1 + H2                                5.440e+05    2.540    12819  !RR 2_H_PV M 2
+C5H10-1 + H             => NC5D1-2a + H2                               2.410e+05    2.550     9611  !RR 2_H_SV M 1
+C5H10-1 + H             => C5H91-3 + H2                                2.120e+05    2.590     2654  !RR 2_H_SA M 2
+C5H10-1 + H             => C5H91-4 + H2                                2.410e+06    2.240     4713  !RR 2_H_S M 2
+C5H10-1 + H             => C5H91-5 + H2                                1.558e+05    2.770     6214  !RR 2_H_P M 3
+C5H10-1 + OH            => C5H91-1 + H2O                               2.460e+03    3.010     1772  !RR 2_OH_PV M 2
+C5H10-1 + OH            => NC5D1-2a + H2O                              1.620e+03    2.580      803  !RR 2_OH_SV M 1
+C5H10-1 + OH            => C5H91-3 + H2O                               1.240e+06    1.840     -790  !RR 2_OH_SA M 2
+C5H10-1 + OH            => C5H91-4 + H2O                               5.422e+09    0.950      494  !RR 2_OH_S01 M 2
+C5H10-1 + OH            => C5H91-5 + H2O                               1.069e+07    1.820      849  !RR 2_OH_P1 M 3
+C5H10-1 + O             => C5H91-1 + OH                                1.200e+11    0.700     8959  !RR 2_O_PV M 2
+C5H10-1 + O             => NC5D1-2a + OH                               6.030e+10    0.700     7632  !RR 2_O_SV M 1
+C5H10-1 + O             => C5H91-3 + OH                                6.470e-03    4.540    -2470  !RR 2_O_SA M 2
+C5H10-1 + O             => C5H91-4 + OH                                1.500e+04    2.920     1927  !RR 2_O_S M 2
+C5H10-1 + O             => C5H91-5 + OH                                1.048e+07    2.150     5347  !RR 2_O_P M 3
+C5H10-1 + O2            => C5H91-1 + HO2                               2.000e+13    0.000    62270  !RR 2_O2_PV M 2
+C5H10-1 + O2            => NC5D1-2a + HO2                              1.000e+13    0.000    58770  !RR 2_O2_SV M 1
+C5H10-1 + O2            => C5H91-3 + HO2                               3.030e+01    3.450    34600  !RR 2_O2_SA M 2
+C5H10-1 + O2            => C5H91-4 + HO2                               6.420e+12    0.150    49900  !RR 2_O2_S M 2
+C5H10-1 + O2            => C5H91-5 + HO2                               9.120e+13   -0.150    53130  !RR 2_O2_P M 3
+C5H10-1 + HO2           => C5H91-1 + H2O2                              9.570e+02    3.060    20799  !RR 2_HO2_PV M 2
+C5H10-1 + HO2           => NC5D1-2a + H2O2                             1.560e+04    2.820    24428  !RR 2_HO2_SV M 1
+C5H10-1 + HO2           => C5H91-3 + H2O2                              1.368e-03    4.480     6720  !RR 2_HO2_SA M 2
+C5H10-1 + HO2           => C5H91-4 + H2O2                              1.742e+01    3.600    13470  !RR 2_HO2_S M 2
+C5H10-1 + HO2           => C5H91-5 + H2O2                              2.047e+02    3.370    17580  !RR 2_HO2_P M 3
+C5H10-1 + CH3           => C5H91-1 + CH4                               4.920e+02    2.930    13793  !RR 2_CH3_PV M 2
+C5H10-1 + CH3           => NC5D1-2a + CH4                              3.260e+02    2.930    11351  !RR 2_CH3_SV M 1
+C5H10-1 + CH3           => C5H91-3 + CH4                               2.420e+02    3.080     5727  !RR 2_CH3_SA M 2
+C5H10-1 + CH3           => C5H91-4 + CH4                               1.052e+05    2.070     7635  !RR 2_CH3_S M 2
+C5H10-1 + CH3           => C5H91-5 + CH4                               1.893e+00    3.560     7358  !RR 2_CH3_P M 3
+C5H10-1 + CH3O          => C5H91-1 + CH3OH                             0.000e+00    0.000        0  !RR  M 2
+C5H10-1 + CH3O          => NC5D1-2a + CH3OH                            0.000e+00    0.000        0  !RR  M 1
+C5H10-1 + CH3O          => C5H91-3 + CH3OH                             4.000e+01    2.900     8609  !RR 2_CH3O_SA M 2
+C5H10-1 + CH3O          => C5H91-4 + CH3OH                             1.100e+11    0.000     5000  !RR 2_CH3O_S M 2
+C5H10-1 + CH3O          => C5H91-5 + CH3OH                             1.500e+11    0.000     7000  !RR 2_CH3O_P M 3
+C5H10-1 + CH3O2         => C5H91-1 + CH3O2H                            1.880e+08    1.410    28200  !RR 2_CH3O2_PV M 2
+C5H10-1 + CH3O2         => NC5D1-2a + CH3O2H                           9.400e+07    1.410    27700  !RR 2_CH3O2_SV M 1
+C5H10-1 + CH3O2         => C5H91-3 + CH3O2H                            3.350e+09    1.020    20632  !RR 2_CH3O2_SA M 2
+C5H10-1 + CH3O2         => C5H91-4 + CH3O2H                            1.295e+00    3.880    15130  !RR 2_CH3O2_S M 2
+C5H10-1 + CH3O2         => C5H91-5 + CH3O2H                            2.352e+00    4.060    18190  !RR 2_CH3O2_P M 3
+C5H10-1 + C2H5          => C5H91-1 + C2H6                              0.000e+00    0.000        0  !RR  M 2
+C5H10-1 + C2H5          => NC5D1-2a + C2H6                             0.000e+00    0.000        0  !RR  M 1
+C5H10-1 + C2H5          => C5H91-3 + C2H6                              0.000e+00    0.000        0  !RR  M 2
+C5H10-1 + C2H5          => C5H91-4 + C2H6                              0.000e+00    0.000        0  !RR  M 2
+C5H10-1 + C2H5          => C5H91-5 + C2H6                              0.000e+00    0.000        0  !RR  M 3
+
+! Oxygen addition to alkyl radicals:
+
+END

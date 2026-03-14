@@ -1,0 +1,963 @@
+! IC7D2 COMBUSTION MECHANISM
+! C-C(=C-C-C-C)-C
+
+ELEMENTS
+
+C
+H
+O
+N
+AR
+HE
+
+END
+
+
+SPECIES
+
+
+! Generic species
+O2                 H2                 H2O2               H2O
+N2                 AR                 HE                 CO
+CO2                HO2                OH                 H
+CH3                C2H5               CH3O               CH3OH
+CH3O2              CH3O2H
+
+!++++++++++++++++++ IC7D2 SUBMECHANISM ++++++++++++++++++
+
+! Fuel
+IC7D2
+
+! oleR Alkenyl radicals
+IC7D1-3            I2C7H132-3         IC7D3-2            I2C7H132-5         
+I2C7H132-6         
+
+! oleROO alkenyl peroxy radicals
+I2C7H132-1O2       I2C7H132-4O2       I2C7H132-5O2       I2C7H132-6O2       
+
+! oleQOOH hydroperoxyalkenyl radicals
+I2C7H122OOH1-4     I2C7H122OOH1-5     I2C7H122OOH1-1     I2C7H122OOH4-1     
+I2C7H122OOH4-5     I2C7H122OOH4-6     I2C7H122OOH5-1     I2C7H122OOH5-4     
+I2C7H122OOH5-6     I2C7H122OOH6-4     I2C7H122OOH6-5     
+
+! oleO2QOOH Hydroperoxyalkenylperoxy radicals
+I2C7H122OOH1-4O2   I2C7H122OOH1-5O2   I2C7H122OOH1-1O2   I2C7H122OOH4-1O2   
+I2C7H122OOH4-5O2   I2C7H122OOH4-6O2   I2C7H122OOH5-1O2   I2C7H122OOH5-4O2   
+I2C7H122OOH5-6O2   I2C7H122OOH6-4O2   I2C7H122OOH6-5O2   
+
+! oleP(OOH)2 dihydroperoxy alkenyl radicals
+I2C7H112Q14-5      I2C7H112Q14-6      I2C7H112Q14-1      I2C7H112Q15-4      
+I2C7H112Q15-6      I2C7H112Q15-1      I2C7H112Q11-4      I2C7H112Q11-5      
+I2C7H112Q45-6      I2C7H112Q45-1      I2C7H112Q46-5      I2C7H112Q56-4      
+I2C7H112Q46-1      I2C7H112Q56-1      
+
+! oleKHPs
+I2C7H122KET45      I2C7H122KET46      I2C7H122KET54      I2C7H122KET56      
+I2C7H122KET64      I2C7H122KET65      
+
+! olecycEths/olecycEthOOHs from oleQOOH/olePOOH elimination
+I2C7H122O4-5       I2C7H122O4-6       I2C7H122O5-6       I2C7H112O45-1OOH   
+I2C7H112O46-1OOH   I2C7H112O14-1OOH   I2C7H112O56-1OOH   I2C7H112O46-5OOH   
+I2C7H112O56-4OOH   I2C7H112O14-5OOH   I2C7H112O45-6OOH   I2C7H112O14-6OOH   
+
+! ROHs alcoholic (hydroxyl) alkyl radicals
+I2C7H14OH-2J3      I2C7H14OH-3J2      I2C7H14OH-2J6      I2C7H14OH-3J5      
+I2C7H14OH-3J6      
+
+! ROHOO alcoholic peroxy radicals
+I2C7H14OH-2O2-3    I2C7H14OH-3O2-2    I2C7H14OH-2O2-6    I2C7H14OH-3O2-5    
+I2C7H14OH-3O2-6    
+
+! QOHOOHs alcoholic hydroperoxylalkyl radicals
+I2C7H13OH2Q3-4     I2C7H13OH2Q3-1     I2C7H13OH2Q3-5     I2C7H13OH2Q3-6     
+I2C7H13OH3Q2-1     I2C7H13OH3Q2-3     I2C7H13OH3Q2-4     I2C7H13OH3Q2-5     
+I2C7H13OH3Q2-6     I2C7H13OH2Q6-5     I2C7H13OH2Q6-4     I2C7H13OH2Q6-3     
+I2C7H13OH3Q5-4     I2C7H13OH3Q5-6     I2C7H13OH3Q5-3     I2C7H13OH3Q5-2     
+I2C7H13OH3Q5-1     I2C7H13OH3Q6-5     I2C7H13OH3Q6-4     I2C7H13OH3Q6-3     
+I2C7H13OH3Q6-2     
+
+! O2QOHOOHs alcoholic hydroperoxyl-alkylperoxy radicals
+I2C7H13OH2Q3-4O2   I2C7H13OH2Q3-1O2   I2C7H13OH2Q3-5O2   I2C7H13OH2Q3-6O2   
+I2C7H13OH3Q2-1O2   I2C7H13OH3Q2-4O2   I2C7H13OH3Q2-5O2   I2C7H13OH3Q2-6O2   
+I2C7H13OH2Q6-5O2   I2C7H13OH2Q6-4O2   I2C7H13OH2Q6-3O2   I2C7H13OH3Q5-4O2   
+I2C7H13OH3Q5-6O2   I2C7H13OH3Q5-2O2   I2C7H13OH3Q5-1O2   I2C7H13OH3Q6-5O2   
+I2C7H13OH3Q6-4O2   I2C7H13OH3Q6-2O2   
+
+! POHOOHs alcoholic dihydroperoxylalkyl radicals
+I2C7H12OH2Q34-5    I2C7H12OH2Q34-6    I2C7H12OH2Q34-1    I2C7H12OH2Q13-1    
+I2C7H12OH2Q13-4    I2C7H12OH2Q13-5    I2C7H12OH2Q35-4    I2C7H12OH2Q35-6    
+I2C7H12OH2Q35-1    I2C7H12OH2Q36-5    I2C7H12OH2Q36-4    I2C7H12OH3Q12-3    
+I2C7H12OH3Q12-1    I2C7H12OH3Q12-4    I2C7H12OH3Q12-5    I2C7H12OH3Q24-3    
+I2C7H12OH3Q24-5    I2C7H12OH3Q24-6    I2C7H12OH3Q24-1    I2C7H12OH3Q25-4    
+I2C7H12OH3Q25-6    I2C7H12OH3Q25-3    I2C7H12OH3Q25-1    I2C7H12OH3Q26-5    
+I2C7H12OH3Q26-4    I2C7H12OH3Q26-3    I2C7H12OH2Q56-4    I2C7H12OH2Q56-3    
+I2C7H12OH2Q56-1    I2C7H12OH2Q46-3    I2C7H12OH2Q46-5    I2C7H12OH2Q46-1    
+I2C7H12OH2Q36-1    I2C7H12OH3Q45-3    I2C7H12OH3Q45-2    I2C7H12OH3Q45-6    
+I2C7H12OH3Q45-1    I2C7H12OH3Q56-4    I2C7H12OH3Q56-3    I2C7H12OH3Q56-2    
+I2C7H12OH3Q15-2    I2C7H12OH3Q15-3    I2C7H12OH3Q15-1    I2C7H12OH3Q15-4    
+I2C7H12OH3Q56-1    I2C7H12OH3Q46-3    I2C7H12OH3Q46-5    I2C7H12OH3Q46-2    
+I2C7H12OH3Q46-1    I2C7H12OH3Q26-1    
+
+! OHKHPs
+I2C7H12OH2KET3-4   I2C7H12OH2KET3-1   I2C7H12OH2KET3-5   I2C7H12OH2KET3-6   
+I2C7H12OH2KET6-5   I2C7H12OH2KET6-4   I2C7H12OH2KET6-3   I2C7H12OH3KET5-4   
+I2C7H12OH3KET5-6   I2C7H12OH3KET5-2   I2C7H12OH3KET5-1   I2C7H12OH3KET6-5   
+I2C7H12OH3KET6-4   I2C7H12OH3KET6-2   
+
+! RAOOH allylic ROOH and subsequents
+IC7OOH1-D2         IC7OOH4-D2         IC7-1D3O           I2C7-2D4O          
+
+! RACH3 Higher oles
+I3C8D3             I24C8D2            
+
+! Waddington mechanism
+I2C7               I2C7               
+
+! oleOHs/oleOHOOHs from ROHOO/O2QOHOOH elimination
+I2C7H13OH2-3       I2C7H13OH3-1       I2C7H13OH3-2       I2C7H13OH2-5       
+I2C7H13OH3-4       I2C7H13OH3-5       I2C7H13OH2-3       I2C7H13OH3-1       
+I2C7H13OH3-2       I2C7H13OH3-4       I2C7H13OH3-5       I2C7H122OH5Q4      
+I2C7H121OH5Q4      I2C7H123OH3Q2      I2C7H122OH4Q5      I2C7H121OH4Q5      
+I2C7H122OH5Q1      I2C7H123OH2Q6      I2C7H123OH3Q5      I2C7H121OH3Q5      
+I2C7H122OH3Q5      I2C7H122OH4Q1      I2C7H123OH3Q6      I2C7H121OH3Q6      
+I2C7H122OH3Q6      
+
+! OHcycEths/OHcycEthOOHs from QOHOOH/POHOOH elimination
+I2C7H13OH2O3-4     I2C7H13OH2O1-3     I2C7H13OH2O3-5     I2C7H13OH2O3-6     
+I2C7H13OH3O1-2     I2C7H13OH3O2-3     I2C7H13OH3O2-4     I2C7H13OH3O2-5     
+I2C7H13OH3O2-6     I2C7H13OH2O5-6     I2C7H13OH2O4-6     I2C7H13OH3O4-5     
+I2C7H13OH3O5-6     I2C7H13OH3O3-5     I2C7H13OH3O1-5     I2C7H13OH3O4-6     
+I2C7H13OH3O3-6     I2C7H12OH2O35Q4    I2C7H12OH2O45Q3    I2C7H12OH2O36Q4    
+I2C7H12OH2O46Q3    I2C7H12OH2O13Q4    I2C7H12OH2O14Q3    I2C7H12OH2O11Q3    
+I2C7H12OH2O13Q1    I2C7H12OH2O34Q1    I2C7H12OH2O15Q3    I2C7H12OH2O35Q1    
+I2C7H12OH2O34Q5    I2C7H12OH2O36Q5    I2C7H12OH2O56Q3    I2C7H12OH2O13Q5    
+I2C7H12OH2O35Q6    I2C7H12OH2O34Q6    I2C7H12OH3O11Q2    I2C7H12OH3O12Q1    
+I2C7H12OH3O14Q2    I2C7H12OH3O24Q1    I2C7H12OH3O15Q2    I2C7H12OH3O25Q1    
+I2C7H12OH3O25Q4    I2C7H12OH3O45Q2    I2C7H12OH3O26Q4    I2C7H12OH3O46Q2    
+I2C7H12OH3O12Q4    I2C7H12OH3O24Q5    I2C7H12OH3O26Q5    I2C7H12OH3O56Q2    
+I2C7H12OH3O12Q5    I2C7H12OH3O25Q6    I2C7H12OH3O24Q6    I2C7H12OH2O45Q6    
+I2C7H12OH2O46Q5    I2C7H12OH2O15Q6    I2C7H12OH2O56Q4    I2C7H12OH2O14Q6    
+I2C7H12OH2O13Q6    I2C7H12OH3O46Q5    I2C7H12OH3O56Q4    I2C7H12OH3O14Q5    
+I2C7H12OH3O15Q4    I2C7H12OH3O45Q6    I2C7H12OH3O11Q5    I2C7H12OH3O15Q1    
+I2C7H12OH3O45Q1    I2C7H12OH3O15Q6    I2C7H12OH3O14Q6    I2C7H12OH3O12Q6    
+
+! Dienes
+I2C7H12D24         I2C7H12D25         
+
+! DieneOOHs
+I2C7H11D24-1OOH    I2C7H11D25-1OOH    I2C7H11D25-4OOH    I2C7H11D24-6OOH    
+
+
+!++++++++++++++++++ DECOMPOSITION PRODUCTS ++++++++++++++++++
+! R
+NC3H7              IC3H7              
+
+! QOOH
+C2H4O2H            C3H6OOH2-1         C3H6OOH1-2         
+
+! OLE
+C3H6               C2H4               I3C8D3             I24C8D2            
+C6H12-2            IC4H8              
+
+! CO aldehydes/ketones
+CH2O               CH3CHO             C2H5CHO            CH3COCH3           
+NC3H7CHO           
+
+! RO
+CH3CO              HCO                CH2CHO             NC3H7CO            
+CH3CHCHO           CH2CH2CHO          C2H5CO             CH3COCH2           
+
+! KHP
+NC4KET12           NC4KET13           C3KET21            HO2CH2CHO          
+NC4KET14           C3KET12            C3KET13            
+
+! POOH2
+C4H71-2,4OOH       C3H51-2,3OOH       
+
+! OLE-OOH
+AC3H5OOH           
+
+! OLE-R
+CC5H9-B            IC6D2-5            IC4H7-I1           C6H112-2           
+C3H5-T             C2H3               C3H5-S             C3H5-A             
+
+! OLE-CO
+IC5D2Y4            CH2CO              SC3H5CHO           AC3H5CHO           
+CH3CHCO            
+
+! smaller dienes
+C6H10D12           IC6D24             C3H4-A             C4H61-3            
+
+! smaller oleKHPs
+IC5D2Y4-1OOH       
+
+! oleOH
+IC3H5OH            C4H71-1OH          I2C6H11OH2-4       I2C5H9OH2-3        
+I2C5H9OH3-3        SC4H7OH-I          I2C6H11OH3-4       C2H3OH             
+SC3H5OH            C6H11OH2-2         
+
+! oleketo_radical
+IC5D2Y4-4J         I2C6H93KET5R2      I2C6H92KET5R4      HCCO               
+IC5D2Y4-4J         
+
+! OHoleOOH
+C6H101OH5Q4        CH2COHCH2OOH       I2C6H101OH4Q3      C4H61OH1Q3         
+C4H61OH1Q4         I2C6H101OH3Q4      SC4H7OOH-I         C6H101OH4Q2        
+
+! OHoleKeto
+CH3COHCO           CHOHCO             
+
+! oleROH
+SC2H2OH            C4H63,1-1OH        C4H64,1-1OH        I2C5H82OH3-4       
+I2C6H103OH3-5      SC4H7OH-IP         C4H63,1-3OH        C2H2OH             
+PC3H4OH-2          
+
+! dienesOH
+C6H9D12OH3         C4H5OH-13          C5H7D13OH4         
+
+! ROH
+TC3H6OH            I2C5H10OH-2J4      IC4H8OH-TI         I2C4H8OH-1J1       
+CC5H10OH           PC4H8OH-1          
+
+! dienesR
+C6H9D24-2          C6H9D25-2          I2C6H9D24-5        C3H3               
+C5H7D24-2          
+
+! diketo
+C3H4KETO13         
+
+! OHRO
+C3Y1-2OH-2J        HOCHCHO            
+
+! QOHOOH
+I2C5H9OH2Q3-4      TQC4H7OHI          
+
+! OHketo
+IC3H6OHCHO         
+
+! OHKHP
+I2C5H8OH2KET4-3    CHOC(CH3)OHCH2Q    I2C5H8OH3KET4-2    
+
+
+END
+
+
+REACTIONS
+
+! Class01: Unimolecular decompositions:
+IC7D2<=>CC5H9-B+C2H5                                  1.000e+16    0.000    71333  !RR 1_allyl_Others M 1
+IC6D2-5+CH3<=>IC7D2                                   8.000e+12    0.000        0  !RR  -1_Others M 1
+
+! Class02: H abstraction:
+IC7D2+H<=>IC7D1-3+H2                                  7.920e+03    3.080     3203  !RR 2_H_PA M 6
+IC7D2+H<=>I2C7H132-3+H2                               2.410e+05    2.550     9611  !RR 2_H_SV M 1
+IC7D2+H<=>IC7D3-2+H2                                  2.120e+05    2.590     2654  !RR 2_H_SA M 2
+IC7D2+H<=>I2C7H132-5+H2                               1.296e+06    2.300     3857  !RR 2_H_S M 2
+IC7D2+H<=>I2C7H132-6+H2                               7.830e+05    2.470     6796  !RR 2_H_P M 3
+IC7D2+OH<=>IC7D1-3+H2O                                4.200e+07    1.770      271  !RR 2_OH_PA M 6
+IC7D2+OH<=>I2C7H132-3+H2O                             3.000e+06    1.970     2848  !RR 2_OH_SV M 1
+IC7D2+OH<=>IC7D3-2+H2O                                2.020e+06    2.200     -437  !RR 2_OH_SA M 2
+IC7D2+OH<=>I2C7H132-5+H2O                             1.018e+10    0.870      601  !RR 2_OH_S01 M 2
+IC7D2+OH<=>I2C7H132-6+H2O                             4.080e+08    1.370     1654  !RR 2_OH_P1 M 3
+IC7D2+O<=>IC7D1-3+OH                                  1.938e-02    4.540    -2470  !RR 2_O_PA M 6
+IC7D2+O<=>I2C7H132-3+OH                               6.030e+10    0.700     7632  !RR 2_O_SV M 1
+IC7D2+O<=>IC7D3-2+OH                                  6.480e-03    4.540    -2470  !RR 2_O_SA M 2
+IC7D2+O<=>I2C7H132-5+OH                               1.462e+03    3.290     2181  !RR 2_O_S M 2
+IC7D2+O<=>I2C7H132-6+OH                               6.600e+06    2.190     5336  !RR 2_O_P M 3
+IC7D2+O2<=>IC7D1-3+HO2                                7.740e+01    3.520    36200  !RR 2_O2_PA M 6
+IC7D2+O2<=>I2C7H132-3+HO2                             1.000e+13    0.000    58770  !RR 2_O2_SV M 1
+IC7D2+O2<=>IC7D3-2+HO2                                6.060e+01    3.450    34600  !RR 2_O2_SA M 2
+IC7D2+O2<=>I2C7H132-5+HO2                             7.740e+13   -0.210    50090  !RR 2_O2_S M 2
+IC7D2+O2<=>I2C7H132-6+HO2                             7.020e+13   -0.140    53470  !RR 2_O2_P M 3
+IC7D2+HO2<=>IC7D1-3+H2O2                              1.854e-04    4.850     7680  !RR 2_HO2_PA M 6
+IC7D2+HO2<=>I2C7H132-3+H2O2                           1.560e+04    2.820    24428  !RR 2_HO2_SV M 1
+IC7D2+HO2<=>IC7D3-2+H2O2                              1.368e-03    4.480     6720  !RR 2_HO2_SA M 2
+IC7D2+HO2<=>I2C7H132-5+H2O2                           9.300e+01    3.370    13911  !RR 2_HO2_S M 2
+IC7D2+HO2<=>I2C7H132-6+H2O2                           6.510e+01    3.580    17350  !RR 2_HO2_P M 3
+IC7D2+CH3<=>IC7D1-3+CH4                               1.578e+02    3.240     7029  !RR 2_CH3_PA M 6
+IC7D2+CH3<=>I2C7H132-3+CH4                            3.260e+02    2.930    11351  !RR 2_CH3_SV M 1
+IC7D2+CH3<=>IC7D3-2+CH4                               2.420e+02    3.080     5727  !RR 2_CH3_SA M 2
+IC7D2+CH3<=>I2C7H132-5+CH4                            9.560e+03    2.380     7196  !RR 2_CH3_S M 2
+IC7D2+CH3<=>I2C7H132-6+CH4                            2.268e-01    3.750     6941  !RR 2_CH3_P M 3
+IC7D2+CH3O<=>IC7D1-3+CH3OH                            1.800e+01    2.950    11990  !RR 2_CH3O_PA M 6
+IC7D2+CH3O<=>I2C7H132-3+CH3OH                         5.500e+09    0.000     5000  !RR 2_CH3O_SV M 1
+IC7D2+CH3O<=>IC7D3-2+CH3OH                            4.000e+01    2.900     8609  !RR 2_CH3O_SA M 2
+IC7D2+CH3O<=>I2C7H132-5+CH3OH                         1.100e+11    0.000     5000  !RR 2_CH3O_S M 2
+IC7D2+CH3O<=>I2C7H132-6+CH3OH                         1.500e+11    0.000     7000  !RR 2_CH3O_P M 3
+IC7D2+CH3O2<=>IC7D1-3+CH3O2H                          1.710e+06    1.730    20000  !RR 2_CH3O2_PA M 6
+IC7D2+CH3O2<=>I2C7H132-3+CH3O2H                       9.400e+07    1.410    27700  !RR 2_CH3O2_SV M 1
+IC7D2+CH3O2<=>IC7D3-2+CH3O2H                          3.360e+09    1.020    20632  !RR 2_CH3O2_SA M 2
+IC7D2+CH3O2<=>I2C7H132-5+CH3O2H                       1.506e+00    3.870    14800  !RR 2_CH3O2_S M 2
+IC7D2+CH3O2<=>I2C7H132-6+CH3O2H                       5.580e-03    4.920    18000  !RR 2_CH3O2_P M 3
+IC7D2+C2H5<=>IC7D1-3+C2H6                             3.024e+11   -0.080     5700  !RR 2_C2H5_PA M 6
+IC7D2+C2H5<=>I2C7H132-3+C2H6                          1.610e+09    0.020     5900  !RR 2_C2H5_SV M 1
+IC7D2+C2H5<=>IC7D3-2+C2H6                             8.060e+10    0.020     5900  !RR 2_C2H5_SA M 2
+IC7D2+C2H5<=>I2C7H132-5+C2H6                          3.220e+10    0.020     5900  !RR 2_C2H5_S M 2
+IC7D2+C2H5<=>I2C7H132-6+C2H6                          6.060e+10   -0.080     5700  !RR 2_C2H5_P M 3
+
+! Class03: Alkenyl radical isomerization:
+IC7D3-2<=>IC7D1-3                                     0.000e+00    0.000        0  !RR  M 3
+I2C7H132-5<=>IC7D1-3                                  0.000e+00    0.000        0  !RR  M 3
+I2C7H132-6<=>IC7D1-3                                  4.500e+11    0.000    19500  !RR 3_P_PA_7 M 3
+
+! Class04: Alkenyl radical beta scissions:
+IC7D1-3<=>CH3+C6H10D12                                2.630e+11    0.770    38475  !RR 4_viny M 1
+CH3+IC6D24<=>IC7D3-2                                  1.760e+04    2.480     6130  !RR  -4_S_me M 1
+I2C7H132-5<=>IC4H7-I1+C3H6                            2.630e+11    0.770    38475  !RR 4_viny M 1
+I2C7H132-6<=>CC5H9-B+C2H4                             4.820e+09    1.160    22476  !RR 4_ally M 1
+
+! Class06: O addition to olefins
+IC7D2+O<=>I2C7H13-2-3O+H                              1.170e-03    4.940    -2423  !RR 6_IN_beta_H M 1
+IC7D2+O<=>C6H12-2+CH3                                 1.848e+09    1.200     -238  !RR 6_IN_T M 2
+IC7D2+O<=>IC4H8+C2H5CHO                               9.240e+08    1.200     -238  !RR 6_IN_beta_radical M 1
+
+! Class07: O2 addition to vinylic radicals
+I2C7H132-3+O2<=>CH3COCH3+NC3H7CO                      9.270e+21   -2.740     9364  !RR 7_IN M 1
+
+! Class08: HO2 addition to allyRs (RA+HO2=RAOOH)
+IC7D1-3+HO2<=>IC7OOH1-D2                              7.200e+31   -6.010     6054  !RR 8_PA M 1
+IC7D3-2+HO2<=>IC7OOH4-D2                              1.440e+32   -6.010     6054  !RR 8_SA M 1
+
+! Class09: HO2 addition to allyRs (RA+HO2=alkROs+OH)
+IC7D1-3+HO2<=>IC7-1D3O+OH                             8.200e+03    2.740     1144  !RR 9_PA M 1
+IC7D3-2+HO2<=>I2C7-2D4O+OH                            1.640e+04    2.740     1144  !RR 9_SA M 1
+
+! Class10: RAOOH=RAO+OH
+IC7OOH1-D2<=>IC7-1D3O+OH                              1.280e+27   -3.610    46333  !RR 10 M 1
+IC7OOH4-D2<=>I2C7-2D4O+OH                             1.280e+27   -3.610    46333  !RR 10 M 1
+
+! Class11: RAO decomposition
+IC7-1D3O<=>CH2O+C6H112-2                              3.920e+28   -4.660    27643  !RR 11_SV M 1
+I2C7-2D4O<=>C2H5CHO+IC4H7-I1                          3.920e+28   -4.660    27643  !RR 11_SV M 1
+I2C7-2D4O<=>IC5D2Y4+C2H5                              3.920e+27   -4.660    15643  !RR 11_PS M 1
+
+! Class12: CH3 addition to allyRs (RACH3)
+IC7D1-3+CH3<=>I3C8D3                                  5.000e+13   -0.320     -262  !RR 12 M 1
+IC7D3-2+CH3<=>I24C8D2                                 5.000e+13   -0.320     -262  !RR 12 M 1
+
+! Class13: HO2 addition to olefins
+IC7D2+HO2<=>IC7OOH2-3                                 2.890e+11    0.000     9700  !RR 13_TS M 1
+IC7D2+HO2<=>IC7OOH3-2                                 9.940e+11    0.000     9400  !RR 13_ST M 1
+
+! Class14: allyRs HAA by O2 reactions
+
+! Class15: OH addition to olefins
+IC7D2+OH<=>I2C7H14OH-2J3                              1.860e+18   -2.030        0  !RR 15_ADD_TS M 1
+IC7D2+OH<=>I2C7H14OH-3J2                              1.860e+18   -2.030        0  !RR 15_ADD_ST M 1
+
+! Class16: betaROH isomerization
+I2C7H14OH-2J3<=>I2C7H14OH-2J6                         1.089e+11    0.410    20870  !RR 3_S_P_5 M 3
+I2C7H14OH-3J2<=>I2C7H14OH-3J5                         3.140e+12    0.000    20310  !RR 3_T_S_5 M 2
+I2C7H14OH-3J2<=>I2C7H14OH-3J6                         2.313e+11    0.000    16500  !RR 3_T_P_6 M 3
+
+! Class17: O2 addition to ROHs
+I2C7H14OH-2J3+O2<=>I2C7H14OH-2O2-3                    6.690e+13   -0.300     -199  !RR 6_S M 1
+I2C7H14OH-3J2+O2<=>I2C7H14OH-3O2-2                    1.370e+12    0.330     -417  !RR 6_T M 1
+I2C7H14OH-2J6+O2<=>I2C7H14OH-2O2-6                    1.630e+14   -0.620       -1  !RR 6_P M 1
+I2C7H14OH-3J5+O2<=>I2C7H14OH-3O2-5                    6.690e+13   -0.300     -199  !RR 6_S M 1
+I2C7H14OH-3J6+O2<=>I2C7H14OH-3O2-6                    1.630e+14   -0.620       -1  !RR 6_P M 1
+
+! Class18: betaROHO2 Waddington mechanism
+I2C7H14OH-2O2-3<=>I2C7                                1.330e+11    0.050    20310  !RR 18_ST_ole M 1
+I2C7H14OH-3O2-2<=>I2C7                                3.420e+12   -0.220    20842  !RR 18_TS_ole M 1
+
+! Class19: Waddington product OROOH decompositions
+I2C7<=>CH3COCH3+NC3H7CHO+OH                           3.430e+22   -2.550    10499  !RR 19_ST_ole M 1
+I2C7<=>NC3H7CHO+CH3COCH3+OH                           1.690e+23   -2.870     7744  !RR 19_TS_ole M 1
+
+! Class20: ROHO2 elimination reactions added
+I2C7H14OH-2O2-3<=>I2C7H13OH2-3+HO2                    9.480e+07    1.760    30410  !RR 11_S_S M 2
+I2C7H14OH-3O2-2<=>I2C7H13OH3-1+HO2                    1.446e+11    0.760    29800  !RR 11_T_P M 6
+I2C7H14OH-3O2-2<=>I2C7H13OH3-2+HO2                    1.550e+09    0.920    27840  !RR 11_T_S_G2 M 1
+I2C7H14OH-2O2-6<=>I2C7H13OH2-5+HO2                    6.080e+08    1.210    30130  !RR 11_P_S M 2
+I2C7H14OH-3O2-5<=>I2C7H13OH3-4+HO2                    9.480e+07    1.760    30410  !RR 11_S_S M 2
+I2C7H14OH-3O2-5<=>I2C7H13OH3-5+HO2                    1.476e+09    1.210    29800  !RR 11_S_P M 3
+I2C7H14OH-3O2-6<=>I2C7H13OH3-5+HO2                    6.080e+08    1.210    30130  !RR 11_P_S M 2
+
+! Class21: ROHOO isomerization
+I2C7H14OH-2O2-3<=>I2C7H13OH2Q3-4                      2.780e-01    3.770    23992  !RR 21_G1_S_S_5 M 2
+I2C7H14OH-2O2-3<=>I2C7H13OH2Q3-1                      4.110e+04    2.200    19784  !RR 21_G2_S_P_6 M 3
+DUP
+I2C7H14OH-2O2-3<=>I2C7H13OH2Q3-5                      7.160e+05    1.670    16221  !RR 21_G1_S_S_6 M 2
+I2C7H14OH-2O2-3<=>I2C7H13OH2Q3-1                      6.240e+03    2.350    18430  !RR 21_G1_S_P_6 M 3
+DUP
+I2C7H14OH-2O2-3<=>I2C7H13OH2Q3-6                      2.289e+02    2.530    17005  !RR 21_G1_S_P_7 M 3
+I2C7H14OH-3O2-2<=>I2C7H13OH3Q2-1                      8.880e+10    0.600    33440  !RR 7_T_P_5 M 6
+I2C7H14OH-3O2-2<=>I2C7H13OH3Q2-3                      1.290e+11    0.350    29470  !RR 7_T_S_5 M 1
+I2C7H14OH-3O2-2<=>I2C7H13OH3Q2-4                      1.084e+12    0.000    19790  !RR 7_T_S_6 M 2
+I2C7H14OH-3O2-2<=>I2C7H13OH3Q2-5                      1.528e+11    0.000    19450  !RR 7_T_S_7 M 2
+I2C7H14OH-3O2-2<=>I2C7H13OH3Q2-6                      7.410e+10    0.000    24900  !RR 7_T_P_8 M 3
+I2C7H14OH-2O2-6<=>I2C7H13OH2Q6-5                      1.884e+06    1.750    28180  !RR 7_P_S_5 M 2
+I2C7H14OH-2O2-6<=>I2C7H13OH2Q6-4                      4.220e+07    1.140    17900  !RR 7_P_S_6 M 2
+I2C7H14OH-2O2-6<=>I2C7H13OH2Q6-3                      2.300e+07    0.810    16770  !RR 7_P_S_7 M 2
+I2C7H14OH-3O2-5<=>I2C7H13OH3Q5-4                      2.780e-01    3.770    23992  !RR 21_G1_S_S_5 M 2
+I2C7H14OH-3O2-5<=>I2C7H13OH3Q5-6                      1.350e-03    4.550    26985  !RR 21_G1_S_P_5 M 3
+I2C7H14OH-3O2-5<=>I2C7H13OH3Q5-3                      1.170e+07    1.410    17829  !RR 21_G2_S_S_6 M 1
+I2C7H14OH-3O2-5<=>I2C7H13OH3Q5-2                      1.100e+09    0.350    15550  !RR 7_S_T_7 M 1
+I2C7H14OH-3O2-5<=>I2C7H13OH3Q5-1                      7.380e+12   -0.430    23890  !RR 7_S_P_8 M 6
+I2C7H14OH-3O2-6<=>I2C7H13OH3Q6-5                      1.884e+06    1.750    28180  !RR 7_P_S_5 M 2
+I2C7H14OH-3O2-6<=>I2C7H13OH3Q6-4                      4.220e+07    1.140    17900  !RR 7_P_S_6 M 2
+I2C7H14OH-3O2-6<=>I2C7H13OH3Q6-3                      4.180e+06    1.260    16333  !RR 21_G2_P_S_7 M 1
+I2C7H14OH-3O2-6<=>I2C7H13OH3Q6-2                      1.640e+08    0.410    15280  !RR 7_P_T_8 M 1
+
+! Class22: beta-QOHOOH scissions
+I2C7H13OH2Q3-4<=>I2C7H13OH2-3+HO2                     1.970e+10    0.740    14280  !RR 22_G1_SS M 1
+I2C7H13OH3Q2-1<=>I2C7H13OH3-1+HO2                     5.060e+10    0.540    13832  !RR 22_G1_TP M 1
+I2C7H13OH3Q2-3<=>I2C7H13OH3-2+HO2                     2.230e+14   -0.180    16442  !RR 22_G2_TS M 1
+I2C7H13OH2-5+HO2<=>I2C7H13OH2Q6-5                     2.820e+04    2.490    14734  !RR  -22_PS M 1
+I2C7H13OH3Q5-4<=>I2C7H13OH3-4+HO2                     1.970e+10    0.740    14280  !RR 22_G1_SS M 1
+I2C7H13OH3Q5-6<=>I2C7H13OH3-5+HO2                     8.170e+09    0.800    14231  !RR 22_G1_SP M 1
+I2C7H13OH3-5+HO2<=>I2C7H13OH3Q6-5                     2.820e+04    2.490    14734  !RR  -22_PS M 1
+
+! Class22_combine: QOHOOH decomposition reactions
+I2C7H13OH2Q3-1<=>NC3H7CHO+IC3H5OH+OH                  7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H13OH2Q3-5<=>C3H6+OH+HCO+TC3H6OH                  7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H13OH2Q3-6<=>C2H4+I2C5H9OH2Q3-4                   1.170e-01    0.190     -667  !RR 13_delta M 1
+I2C7H13OH3Q2-4<=>CH3COCH3+C4H71-1OH+OH                7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H13OH3Q2-5<=>C3H6+TQC4H7OHI                       1.170e-01    0.190     -667  !RR 13_delta M 1
+I2C7H13OH2Q6-4<=>CH2O+I2C6H11OH2-4+OH                 7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H13OH2Q6-3<=>I2C5H9OH2-3+C2H4O2H                  1.170e-01    0.190     -667  !RR 13_delta M 1
+I2C7H13OH3Q5-3<=>CH3CHO+I2C5H9OH3-3+OH                7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H13OH3Q5-2<=>SC4H7OH-I+C3H6OOH2-1                 1.170e-01    0.190     -667  !RR 13_delta M 1
+I2C7H13OH3Q6-4<=>CH2O+I2C6H11OH3-4+OH                 7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H13OH3Q6-3<=>I2C5H9OH3-3+C2H4O2H                  1.170e-01    0.190     -667  !RR 13_delta M 1
+
+! Class23: QOHOOH to cyclic ethers reactions
+I2C7H13OH2Q3-4<=>I2C7H13OH2O3-4+OH                    2.760e+09    1.010     8031  !RR 23_b_G1_SS M 1
+I2C7H13OH2Q3-1<=>I2C7H13OH2O1-3+OH                    1.000e+16   -1.330    19882  !RR 23_g_G2_SP M 1
+I2C7H13OH2Q3-5<=>I2C7H13OH2O3-5+OH                    2.440e+11   -0.080    12763  !RR 23_g_G1_SS M 1
+I2C7H13OH2Q3-6<=>I2C7H13OH2O3-6+OH                    5.020e+12   -0.770    10632  !RR 23_de_G1_SP M 1
+I2C7H13OH3Q2-1<=>I2C7H13OH3O1-2+OH                    4.310e+11    0.100     9747  !RR 23_b_G1_TP M 1
+I2C7H13OH3Q2-3<=>I2C7H13OH3O2-3+OH                    5.560e+13   -0.320     7804  !RR 23_b_G2_TS M 1
+I2C7H13OH3Q2-4<=>I2C7H13OH3O2-4+OH                    3.690e+14   -0.780    16261  !RR 23_g_G2_TS M 1
+I2C7H13OH3Q2-5<=>I2C7H13OH3O2-5+OH                    1.620e+13   -0.760    12015  !RR 23_de_G2_TS M 1
+I2C7H13OH3Q2-6<=>I2C7H13OH3O2-6+OH                    1.020e+15   -1.250    14452  !RR 23_eps_G2_TP M 1
+I2C7H13OH2Q6-5<=>I2C7H13OH2O5-6+OH                    4.330e+06    1.680     9849  !RR 12_P_S_3_S M 1
+I2C7H13OH2Q6-4<=>I2C7H13OH2O4-6+OH                    1.580e+09    0.790    15550  !RR 12_P_S_4_S M 1
+I2C7H13OH2Q6-3<=>I2C7H13OH2O3-6+OH                    4.170e+07    0.890    10040  !RR 12_P_S_5_S M 1
+I2C7H13OH3Q5-4<=>I2C7H13OH3O4-5+OH                    2.760e+09    1.010     8031  !RR 23_b_G1_SS M 1
+I2C7H13OH3Q5-6<=>I2C7H13OH3O5-6+OH                    2.260e+10    0.560    10498  !RR 23_b_G1_SP M 1
+I2C7H13OH3Q5-3<=>I2C7H13OH3O3-5+OH                    2.180e+14   -0.760    17066  !RR 23_g_G2_SS M 1
+I2C7H13OH3Q5-2<=>I2C7H13OH3O2-5+OH                    2.090e+11   -0.180     9249  !RR 23_de_G2_ST M 1
+I2C7H13OH3Q5-1<=>I2C7H13OH3O1-5+OH                    7.310e+11   -0.310    12455  !RR 23_eps_G2_SP M 1
+I2C7H13OH3Q6-5<=>I2C7H13OH3O5-6+OH                    4.330e+06    1.680     9849  !RR 12_P_S_3_S M 1
+I2C7H13OH3Q6-4<=>I2C7H13OH3O4-6+OH                    1.580e+09    0.790    15550  !RR 12_P_S_4_S M 1
+I2C7H13OH3Q6-3<=>I2C7H13OH3O3-6+OH                    1.900e+10    0.050    10767  !RR 23_de_G2_PS M 1
+I2C7H13OH3Q6-2<=>I2C7H13OH3O2-6+OH                    3.170e+10    0.030     9292  !RR 23_eps_G2_PT M 1
+
+! Class24: O2 addition to QOHOOH reactions
+I2C7H13OH2Q3-4+O2<=>I2C7H13OH2Q3-4O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH2Q3-1+O2<=>I2C7H13OH2Q3-1O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H13OH2Q3-5+O2<=>I2C7H13OH2Q3-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH2Q3-6+O2<=>I2C7H13OH2Q3-6O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H13OH3Q2-1+O2<=>I2C7H13OH3Q2-1O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H13OH3Q2-4+O2<=>I2C7H13OH3Q2-4O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH3Q2-5+O2<=>I2C7H13OH3Q2-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH3Q2-6+O2<=>I2C7H13OH3Q2-6O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H13OH2Q6-5+O2<=>I2C7H13OH2Q6-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH2Q6-4+O2<=>I2C7H13OH2Q6-4O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH2Q6-3+O2<=>I2C7H13OH2Q6-3O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH3Q5-4+O2<=>I2C7H13OH3Q5-4O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH3Q5-6+O2<=>I2C7H13OH3Q5-6O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H13OH3Q5-2+O2<=>I2C7H13OH3Q5-2O2                  0.000e+00    0.000        0  !RR  M 1
+I2C7H13OH3Q5-1+O2<=>I2C7H13OH3Q5-1O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H13OH3Q6-5+O2<=>I2C7H13OH3Q6-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH3Q6-4+O2<=>I2C7H13OH3Q6-4O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H13OH3Q6-2+O2<=>I2C7H13OH3Q6-2O2                  0.000e+00    0.000        0  !RR  M 1
+
+! Class25: O2QOHOOH HO2 elimination reactions
+I2C7H13OH2Q3-4O2<=>I2C7H122OH5Q4+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH2Q3-5O2<=>I2C7H122OH5Q4+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH2Q3-5O2<=>I2C7H121OH5Q4+HO2                  1.218e+10    1.040    31480  !RR 15_S_P M 3
+I2C7H13OH2Q3-6O2<=>I2C7H121OH5Q4+HO2                  2.900e+07    1.580    28500  !RR 15_P_S M 2
+I2C7H13OH3Q2-4O2<=>I2C7H123OH3Q2+HO2                  6.120e+14   -0.470    34520  !RR 25_S_SOH M 1
+I2C7H13OH3Q2-4O2<=>I2C7H122OH4Q5+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH3Q2-5O2<=>I2C7H122OH4Q5+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH3Q2-5O2<=>I2C7H121OH4Q5+HO2                  1.218e+10    1.040    31480  !RR 15_S_P M 3
+I2C7H13OH3Q2-6O2<=>I2C7H121OH4Q5+HO2                  2.900e+07    1.580    28500  !RR 15_P_S M 2
+I2C7H13OH2Q6-5O2<=>I2C7H122OH5Q1+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH2Q6-4O2<=>I2C7H123OH2Q6+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH2Q6-4O2<=>I2C7H122OH5Q1+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH2Q6-3O2<=>I2C7H123OH2Q6+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH3Q5-4O2<=>I2C7H123OH3Q5+HO2                  6.120e+14   -0.470    34520  !RR 25_S_SOH M 1
+I2C7H13OH3Q5-2O2<=>I2C7H121OH3Q5+HO2                  1.770e+10    0.890    29510  !RR 15_T_P M 6
+I2C7H13OH3Q5-2O2<=>I2C7H122OH3Q5+HO2                  9.730e+10    0.580    29610  !RR 15_T_S M 1
+I2C7H13OH3Q5-1O2<=>I2C7H121OH3Q5+HO2                  1.030e+08    1.320    28890  !RR 15_P_T M 1
+I2C7H13OH3Q6-5O2<=>I2C7H122OH4Q1+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH3Q6-4O2<=>I2C7H123OH3Q6+HO2                  6.120e+14   -0.470    34520  !RR 25_S_SOH M 1
+I2C7H13OH3Q6-4O2<=>I2C7H122OH4Q1+HO2                  1.878e+08    1.480    29430  !RR 15_S_S M 2
+I2C7H13OH3Q6-2O2<=>I2C7H121OH3Q6+HO2                  1.770e+10    0.890    29510  !RR 15_T_P M 6
+I2C7H13OH3Q6-2O2<=>I2C7H122OH3Q6+HO2                  9.730e+10    0.580    29610  !RR 15_T_S M 1
+
+! Class26: OH-KHP formation from O2QOHOOH reactions
+I2C7H13OH2Q3-4O2<=>I2C7H12OH2KET3-4+OH                2.160e+12    0.000    25710  !RR 9_S_S_5 M 1
+I2C7H13OH2Q3-1O2<=>I2C7H12OH2KET3-1+OH                3.120e+05    1.710    15670  !RR 9_P_S_6 M 1
+I2C7H13OH2Q3-5O2<=>I2C7H12OH2KET3-5+OH                1.950e+10    0.450    19240  !RR 9_S_S_6 M 1
+I2C7H13OH2Q3-6O2<=>I2C7H12OH2KET3-6+OH                5.110e+01    2.410    13000  !RR 9_P_S_7 M 1
+I2C7H13OH2Q6-5O2<=>I2C7H12OH2KET6-5+OH                6.720e+05    2.050    26160  !RR 9_S_P_5 M 2
+I2C7H13OH2Q6-4O2<=>I2C7H12OH2KET6-4+OH                7.600e+05    1.620    17160  !RR 9_S_P_6 M 2
+I2C7H13OH2Q6-3O2<=>I2C7H12OH2KET6-3+OH                2.880e+02    2.390    16680  !RR 9_S_P_7 M 2
+I2C7H13OH3Q5-4O2<=>I2C7H12OH3KET5-4+OH                2.160e+12    0.000    25710  !RR 9_S_S_5 M 1
+I2C7H13OH3Q5-6O2<=>I2C7H12OH3KET5-6+OH                2.760e+08    1.200    25700  !RR 9_P_S_5 M 1
+I2C7H13OH3Q5-2O2<=>I2C7H12OH3KET5-2+OH                3.210e+06    1.300    14440  !RR 9_T_S_7 M 1
+I2C7H13OH3Q5-1O2<=>I2C7H12OH3KET5-1+OH                1.160e+02    2.390    12230  !RR 9_P_S_8 M 1
+I2C7H13OH3Q6-5O2<=>I2C7H12OH3KET6-5+OH                6.720e+05    2.050    26160  !RR 9_S_P_5 M 2
+I2C7H13OH3Q6-4O2<=>I2C7H12OH3KET6-4+OH                7.600e+05    1.620    17160  !RR 9_S_P_6 M 2
+I2C7H13OH3Q6-2O2<=>I2C7H12OH3KET6-2+OH                5.260e+06    1.200    16870  !RR 9_T_P_8 M 2
+
+! Class27: OH-KHP decomposition reactions reactions
+I2C7H12OH2KET3-4<=>C2H5CHO+CH3COHCO+CH3+OH            1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+I2C7H12OH2KET3-1<=>CH2O+CH3COHCO+NC3H7+OH             2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+I2C7H12OH2KET3-5<=>CH3CHO+CH2CO+TC3H6OH+OH            5.420e+13    0.680    41540  !RR 10_S_gamma M 1
+I2C7H12OH2KET3-6<=>CH2O+C2H4+CH3COHCO+CH3+OH          4.170e+18   -0.750    43910  !RR 10_P_other M 1
+I2C7H12OH2KET6-5<=>HCO+I2C5H10OH-2J4+HCO+OH           1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+I2C7H12OH2KET6-4<=>HCO+IC4H8OH-TI+CH2CHO+OH           5.420e+13    0.680    41540  !RR 10_S_gamma M 1
+I2C7H12OH2KET6-3<=>HCO+TC3H6OH+C2H4+HCO+OH            7.410e+15   -0.030    42260  !RR 10_S_other M 1
+I2C7H12OH3KET5-4<=>HCO+I2C4H8OH-1J1+CH3CO+OH          1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+I2C7H12OH3KET5-6<=>CH2O+CH2CO+I2C4H8OH-1J1+OH         6.970e+17   -0.610    41790  !RR 10_P_beta M 1
+I2C7H12OH3KET5-2<=>CH3COCH3+C2H3OH+CH3CO+OH           5.520e+15    0.000    43000  !RR 10_T_other M 1
+I2C7H12OH3KET5-1<=>CH2O+SC3H5OH+CH2CO+CH3+OH          4.170e+18   -0.750    43910  !RR 10_P_other M 1
+I2C7H12OH3KET6-5<=>HCO+CC5H10OH+HCO+OH                1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+I2C7H12OH3KET6-4<=>HCO+I2C4H8OH-1J1+CH2CHO+OH         5.420e+13    0.680    41540  !RR 10_S_gamma M 1
+I2C7H12OH3KET6-2<=>CH3COCH3+C2H3OH+CH2CHO+OH          5.520e+15    0.000    43000  !RR 10_T_other M 1
+
+! Class28: O2QOHOOH isomerization reactions
+I2C7H13OH2Q3-4O2<=>I2C7H12OH2Q34-5                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH2Q3-4O2<=>I2C7H12OH2Q34-6                    4.620e+08    1.050    21700  !RR 14_S_P_6 M 3
+I2C7H13OH2Q3-4O2<=>I2C7H12OH2Q34-1                    8.400e+03    2.320    19850  !RR 14_S_P_7 M 6
+I2C7H13OH2Q3-1O2<=>I2C7H12OH2Q13-1                    6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+I2C7H13OH2Q3-1O2<=>I2C7H12OH2Q13-4                    7.980e+07    0.730    16340  !RR 14_P_S_7 M 2
+I2C7H13OH2Q3-1O2<=>I2C7H12OH2Q13-5                    2.600e+06    1.000    18200  !RR 14_P_S_8 M 2
+I2C7H13OH2Q3-5O2<=>I2C7H12OH2Q35-4                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH2Q3-5O2<=>I2C7H12OH2Q35-6                    1.041e+07    1.720    33720  !RR 14_S_P_5 M 3
+I2C7H13OH2Q3-5O2<=>I2C7H12OH2Q35-1                    1.242e+05    1.240    19670  !RR 14_S_P_8 M 6
+I2C7H13OH2Q3-6O2<=>I2C7H12OH2Q36-5                    3.780e+10    0.620    30700  !RR 14_P_S_5 M 2
+I2C7H13OH2Q3-6O2<=>I2C7H12OH2Q36-4                    1.210e+05    1.950    17870  !RR 14_P_S_6 M 2
+I2C7H13OH3Q2-1O2<=>I2C7H12OH3Q12-3                    6.050e+04    1.950    17870  !RR 14_P_S_6 M 1
+I2C7H13OH3Q2-1O2<=>I2C7H12OH3Q12-1                    6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+I2C7H13OH3Q2-1O2<=>I2C7H12OH3Q12-4                    7.980e+07    0.730    16340  !RR 14_P_S_7 M 2
+I2C7H13OH3Q2-1O2<=>I2C7H12OH3Q12-5                    2.600e+06    1.000    18200  !RR 14_P_S_8 M 2
+I2C7H13OH3Q2-4O2<=>I2C7H12OH3Q24-3                    4.290e+08    0.900    29510  !RR 14_S_S_5 M 1
+I2C7H13OH3Q2-4O2<=>I2C7H12OH3Q24-5                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH3Q2-4O2<=>I2C7H12OH3Q24-6                    4.620e+08    1.050    21700  !RR 14_S_P_6 M 3
+I2C7H13OH3Q2-4O2<=>I2C7H12OH3Q24-1                    8.400e+03    2.320    19850  !RR 14_S_P_7 M 6
+I2C7H13OH3Q2-5O2<=>I2C7H12OH3Q25-4                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH3Q2-5O2<=>I2C7H12OH3Q25-6                    1.041e+07    1.720    33720  !RR 14_S_P_5 M 3
+I2C7H13OH3Q2-5O2<=>I2C7H12OH3Q25-3                    3.280e+07    1.090    17700  !RR 14_S_S_6 M 1
+I2C7H13OH3Q2-5O2<=>I2C7H12OH3Q25-1                    1.242e+05    1.240    19670  !RR 14_S_P_8 M 6
+I2C7H13OH3Q2-6O2<=>I2C7H12OH3Q26-5                    3.780e+10    0.620    30700  !RR 14_P_S_5 M 2
+I2C7H13OH3Q2-6O2<=>I2C7H12OH3Q26-4                    1.210e+05    1.950    17870  !RR 14_P_S_6 M 2
+I2C7H13OH3Q2-6O2<=>I2C7H12OH3Q26-3                    3.990e+07    0.730    16340  !RR 14_P_S_7 M 1
+I2C7H13OH2Q6-5O2<=>I2C7H12OH2Q56-4                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH2Q6-5O2<=>I2C7H12OH2Q56-3                    6.560e+07    1.090    17700  !RR 14_S_S_6 M 2
+I2C7H13OH2Q6-5O2<=>I2C7H12OH2Q56-1                    1.242e+05    1.240    19670  !RR 14_S_P_8 M 6
+I2C7H13OH2Q6-4O2<=>I2C7H12OH2Q46-3                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH2Q6-4O2<=>I2C7H12OH2Q46-5                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH2Q6-4O2<=>I2C7H12OH2Q46-1                    8.400e+03    2.320    19850  !RR 14_S_P_7 M 6
+I2C7H13OH2Q6-3O2<=>I2C7H12OH2Q36-4                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH2Q6-3O2<=>I2C7H12OH2Q36-1                    9.240e+08    1.050    21700  !RR 14_S_P_6 M 6
+I2C7H13OH2Q6-3O2<=>I2C7H12OH2Q36-5                    6.560e+07    1.090    17700  !RR 14_S_S_6 M 2
+I2C7H13OH3Q5-4O2<=>I2C7H12OH3Q45-3                    4.290e+08    0.900    29510  !RR 14_S_S_5 M 1
+I2C7H13OH3Q5-4O2<=>I2C7H12OH3Q45-2                    3.990e+06    1.200    15400  !RR 14_S_T_6 M 1
+I2C7H13OH3Q5-4O2<=>I2C7H12OH3Q45-6                    4.620e+08    1.050    21700  !RR 14_S_P_6 M 3
+I2C7H13OH3Q5-4O2<=>I2C7H12OH3Q45-1                    8.400e+03    2.320    19850  !RR 14_S_P_7 M 6
+I2C7H13OH3Q5-6O2<=>I2C7H12OH3Q56-4                    1.210e+05    1.950    17870  !RR 14_P_S_6 M 2
+I2C7H13OH3Q5-6O2<=>I2C7H12OH3Q56-3                    3.990e+07    0.730    16340  !RR 14_P_S_7 M 1
+I2C7H13OH3Q5-6O2<=>I2C7H12OH3Q56-2                    9.940e+05    1.100    14300  !RR 14_P_T_8 M 1
+I2C7H13OH3Q5-2O2<=>I2C7H12OH3Q25-1                    2.244e+09    1.200    33500  !RR 14_T_P_5 M 6
+I2C7H13OH3Q5-2O2<=>I2C7H12OH3Q25-3                    5.650e+09    0.700    30100  !RR 14_T_S_5 M 1
+I2C7H13OH3Q5-2O2<=>I2C7H12OH3Q25-4                    3.300e+10    0.200    18500  !RR 14_T_S_6 M 2
+I2C7H13OH3Q5-2O2<=>I2C7H12OH3Q25-6                    1.839e+05    1.500    19910  !RR 14_T_P_8 M 3
+I2C7H13OH3Q5-1O2<=>I2C7H12OH3Q15-2                    6.350e+08    0.800    27100  !RR 14_P_T_5 M 1
+I2C7H13OH3Q5-1O2<=>I2C7H12OH3Q15-3                    6.050e+04    1.950    17870  !RR 14_P_S_6 M 1
+I2C7H13OH3Q5-1O2<=>I2C7H12OH3Q15-1                    6.060e+09    0.620    22000  !RR 14_P_P_6 M 3
+I2C7H13OH3Q5-1O2<=>I2C7H12OH3Q15-4                    7.980e+07    0.730    16340  !RR 14_P_S_7 M 2
+I2C7H13OH3Q6-5O2<=>I2C7H12OH3Q56-4                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH3Q6-5O2<=>I2C7H12OH3Q56-3                    3.280e+07    1.090    17700  !RR 14_S_S_6 M 1
+I2C7H13OH3Q6-5O2<=>I2C7H12OH3Q56-2                    1.590e+10    0.000    17680  !RR 14_S_T_7 M 1
+I2C7H13OH3Q6-5O2<=>I2C7H12OH3Q56-1                    1.242e+05    1.240    19670  !RR 14_S_P_8 M 6
+I2C7H13OH3Q6-4O2<=>I2C7H12OH3Q46-3                    4.290e+08    0.900    29510  !RR 14_S_S_5 M 1
+I2C7H13OH3Q6-4O2<=>I2C7H12OH3Q46-5                    8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H13OH3Q6-4O2<=>I2C7H12OH3Q46-2                    3.990e+06    1.200    15400  !RR 14_S_T_6 M 1
+I2C7H13OH3Q6-4O2<=>I2C7H12OH3Q46-1                    8.400e+03    2.320    19850  !RR 14_S_P_7 M 6
+I2C7H13OH3Q6-2O2<=>I2C7H12OH3Q26-1                    2.244e+09    1.200    33500  !RR 14_T_P_5 M 6
+I2C7H13OH3Q6-2O2<=>I2C7H12OH3Q26-3                    5.650e+09    0.700    30100  !RR 14_T_S_5 M 1
+I2C7H13OH3Q6-2O2<=>I2C7H12OH3Q26-4                    3.300e+10    0.200    18500  !RR 14_T_S_6 M 2
+I2C7H13OH3Q6-2O2<=>I2C7H12OH3Q26-5                    7.540e+10    0.000    21340  !RR 14_T_S_7 M 2
+
+! Class29: POHOOH decomposition reactions
+I2C7H12OH2Q34-5<=>I2C7H122OH5Q4+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q34-6<=>I2C5H8OH2KET4-3+C2H4+OH             2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I2C7H12OH2Q34-1<=>NC4KET12+IC3H5OH+OH                 2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I2C7H12OH2Q13-1<=>CH2O+C6H101OH1Q2+OH                 3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+I2C7H12OH2Q13-1<=>NC3H7CHO+CH2COHCH2OOH+OH            2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I2C7H12OH2Q13-4<=>I2C7H123OH2Q1+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q13-5<=>CHOC(CH3)OHCH2Q+C3H6+OH             3.450e+14   -0.330    25490  !RR 17_gamma_S_S M 1
+I2C7H12OH2Q35-4<=>I2C7H123OH2Q5+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q35-4<=>I2C7H122OH5Q4+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q35-6<=>I2C7H121OH5Q4+HO2                   5.190e+11    0.430    15490  !RR 17_beta_S_P M 1
+I2C7H12OH2Q35-1<=>NC4KET13+IC3H5OH+OH                 2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I2C7H12OH2Q36-5<=>AC3H5OOH+OH+HCO+TC3H6OH             3.450e+14   -0.330    25490  !RR 17_gamma_S_S M 1
+I2C7H12OH2Q36-5<=>I2C7H121OH5Q4+HO2                   5.630e+09    0.970    15000  !RR 17_beta_P_S M 1
+I2C7H12OH2Q36-4<=>I2C7H123OH2Q6+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q36-4<=>CH2O+I2C6H101OH4Q3+OH               3.080e+13    0.000    27360  !RR 17_gamma_P_S M 1
+I2C7H12OH3Q12-1<=>I2C7H121OH3Q1+HO2                   3.890e+13   -0.150    15500  !RR 17_beta_T_P M 1
+I2C7H12OH3Q12-4<=>C3KET21+C4H71-1OH+OH                3.080e+13    0.000    24640  !RR 17_gamma_T_S M 1
+I2C7H12OH3Q12-5<=>C3H6+I2C4H6OH1Q23-1                 1.390e+14    0.000    28390  !RR 17_delta_T_S M 1
+I2C7H12OH3Q24-5<=>I2C7H122OH4Q5+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH3Q24-6<=>I2C5H8OH3KET4-2+C2H4+OH             2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I2C7H12OH3Q24-1<=>I2C7H121OH3Q4+HO2                   3.890e+13   -0.150    15500  !RR 17_beta_T_P M 1
+I2C7H12OH3Q25-4<=>CH3COCH3+C4H61OH1Q3+OH              3.080e+13    0.000    24640  !RR 17_gamma_T_S M 1
+I2C7H12OH3Q25-4<=>I2C7H122OH4Q5+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH3Q25-6<=>I2C7H121OH4Q5+HO2                   5.190e+11    0.430    15490  !RR 17_beta_S_P M 1
+I2C7H12OH3Q25-1<=>I2C7H121OH3Q5+HO2                   3.890e+13   -0.150    15500  !RR 17_beta_T_P M 1
+I2C7H12OH3Q26-5<=>AC3H5OOH+TQC4H7OHI                  1.390e+14    0.000    28390  !RR 17_delta_T_S M 1
+I2C7H12OH3Q26-5<=>I2C7H121OH4Q5+HO2                   5.630e+09    0.970    15000  !RR 17_beta_P_S M 1
+I2C7H12OH3Q26-4<=>CH3COCH3+C4H61OH1Q4+OH              3.080e+13    0.000    24640  !RR 17_gamma_T_S M 1
+I2C7H12OH3Q26-4<=>CH2O+I2C6H101OH3Q4+OH               3.080e+13    0.000    27360  !RR 17_gamma_P_S M 1
+I2C7H12OH2Q56-4<=>I2C7H122OH5Q1+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q56-3<=>HO2CH2CHO+I2C5H9OH2-3+OH            3.450e+14   -0.330    25490  !RR 17_gamma_S_S M 1
+I2C7H12OH2Q46-3<=>I2C7H123OH2Q6+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q46-5<=>I2C7H122OH5Q1+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH2Q46-5<=>I2C7H121OH5Q3+HO2                   5.630e+09    0.970    15000  !RR 17_beta_P_S M 1
+I2C7H12OH2Q46-1<=>IC3H5OH+C4H71-2,4OOH                1.390e+14    0.000    28140  !RR 17_delta_S_P M 1
+I2C7H12OH2Q36-1<=>NC4KET14+IC3H5OH+OH                 2.020e+11    0.580    23830  !RR 17_gamma_S_P M 1
+I2C7H12OH3Q45-2<=>C3KET12+SC4H7OH-I+OH                3.080e+13    0.000    24260  !RR 17_gamma_S_T M 1
+I2C7H12OH3Q45-6<=>I2C7H121OH4Q3+HO2                   5.190e+11    0.430    15490  !RR 17_beta_S_P M 1
+I2C7H12OH3Q45-1<=>C3H6+C4H6OH1Q23-1                   1.390e+14    0.000    28140  !RR 17_delta_S_P M 1
+I2C7H12OH3Q56-4<=>I2C7H122OH4Q1+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH3Q56-2<=>SC4H7OH-I+C3H51-2,3OOH              1.390e+14    0.000    15300  !RR 17_delta_S_T M 1
+I2C7H12OH3Q15-2<=>I2C7H121OH3Q5+HO2                   8.380e+09    0.920    14500  !RR 17_beta_P_T M 1
+I2C7H12OH3Q15-2<=>SC4H7OOH-I+C3H6OOH2-1               1.390e+14    0.000    15300  !RR 17_delta_S_T M 1
+I2C7H12OH3Q15-1<=>CH2O+C6H101OH2Q4+OH                 3.080e+13    0.000    13400  !RR 17_gamma_P_P M 1
+I2C7H12OH3Q15-4<=>C4H61OH1Q3+C3H6OOH1-2               1.390e+14    0.000    28100  !RR 17_delta_P_S M 1
+I2C7H12OH3Q15-4<=>I2C7H122OH4Q6+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH3Q46-5<=>I2C7H122OH4Q1+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S M 1
+I2C7H12OH3Q46-5<=>I2C7H121OH4Q3+HO2                   5.630e+09    0.970    15000  !RR 17_beta_P_S M 1
+I2C7H12OH3Q46-2<=>C3KET13+SC4H7OH-I+OH                3.080e+13    0.000    24260  !RR 17_gamma_S_T M 1
+I2C7H12OH3Q46-1<=>C3H6+C4H6OH1Q24-1                   1.390e+14    0.000    28140  !RR 17_delta_S_P M 1
+I2C7H12OH3Q26-1<=>I2C7H121OH3Q6+HO2                   3.890e+13   -0.150    15500  !RR 17_beta_T_P M 1
+
+! Class30: POHOOH to ether-OHOOHs reactions
+I2C7H12OH2Q34-5<=>I2C7H12OH2O35Q4+OH                  3.730e+08    0.740    14670  !RR 16_S_S_4_S M 1
+I2C7H12OH2Q34-5<=>I2C7H12OH2O45Q3+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q34-6<=>I2C7H12OH2O36Q4+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH2Q34-6<=>I2C7H12OH2O46Q3+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH2Q34-1<=>I2C7H12OH2O13Q4+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH2Q34-1<=>I2C7H12OH2O14Q3+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH2Q13-1<=>I2C7H12OH2O11Q3+OH                  6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I2C7H12OH2Q13-1<=>I2C7H12OH2O13Q1+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH2Q13-4<=>I2C7H12OH2O14Q3+OH                  2.770e+10    0.000    10500  !RR 16_P_S_5_S M 1
+I2C7H12OH2Q13-4<=>I2C7H12OH2O34Q1+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q13-5<=>I2C7H12OH2O15Q3+OH                  4.830e+08    0.370    10710  !RR 16_P_S_6_S M 1
+I2C7H12OH2Q13-5<=>I2C7H12OH2O35Q1+OH                  3.730e+08    0.740    14670  !RR 16_S_S_4_S M 1
+I2C7H12OH2Q35-4<=>I2C7H12OH2O34Q5+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q35-4<=>I2C7H12OH2O45Q3+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q35-6<=>I2C7H12OH2O36Q5+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH2Q35-6<=>I2C7H12OH2O56Q3+OH                  1.780e+10    0.680    10650  !RR 16_S_P_3_S M 1
+I2C7H12OH2Q35-1<=>I2C7H12OH2O13Q5+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH2Q35-1<=>I2C7H12OH2O15Q3+OH                  1.760e+11   -0.460    15710  !RR 16_S_P_6_S M 1
+I2C7H12OH2Q36-5<=>I2C7H12OH2O35Q6+OH                  3.730e+08    0.740    14670  !RR 16_S_S_4_S M 1
+I2C7H12OH2Q36-5<=>I2C7H12OH2O56Q3+OH                  5.940e+10    0.480    12090  !RR 16_P_S_3_S M 1
+I2C7H12OH2Q36-4<=>I2C7H12OH2O34Q6+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q36-4<=>I2C7H12OH2O46Q3+OH                  1.210e+12    0.000    17830  !RR 16_P_S_4_S M 1
+I2C7H12OH3Q12-1<=>I2C7H12OH3O11Q2+OH                  6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I2C7H12OH3Q12-1<=>I2C7H12OH3O12Q1+OH                  9.520e+12    0.000    11460  !RR 16_T_P_3_S M 1
+I2C7H12OH3Q12-4<=>I2C7H12OH3O14Q2+OH                  2.770e+10    0.000    10500  !RR 16_P_S_5_S M 1
+I2C7H12OH3Q12-4<=>I2C7H12OH3O24Q1+OH                  4.450e+11    0.000    14920  !RR 16_T_S_4_S M 1
+I2C7H12OH3Q12-5<=>I2C7H12OH3O15Q2+OH                  4.830e+08    0.370    10710  !RR 16_P_S_6_S M 1
+I2C7H12OH3Q12-5<=>I2C7H12OH3O25Q1+OH                  2.050e+10    0.000     9359  !RR 16_T_S_5_S M 1
+I2C7H12OH3Q24-5<=>I2C7H12OH3O25Q4+OH                  2.050e+10    0.000     9359  !RR 16_T_S_5_S M 1
+I2C7H12OH3Q24-5<=>I2C7H12OH3O45Q2+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH3Q24-6<=>I2C7H12OH3O26Q4+OH                  2.450e+09    0.000    18680  !RR 16_T_P_6_S M 1
+I2C7H12OH3Q24-6<=>I2C7H12OH3O46Q2+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH3Q24-1<=>I2C7H12OH3O12Q4+OH                  9.520e+12    0.000    11460  !RR 16_T_P_3_S M 1
+I2C7H12OH3Q24-1<=>I2C7H12OH3O14Q2+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH3Q25-4<=>I2C7H12OH3O24Q5+OH                  4.450e+11    0.000    14920  !RR 16_T_S_4_S M 1
+I2C7H12OH3Q25-4<=>I2C7H12OH3O45Q2+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH3Q25-6<=>I2C7H12OH3O26Q5+OH                  2.450e+09    0.000    18680  !RR 16_T_P_6_S M 1
+I2C7H12OH3Q25-6<=>I2C7H12OH3O56Q2+OH                  1.780e+10    0.680    10650  !RR 16_S_P_3_S M 1
+I2C7H12OH3Q25-1<=>I2C7H12OH3O12Q5+OH                  9.520e+12    0.000    11460  !RR 16_T_P_3_S M 1
+I2C7H12OH3Q25-1<=>I2C7H12OH3O15Q2+OH                  1.760e+11   -0.460    15710  !RR 16_S_P_6_S M 1
+I2C7H12OH3Q26-5<=>I2C7H12OH3O25Q6+OH                  2.050e+10    0.000     9359  !RR 16_T_S_5_S M 1
+I2C7H12OH3Q26-5<=>I2C7H12OH3O56Q2+OH                  5.940e+10    0.480    12090  !RR 16_P_S_3_S M 1
+I2C7H12OH3Q26-4<=>I2C7H12OH3O24Q6+OH                  4.450e+11    0.000    14920  !RR 16_T_S_4_S M 1
+I2C7H12OH3Q26-4<=>I2C7H12OH3O46Q2+OH                  1.210e+12    0.000    17830  !RR 16_P_S_4_S M 1
+I2C7H12OH2Q56-4<=>I2C7H12OH2O45Q6+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q56-4<=>I2C7H12OH2O46Q5+OH                  1.210e+12    0.000    17830  !RR 16_P_S_4_S M 1
+I2C7H12OH2Q56-3<=>I2C7H12OH2O35Q6+OH                  3.730e+08    0.740    14670  !RR 16_S_S_4_S M 1
+I2C7H12OH2Q56-3<=>I2C7H12OH2O36Q5+OH                  2.770e+10    0.000    10500  !RR 16_P_S_5_S M 1
+I2C7H12OH2Q56-1<=>I2C7H12OH2O15Q6+OH                  1.760e+11   -0.460    15710  !RR 16_S_P_6_S M 1
+I2C7H12OH2Q46-3<=>I2C7H12OH2O34Q6+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q46-3<=>I2C7H12OH2O36Q4+OH                  2.770e+10    0.000    10500  !RR 16_P_S_5_S M 1
+I2C7H12OH2Q46-5<=>I2C7H12OH2O45Q6+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH2Q46-5<=>I2C7H12OH2O56Q4+OH                  5.940e+10    0.480    12090  !RR 16_P_S_3_S M 1
+I2C7H12OH2Q46-1<=>I2C7H12OH2O14Q6+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH2Q36-1<=>I2C7H12OH2O13Q6+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH3Q45-2<=>I2C7H12OH3O24Q5+OH                  1.340e+12    0.000    15160  !RR 16_S_T_4_S M 1
+I2C7H12OH3Q45-2<=>I2C7H12OH3O25Q4+OH                  3.250e+10    0.000     7789  !RR 16_S_T_5_S M 1
+I2C7H12OH3Q45-6<=>I2C7H12OH3O46Q5+OH                  1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H12OH3Q45-6<=>I2C7H12OH3O56Q4+OH                  1.780e+10    0.680    10650  !RR 16_S_P_3_S M 1
+I2C7H12OH3Q45-1<=>I2C7H12OH3O14Q5+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH3Q45-1<=>I2C7H12OH3O15Q4+OH                  1.760e+11   -0.460    15710  !RR 16_S_P_6_S M 1
+I2C7H12OH3Q56-4<=>I2C7H12OH3O45Q6+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH3Q56-4<=>I2C7H12OH3O46Q5+OH                  1.210e+12    0.000    17830  !RR 16_P_S_4_S M 1
+I2C7H12OH3Q56-2<=>I2C7H12OH3O25Q6+OH                  3.250e+10    0.000     7789  !RR 16_S_T_5_S M 1
+I2C7H12OH3Q56-2<=>I2C7H12OH3O26Q5+OH                  1.880e+09    0.000     9597  !RR 16_P_T_6_S M 1
+I2C7H12OH3Q15-2<=>I2C7H12OH3O12Q5+OH                  5.680e+12    0.010    12850  !RR 16_P_T_3_S M 1
+I2C7H12OH3Q15-2<=>I2C7H12OH3O25Q1+OH                  3.250e+10    0.000     7789  !RR 16_S_T_5_S M 1
+I2C7H12OH3Q15-1<=>I2C7H12OH3O11Q5+OH                  6.990e+11    0.000    20150  !RR 16_P_P_4_S M 1
+I2C7H12OH3Q15-1<=>I2C7H12OH3O15Q1+OH                  1.760e+11   -0.460    15710  !RR 16_S_P_6_S M 1
+I2C7H12OH3Q15-4<=>I2C7H12OH3O14Q5+OH                  2.770e+10    0.000    10500  !RR 16_P_S_5_S M 1
+I2C7H12OH3Q15-4<=>I2C7H12OH3O45Q1+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH3Q56-1<=>I2C7H12OH3O15Q6+OH                  1.760e+11   -0.460    15710  !RR 16_S_P_6_S M 1
+I2C7H12OH3Q46-5<=>I2C7H12OH3O45Q6+OH                  2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H12OH3Q46-5<=>I2C7H12OH3O56Q4+OH                  5.940e+10    0.480    12090  !RR 16_P_S_3_S M 1
+I2C7H12OH3Q46-2<=>I2C7H12OH3O24Q6+OH                  1.340e+12    0.000    15160  !RR 16_S_T_4_S M 1
+I2C7H12OH3Q46-2<=>I2C7H12OH3O26Q4+OH                  1.880e+09    0.000     9597  !RR 16_P_T_6_S M 1
+I2C7H12OH3Q46-1<=>I2C7H12OH3O14Q6+OH                  2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H12OH3Q26-1<=>I2C7H12OH3O12Q6+OH                  9.520e+12    0.000    11460  !RR 16_T_P_3_S M 1
+
+! Class31: O2 addition to oleR:
+IC7D1-3+O2<=>I2C7H132-1O2                             1.830e+02    2.180    -2200  !RR 31_PA M 1
+IC7D3-2+O2<=>I2C7H132-4O2                             9.140e+02    2.180    -2200  !RR 31_SA M 1
+I2C7H132-5+O2<=>I2C7H132-5O2                          6.690e+13   -0.300     -199  !RR 6_S M 1
+I2C7H132-6+O2<=>I2C7H132-6O2                          1.630e+14   -0.620       -1  !RR 6_P M 1
+
+! Class32: oleROO HO2 elimination:
+I2C7H132-4O2<=>I2C7H12D24+HO2                         9.480e+07    1.760    30410  !RR 32_SA_S M 2
+I2C7H132-5O2<=>I2C7H12D24+HO2                         1.500e+07    1.800    25340  !RR 32_S_SA M 2
+I2C7H132-5O2<=>I2C7H12D25+HO2                         1.476e+09    1.210    29800  !RR 11_S_P M 3
+I2C7H132-6O2<=>I2C7H12D25+HO2                         6.080e+08    1.210    30130  !RR 11_P_S M 2
+
+! Class33: oleROO isomerization:
+I2C7H132-4O2<=>I2C7H122OOH4-5                         7.760e-05    4.570    22400  !RR 33_SA_S_5 M 2
+I2C7H132-4O2<=>I2C7H122OOH4-6                         6.780e+10    0.300    22260  !RR 33_SA_P_6 M 3
+I2C7H132-4O2<=>I2C7H122OOH4-1                         2.280e+04    2.010    12132  !RR 33_SA_PA_7 M 3
+I2C7H132-5O2<=>I2C7H122OOH5-4                         9.260e-12    6.630    14630  !RR 33_S_SA_5 M 2
+I2C7H132-5O2<=>I2C7H122OOH5-6                         5.880e+07    1.380    31920  !RR 7_S_P_5 M 3
+I2C7H132-5O2<=>I2C7H122OOH5-1                         9.780e+09    0.230    20180  !RR 33_S_PA_8 M 3
+I2C7H132-6O2<=>I2C7H122OOH6-5                         1.150e-14    7.690    17770  !RR 33_P_S_5 M 2
+I2C7H132-6O2<=>I2C7H122OOH6-4                         2.560e-06    5.040     9710  !RR 33_P_SA_6 M 2
+
+! Class34: oleQOOH decomposition:
+I2C7H12D24+HO2<=>I2C7H122OOH4-5                       8.470e+11    0.000    11200  !RR -13_beta_SS M 1
+I2C7H122OOH4-6<=>IC5D2Y4+C2H4+OH                      7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H12D24+HO2<=>I2C7H122OOH5-4                       8.470e+11    0.000    11200  !RR -13_beta_SS M 1
+I2C7H12D25+HO2<=>I2C7H122OOH5-6                       5.920e+11    0.000    13300  !RR -13_beta_SP M 1
+I2C7H122OOH6-4<=>CH2O+IC6D24+OH                       7.880e-01    0.080      -21  !RR 13_gamma M 1
+I2C7H12D25+HO2<=>I2C7H122OOH6-5                       7.690e+11    0.000    13300  !RR -13_beta_PS M 1
+
+! Class35: oleQOOH to cyclic ethers:
+I2C7H122OOH4-5<=>I2C7H122O4-5+OH                      1.440e+16   -1.180    10500  !RR 35_SA_S_3 M 1
+I2C7H122OOH4-6<=>I2C7H122O4-6+OH                      5.640e+11    0.080    18590  !RR 35_SA_P_4 M 1
+I2C7H122OOH5-4<=>I2C7H122O4-5+OH                      7.180e+12   -0.230     9704  !RR 35_S_SA_3 M 1
+I2C7H122OOH5-6<=>I2C7H122O5-6+OH                      5.020e+08    1.070    10360  !RR 12_S_P_3_S M 1
+I2C7H122OOH6-4<=>I2C7H122O4-6+OH                      1.580e+09    0.790    15550  !RR 35_P_SA_4 M 1
+I2C7H122OOH6-5<=>I2C7H122O5-6+OH                      4.330e+06    1.680     9849  !RR 12_P_S_3_S M 1
+
+! Class36: OleOHs (roho2 elim) consumption:
+I2C7H13OH3-1+OH<=>CH3+C6H9D12OH3+H2O                  1.010e+06    2.200     -437  !RR 36 M 1
+I2C7H13OH3-1+OH<=>C2H5+C3H5-T+SC2H2OH+H2O             1.010e+06    2.200     -437  !RR 36 M 1
+I2C7H13OH3-1+OH<=>PC4H8OH-1+C3H4-A+H2O                1.010e+06    2.200     -437  !RR 36 M 1
+I2C7H13OH3-2+OH<=>CH3+C6H9D12OH3+H2O                  1.010e+06    2.200     -437  !RR 36 M 1
+I2C7H13OH3-2+OH<=>CH3+C2H3+SC3H5OH+CH3+H2O            1.010e+06    2.200     -437  !RR 36 M 1
+I2C7H13OH2-5+OH<=>TC3H6OH+C4H61-3+H2O                 1.010e+06    2.200     -437  !RR 36 M 1
+I2C7H13OH3-4+OH<=>CH3+C3H5-S+HCCOH+CH3+H2O            2.020e+06    2.200     -437  !RR 36 M 2
+I2C7H13OH3-5+OH<=>IC3H7+C4H5OH-13+H2O                 1.010e+06    2.200     -437  !RR 36 M 1
+
+! Class37: O2 addition to oleQOOH:
+I2C7H122OOH1-4+O2<=>I2C7H122OOH1-4O2                  4.570e+02    2.180    -2200  !RR 37_SA M 1
+I2C7H122OOH1-5+O2<=>I2C7H122OOH1-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H122OOH1-1+O2<=>I2C7H122OOH1-1O2                  4.620e+16   -1.630      -20  !RR 37_PA M 1
+I2C7H122OOH4-1+O2<=>I2C7H122OOH4-1O2                  4.620e+16   -1.630      -20  !RR 37_PA M 1
+I2C7H122OOH4-5+O2<=>I2C7H122OOH4-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+I2C7H122OOH4-6+O2<=>I2C7H122OOH4-6O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H122OOH5-1+O2<=>I2C7H122OOH5-1O2                  4.620e+16   -1.630      -20  !RR 37_PA M 1
+I2C7H122OOH5-4+O2<=>I2C7H122OOH5-4O2                  4.570e+02    2.180    -2200  !RR 37_SA M 1
+I2C7H122OOH5-6+O2<=>I2C7H122OOH5-6O2                  8.000e+18   -2.370     1115  !RR 8_P M 1
+I2C7H122OOH6-4+O2<=>I2C7H122OOH6-4O2                  4.570e+02    2.180    -2200  !RR 37_SA M 1
+I2C7H122OOH6-5+O2<=>I2C7H122OOH6-5O2                  1.300e+13   -0.460     -616  !RR 8_S_C7 M 1
+
+! Class38: oleKHP formation:
+I2C7H122OOH4-5O2<=>I2C7H122KET45+OH                   1.080e+13    0.000    25712  !RR 38_S_SA_5 M 1
+I2C7H122OOH4-6O2<=>I2C7H122KET46+OH                   1.560e+06    1.710    15670  !RR 38_P_SA_6 M 1
+I2C7H122OOH5-4O2<=>I2C7H122KET54+OH                   7.200e+11    0.000    25712  !RR 38_SA_S_5 M 1
+I2C7H122OOH5-6O2<=>I2C7H122KET56+OH                   2.760e+08    1.200    25700  !RR 9_P_S_5 M 1
+I2C7H122OOH6-4O2<=>I2C7H122KET64+OH                   2.540e+05    1.620    17160  !RR 38_SA_P_6 M 2
+I2C7H122OOH6-5O2<=>I2C7H122KET65+OH                   6.720e+05    2.050    26160  !RR 9_S_P_5 M 2
+
+! Class39: oleKHP decomposition:
+I2C7H122KET45<=>CH3CHO+IC5D2Y4-4J+OH                  1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+I2C7H122KET46<=>CH2O+CH2CO+IC4H7-I1+OH                2.360e+16   -0.160    43390  !RR 10_P_gamma M 1
+I2C7H122KET54<=>CH3CO+HCO+IC4H7-I1+OH                 1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+I2C7H122KET56<=>CH2O+CH2CO+IC4H7-I1+OH                6.970e+17   -0.610    41790  !RR 10_P_beta M 1
+I2C7H122KET64<=>CH2CHO+HCO+IC4H7-I1+OH                5.420e+13    0.680    41540  !RR 10_S_gamma M 1
+I2C7H122KET65<=>HCO+HCO+CC5H9-B+OH                    1.240e+17   -0.380    42160  !RR 10_S_beta M 1
+
+! Class40: OHOleOOHs (o2qohooh elim) consumption:
+I2C7H122OH5Q4<=>SC3H5CHO+TC3H6OH+OH                   1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H122OH5Q4<=>IC3H6OHCHO+C3H5-S+OH                  1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H121OH5Q4<=>AC3H5CHO+TC3H6OH+OH                   1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H121OH5Q4<=>IC3H6OHCHO+C3H5-A+OH                  1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H123OH3Q2<=>CH3CO+CH3+OH+HCCOH+C2H5               1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H123OH3Q2<=>CH3COCH3+OH+HCCOH+C2H5                1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H123OH3Q2<=>C5H6D2OH2KETO1-1+CH3+CH3+OH           1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H122OH4Q5<=>CH3CO+C4H63,1-1OH+CH3+OH              1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H122OH4Q5<=>CH3COCH3+C4H63,1-1OH+OH               1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H122OH4Q5<=>C5H6D2OH4KETO5-5+CH3+CH3+OH           1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H121OH4Q5<=>CH3CO+C4H64,1-1OH+CH3+OH              1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H121OH4Q5<=>CH3COCH3+C4H64,1-1OH+OH               1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H121OH4Q5<=>C5H6D1OH4KETO5-5+CH3+CH3+OH           1.010e+16    0.000    41310  !RR 18_T M 1
+I2C7H122OH5Q1<=>CH2O+OH+C2H2+IC4H8OH-TI               3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H123OH2Q6<=>CH2O+OH+C5H7D13OH4+CH3                3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H123OH3Q5<=>CH3CHO+OH+HCCOH+IC3H7                 1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H123OH3Q5<=>HCO+CH3+OH+HCCOH+IC3H7                1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H121OH3Q5<=>CH3CHO+OH+C2H3OH+C3H5-T               1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H121OH3Q5<=>HCO+CH3+OH+C2H3OH+C3H5-T              1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H122OH3Q5<=>CH3CHO+OH+I2C5H82OH3-4                1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H122OH3Q5<=>HCO+CH3+OH+I2C5H82OH3-4               1.050e+16    0.000    41810  !RR 18_S M 1
+I2C7H122OH4Q1<=>CH2O+OH+C2H2+I2C4H8OH-1J1             3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H123OH3Q6<=>CH2O+OH+I2C6H103OH3-5                 3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H121OH3Q6<=>CH2O+OH+C2H4+SC4H7OH-IP               3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H122OH3Q6<=>CH2O+OH+C2H4+SC3H5OH+CH3              3.330e+16   -0.010    41660  !RR 18_P M 1
+
+! Class41: oleO2QOOH isomerization:
+I2C7H122OOH1-4O2<=>I2C7H112Q14-5                      8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H122OOH1-4O2<=>I2C7H112Q14-6                      4.620e+08    1.050    21700  !RR 14_S_P_6 M 3
+I2C7H122OOH1-4O2<=>I2C7H112Q14-1                      1.233e+06    1.500    20010  !RR 41_S_PA_7 M 3
+I2C7H122OOH1-5O2<=>I2C7H112Q15-4                      2.140e+09    0.900    29510  !RR 41_S_SA_5 M 2
+I2C7H122OOH1-5O2<=>I2C7H112Q15-6                      1.041e+07    1.720    33720  !RR 14_S_P_5 M 3
+I2C7H122OOH1-5O2<=>I2C7H112Q15-1                      2.367e+04    1.800    19760  !RR 41_S_PA_8 M 3
+I2C7H122OOH1-1O2<=>I2C7H112Q11-4                      1.996e+08    0.730    16340  !RR 41_P_SA_7 M 2
+I2C7H122OOH1-1O2<=>I2C7H112Q11-5                      2.600e+06    1.000    18200  !RR 14_P_S_8 M 2
+I2C7H122OOH4-5O2<=>I2C7H112Q45-6                      1.041e+07    1.720    33720  !RR 14_S_P_5 M 3
+I2C7H122OOH4-5O2<=>I2C7H112Q45-1                      2.367e+04    1.800    19760  !RR 41_S_PA_8 M 3
+I2C7H122OOH4-6O2<=>I2C7H112Q46-5                      3.780e+10    0.620    30700  !RR 14_P_S_5 M 2
+I2C7H122OOH5-4O2<=>I2C7H112Q45-6                      4.620e+08    1.050    21700  !RR 14_S_P_6 M 3
+I2C7H122OOH5-4O2<=>I2C7H112Q45-1                      1.233e+06    1.500    20010  !RR 41_S_PA_7 M 3
+I2C7H122OOH5-6O2<=>I2C7H112Q56-4                      3.020e+05    1.950    17870  !RR 41_P_SA_6 M 2
+I2C7H122OOH6-4O2<=>I2C7H112Q46-5                      8.580e+08    0.900    29510  !RR 14_S_S_5 M 2
+I2C7H122OOH6-4O2<=>I2C7H112Q46-1                      1.233e+06    1.500    20010  !RR 41_S_PA_7 M 3
+I2C7H122OOH6-5O2<=>I2C7H112Q56-4                      2.140e+09    0.900    29510  !RR 41_S_SA_5 M 2
+I2C7H122OOH6-5O2<=>I2C7H112Q56-1                      2.367e+04    1.800    19760  !RR 41_S_PA_8 M 3
+
+! Class42: oleP(OOH)2 decomposition:
+I2C7H112Q14-5<=>I2C7H11D24-1OOH+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S_rev M 1
+I2C7H112Q14-6<=>IC5D2Y4-1OOH+C2H4+OH                  5.190e+11    0.430    15490  !RR 17_beta_S_P_rev M 1
+I2C7H112Q15-4<=>I2C7H11D24-1OOH+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S_rev M 1
+I2C7H112Q15-6<=>I2C7H11D25-1OOH+HO2                   5.190e+11    0.430    15490  !RR 17_beta_S_P_rev M 1
+I2C7H112Q45-6<=>I2C7H11D25-4OOH+HO2                   5.190e+11    0.430    15490  !RR 17_beta_S_P_rev M 1
+I2C7H112Q46-5<=>I2C7H11D24-6OOH+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S_rev M 1
+I2C7H112Q46-5<=>I2C7H11D25-4OOH+HO2                   5.630e+09    0.970    15000  !RR 17_beta_P_S_rev M 1
+I2C7H112Q56-4<=>I2C7H11D24-6OOH+HO2                   4.310e+08    1.250    14340  !RR 17_beta_S_S_rev M 1
+
+! Class43: P(OOH)2 to cyclic ethers-OOH:
+I2C7H112Q14-5<=>I2C7H112O45-1OOH+OH                   2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H112Q14-6<=>I2C7H112O46-1OOH+OH                   1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H112Q14-1<=>I2C7H112O14-1OOH+OH                   2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H112Q15-4<=>I2C7H112O45-1OOH+OH                   2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H112Q15-6<=>I2C7H112O56-1OOH+OH                   1.780e+10    0.680    10650  !RR 16_S_P_3_S M 1
+I2C7H112Q11-4<=>I2C7H112O14-1OOH+OH                   2.770e+10    0.000    10500  !RR 16_P_S_5_S M 1
+I2C7H112Q45-6<=>I2C7H112O46-5OOH+OH                   1.200e+12    0.010    18310  !RR 16_S_P_4_S M 1
+I2C7H112Q45-6<=>I2C7H112O56-4OOH+OH                   1.780e+10    0.680    10650  !RR 16_S_P_3_S M 1
+I2C7H112Q45-1<=>I2C7H112O14-5OOH+OH                   2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+I2C7H112Q46-5<=>I2C7H112O45-6OOH+OH                   2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H112Q46-5<=>I2C7H112O56-4OOH+OH                   5.940e+10    0.480    12090  !RR 16_P_S_3_S M 1
+I2C7H112Q56-4<=>I2C7H112O45-6OOH+OH                   2.810e+12    0.010    11850  !RR 16_S_S_3_S M 1
+I2C7H112Q56-4<=>I2C7H112O46-5OOH+OH                   1.210e+12    0.000    17830  !RR 16_P_S_4_S M 1
+I2C7H112Q46-1<=>I2C7H112O14-6OOH+OH                   2.960e+11   -0.320    12750  !RR 16_S_P_5_S M 1
+
+! Class44: oleO2QOOH elimination to dienes-OOH:
+I2C7H122OOH1-4O2<=>I2C7H11D24-1OOH+HO2                2.740e+08    0.990    23400  !RR 15_SA_S M 2
+I2C7H122OOH1-5O2<=>I2C7H11D24-1OOH+HO2                3.360e+05    2.000    25200  !RR 15_S_SA M 2
+I2C7H122OOH1-5O2<=>I2C7H11D25-1OOH+HO2                1.218e+10    1.040    31480  !RR 15_S_P M 3
+I2C7H122OOH4-5O2<=>I2C7H11D25-4OOH+HO2                1.218e+10    1.040    31480  !RR 15_S_P M 3
+I2C7H122OOH4-6O2<=>I2C7H11D25-4OOH+HO2                2.900e+07    1.580    28500  !RR 15_P_S M 2
+I2C7H122OOH6-4O2<=>I2C7H11D24-6OOH+HO2                2.740e+08    0.990    23400  !RR 15_SA_S M 2
+I2C7H122OOH6-5O2<=>I2C7H11D24-6OOH+HO2                3.360e+05    2.000    25200  !RR 15_S_SA M 2
+
+! Class45: olecEthOOHs (from oleP(OOH)2) consumption:
+I2C7H112O45-1OOH<=>C3H6+CH2O+CH3CHCHO+OH              1.500e+16    0.000    40800  !RR 19_P M 1
+I2C7H112O46-1OOH<=>C3H6+CH2O+CH2CH2CHO+OH             1.500e+16    0.000    40800  !RR 19_P M 1
+I2C7H112O14-1OOH<=>C2H5CHO+C3H3+CH2O+OH               1.500e+16    0.000    40800  !RR 19_P M 1
+I2C7H112O46-5OOH<=>CH2CHO+HCO+IC4H7-I1+OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H112O46-5OOH<=>CH2O+I2C6H93KET5R2+OH              2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H112O56-4OOH<=>CH2CHO+HCO+IC4H7-I1+OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H112O14-5OOH<=>CH3CHO+CH3+HCO+C3H3+OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H112O45-6OOH<=>CH2O+I2C6H92KET5R4+OH              1.500e+16    0.000    40800  !RR 19_P M 1
+I2C7H112O14-6OOH<=>CH2O+C5H7D24-2+CH2O+OH             1.500e+16    0.000    40800  !RR 19_P M 1
+
+! Class46: olecEths (from oleQOOH) consumption:
+I2C7H122O4-5+OH<=>CH3+H2O+HCCO+IC4H7-I1               4.340e+12   -0.050       80  !RR 46 M 1
+I2C7H122O4-5+OH<=>CH3CHCO+IC4H7-I1+H2O                4.340e+12   -0.050       80  !RR 46 M 1
+I2C7H122O4-6+OH<=>HCO+IC6D24+H2O                      4.340e+12   -0.050       80  !RR 46 M 1
+I2C7H122O4-6+OH<=>IC5D2Y4-4J+C2H4+H2O                 4.340e+12   -0.050       80  !RR 46 M 1
+I2C7H122O5-6+OH<=>CH2CO+CC5H9-B+H2O                   4.340e+12   -0.050       80  !RR 46 M 1
+
+! Class47: OHcEthOOHs (from POHOOH2) consumption:
+I2C7H12OH2O35Q4<=>OH+HCO+TC3H6OH+CH3CHCHO             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O35Q4<=>CH3CHO+OH+CH3+HCO+HCCOH+CH3         2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O45Q3<=>OH+HCO+TC3H6OH+CH3CHCHO             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O36Q4<=>OH+HCO+TC3H6OH+CH2CH2CHO            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O36Q4<=>C2H4+HCO+OH+HCO+TC3H6OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O46Q3<=>OH+HCO+TC3H6OH+CH2CH2CHO            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O14Q3<=>IC3H5OH+C2H5CHO+HCO+OH              4.240e+16   -0.100    41730  !RR 19_S M 2
+I2C7H12OH2O15Q3<=>IC3H5OH+C3H4KETO13+CH3+OH           2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O15Q3<=>C3H6+CH2O+OH+C3Y1-2OH-2J            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O36Q5<=>I2C5H9OH2-3+CH2O+HCO+OH             2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O36Q5<=>CH2O+OH+CH3+HCO+C4H63,1-3OH         2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O56Q3<=>CH2O+C2H3+OH+HCO+TC3H6OH            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O11Q2<=>CH2O+OH+CH2CO+PC4H8OH-1             2.280e+16    0.000    41310  !RR 19_T M 2
+I2C7H12OH3O14Q2<=>CH2O+OH+C4H71-1OH+CH3CO             2.280e+16    0.000    41310  !RR 19_T M 2
+I2C7H12OH3O15Q2<=>CH2O+OH+C3H6+CHOHCO+CH3             1.140e+16    0.000    41310  !RR 19_T M 1
+I2C7H12OH3O25Q4<=>SC4H7OH-I+CH3CHO+HCO+OH             4.240e+16   -0.100    41730  !RR 19_S M 2
+I2C7H12OH3O26Q4<=>SC4H7OH-I+CH2O+CH2CHO+OH            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O26Q4<=>C2H4+CH3+OH+HCO+CHOHCO+CH3          2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O26Q5<=>CH2O+OH+SC4H7OH-I+CH2CHO            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O46Q5<=>CH2CHO+OH+HCO+IC4H8OH-TI            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O46Q5<=>CH2O+OH+TC3H6OH+HCO+C2H3            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH2O56Q4<=>CH2CHO+OH+HCO+IC4H8OH-TI            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O46Q5<=>CH2CHO+OH+HCO+I2C4H8OH-1J1          2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O46Q5<=>CH2O+OH+IC3H7+HCO+C2H2OH            2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O56Q4<=>CH2CHO+OH+HCO+I2C4H8OH-1J1          2.120e+16   -0.100    41730  !RR 19_S M 1
+I2C7H12OH3O15Q4<=>CH3CHO+OH+C3H6+HOCHCHO              2.120e+16   -0.100    41730  !RR 19_S M 1
+
+! Class48: OHcEthDec (from QOHOOH) consumption:
+I2C7H13OH2O3-4+OH<=>C2H5+HCCO+TC3H6OH+H2O             8.680e+12   -0.050       80  !RR 48 M 2
+I2C7H13OH2O1-3+OH<=>IC3H5OH+NC3H7CO+H2O               4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O1-3+OH<=>HCO+C6H11OH2-2+H2O                4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O3-5+OH<=>CH3CO+I2C5H9OH2-3+H2O             4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O3-5+OH<=>C3H6+CH3+HOCCO+CH3+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O3-6+OH<=>I2C5H9OH2-3+CH2CHO+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O3-6+OH<=>C2H4+CH2CO+TC3H6OH+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O1-2+OH<=>NC3H7+HCO+PC3H4OH-2+H2O           4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O2-4+OH<=>SC4H7OH-I+C2H5CO+H2O              4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O2-5+OH<=>SC4H7OH-I+CH3COCH2+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O2-6+OH<=>SC4H7OH-I+CH2CH2CHO+H2O           4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O5-6+OH<=>IC4H8OH-TI+HCO+C2H3+H2O           4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O5-6+OH<=>CH2CO+I2C5H10OH-2J4+H2O           4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O4-6+OH<=>HCO+I2C6H11OH2-4+H2O              4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH2O4-6+OH<=>C2H4+CH2CO+TC3H6OH+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O4-5+OH<=>CH3+HCCO+I2C4H8OH-1J1+H2O         8.680e+12   -0.050       80  !RR 48 M 2
+I2C7H13OH3O5-6+OH<=>I2C4H8OH-1J1+HCO+C2H3+H2O         4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O5-6+OH<=>CH2CO+CC5H10OH+H2O                4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O3-5+OH<=>CH3CO+I2C5H9OH3-3+H2O             4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O1-5+OH<=>C3H6+C2H3OH+CH3CO+H2O             4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O1-5+OH<=>C3H6+SC3H5OH+HCO+H2O              4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O4-6+OH<=>HCO+I2C6H11OH3-4+H2O              4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O4-6+OH<=>C2H4+CHOHCO+IC3H7+H2O             4.340e+12   -0.050       80  !RR 48 M 1
+I2C7H13OH3O3-6+OH<=>I2C5H9OH3-3+CH2CHO+H2O            4.340e+12   -0.050       80  !RR 48 M 1
+
+! Class49: dieneOOHdecom (oleO2QOOH elim) consumption:
+I2C7H11D24-1OOH<=>CH2O+C6H9D24-2+OH                   3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H11D25-1OOH<=>CH2O+C6H9D25-2+OH                   3.330e+16   -0.010    41660  !RR 18_P M 1
+I2C7H11D25-4OOH<=>IC4H7-I1+OH+HCO+C2H3                2.100e+16    0.000    41810  !RR 18_S M 2
+I2C7H11D24-6OOH<=>CH2O+I2C6H9D24-5+OH                 3.330e+16   -0.010    41660  !RR 18_P M 1
+
+! Class50: alpha-QOHOOH To KHPs:
+I2C7H13OH3Q2-3+O2<=>IC7KET32+HO2                      3.370e+10    0.760    -1636  !RR 50_S M 1
+I2C7H13OH3Q5-3+O2<=>IC7KET35+HO2                      3.370e+10    0.760    -1636  !RR 50_S M 1
+I2C7H13OH3Q6-3+O2<=>IC7KET36+HO2                      3.370e+10    0.760    -1636  !RR 50_S M 1
+
+END

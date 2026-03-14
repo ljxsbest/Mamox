@@ -30,6 +30,7 @@ public:
 
 	RateRule initiation{ 3, true };  // 2 to 3. // first value is the number of dependencies (or parameters) in csv, the second value is whether the rate rule is symmetrical or not
 	RateRule hAbstraction{ 3 ,false };
+	RateRule dieneDec{ 1, false }; // JL260118. added for diene decomposition.
 	RateRule isomerizationR{ 4 ,false }; // 3 to 4
 	RateRule betaDecR{ 3 ,false }; // Jiaxin 2 to 3
 	RateRule oleFromR{ 0 ,false };
@@ -43,6 +44,7 @@ public:
 	RateRule HO2AddAllyR_rec{1, false};
 	RateRule HO2AddAllyR_dec{ 1, false };
 	RateRule ch3AddAllyR{ 1, false };
+	RateRule AllyRrecom{ 0, false };
 	RateRule ho2AddOle{ 2, false };
 
 	RateRule OatomAddOle{ 2, false };
@@ -87,13 +89,15 @@ public:
 	RateRule oleOOHDec{ 1 ,false };
 	RateRule etherOOHDec{ 1 ,false };
 	RateRule cycEthDec{ 0 ,false };
+	RateRule cycEthDec1{ 0 ,false };
+	RateRule cycoodec{ 1, false };
 	RateRule allylicRadForm{ 1 ,false };
 	RateRule alkenylROForm{ 0 ,false };
 	RateRule alkenylRODec{ 1 ,false };
 	RateRule aldDec{ 0 ,false };
 	RateRule oleOHsConsum{ 0, false };
 	RateRule Alpha_qohooh { 1, false };
-
+	RateRule cycloadd{ 2, false }; // JL250822
 
 
 public:
@@ -104,14 +108,18 @@ public:
 	int sizeReactions = 0;
 	Kinox(void);    // default constructor
 	Kinox(std::string nome);    // constructor
+	//int ClassCount(std::string nome); // Jiaxin
+	//int ClassCount(std::istream& stream, int index_class);
 	void leggi(char[80]);
 
 	friend std::ostream& operator<<(std::ostream&, Kinox&);
 	friend std::istream& operator>>(std::istream&, Kinox&);
 
 	reactionComment v_initiation(Radicale r1, int isomers, int IsRAlly); // JIAXIN.
+	reactionComment v_initiation1(int numH_posr);
 	reactionComment v_h_abstraction(Molecola r, Carbonio c, int isAllorVyn, int numH, int isomers, std::string OH_label);
-	reactionComment v_isomerization_r(Radicale r, Idrogeno h, Anello a, int numH, int Hally);
+	reactionComment v_dienes_dec(Molecola r, int numH);
+	reactionComment v_isomerization_r(Radicale r, Idrogeno h, Anello a, int numH, int Rally, int Hally);
 	// JIAXIN
 	reactionComment v_roh_isom_r(Radicale r, Idrogeno h, Anello a, int numH); //betaROH isomerization.
 	reactionComment v_beta_dec_r(Radicale r1, Radicale r2, int isAllyOrNot);
@@ -120,11 +128,14 @@ public:
 	reactionComment v_o2_add_roh(Radicale r); // JIAXIN
 	reactionComment v_alpha_qohooh(Radicale r);
 	reactionComment v_oh_add_ole(Carbonio OHAdd_site, Carbonio radical_site); // JIAXIN OH add
+	reactionComment v_cycloadd(int ring, std::string label); // JL250822
+	reactionComment v_cycoodec(std::string label);// JL250828
 
 	reactionComment v_h_add_ole(Carbonio HAdd_site, Carbonio radical_site); // JIAXIN OH add
 	reactionComment v_ho2_add_allyR_rec(Radicale radical_site); // JIAXIN
 	reactionComment v_ho2_add_allyR_dec(Radicale radical_site); // JIAXIN
 	reactionComment v_ch3_add_allyR(); // JIAXIN
+	reactionComment v_allyR_recom(); // JL260118
 	reactionComment v_ho2_add_ole(Carbonio HO2Add_site, Carbonio radical_site); // JIAXIN OH add
 
 	reactionComment v_o_add_ole(Carbonio OAdd_site, std::string R_expel); // JIAXIN OH add
@@ -172,6 +183,7 @@ public:
 	reactionComment v_oleooh_dec(Radicale r);
 	reactionComment v_etherooh_dec(Radicale r);
 	reactionComment v_cyc_eth_dec();
+	reactionComment v_cyc_eth_dec1();
 	reactionComment v_allylic_rad_form(Carbonio c, int numH);
 	reactionComment v_alkenyl_ro_form();
 	reactionComment v_alkenyl_ro_dec(Carbonio c);
